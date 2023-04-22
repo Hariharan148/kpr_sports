@@ -7,7 +7,7 @@ import 'package:kpr_sports/attendence_report/report.dart';
 var appRoutes = {
   "/": (context) => const HomeScreen(),
   "/students": (context) => const StudentsScreen(),
-  "/attendence": (context) => const AttendeceScreen(),
+  "/attendance": (context) => const AttendanceScreen(),
   "/report": (context) => const ReportScreen(),
   "/settings": (context) => const SettingsScreen()
 };
