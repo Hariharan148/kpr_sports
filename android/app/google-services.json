@@ -1,0 +1,39 @@
+{
+  "project_info": {
+    "project_number": "454619571339",
+    "project_id": "kpr-sports",
+    "storage_bucket": "kpr-sports.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:454619571339:android:ba93667fbd2becf341e08e",
+        "android_client_info": {
+          "package_name": "com.kprsports.kpr_sports"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "454619571339-g2aij4qag81hmdt7fhsr9cedpkq1fc8c.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyA95mXPSrYRUV5fTb1FzhrG6P5SInuZF40"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "454619571339-g2aij4qag81hmdt7fhsr9cedpkq1fc8c.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
