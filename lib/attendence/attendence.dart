@@ -10,6 +10,10 @@ class AttendeceScreen extends StatefulWidget {
 class _AttendeceScreenState extends State<AttendeceScreen> {
   @override
   Widget build(BuildContext context) {
-    return Container();
+    return Scaffold(
+      appBar: AppBar(
+        title: const Text("Attendence "),
+      ),
+    );
   }
 }
