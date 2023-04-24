@@ -21,12 +21,14 @@ class _ReportScreenState extends State<ReportScreen> {
     });
     try {
       final data = await fetchAttendanceData(_selectedDataRange);
+      print("data $data");
       if (data != null) {
         setState(() {
           _studentDataMap =
               data['studentDataMap'] as Map<String, Map<String, bool>>;
           _dates = data['dates'] as List<String>;
         });
+        print(_studentDataMap.entries);
       }
     } catch (e) {
       print('Error fetching attendance data: $e');

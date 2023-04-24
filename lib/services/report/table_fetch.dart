@@ -30,12 +30,11 @@ Future<Map<String, dynamic>?> fetchAttendanceData(
     print(studentDocs);
     for (final studentDoc in studentDocs) {
       final studentData = studentDoc.data();
-      print(studentData);
-      final studentId = studentDoc.id;
-      if (!studentDataMap.containsKey(studentId)) {
-        studentDataMap[studentId] = <String, bool>{};
+      print(studentData["name"]);
+      if (!studentDataMap.containsKey(studentData["name"])) {
+        studentDataMap[studentData["name"]] = <String, bool>{};
       }
-      studentDataMap[studentId]![attendanceData['date']] =
+      studentDataMap[studentData["name"]]![attendanceData['date']] =
           studentData['attendanceStatus'];
     }
   }

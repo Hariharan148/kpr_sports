@@ -1,9 +1,8 @@
-import 'dart:math';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  const AttendanceScreen({super.key});
+  const AttendanceScreen({Key? key}) : super(key: key);
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
@@ -23,6 +22,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         attendenceStatus = querySnapshot.docs
             .map((doc) => {
                   "uid": doc.id,
+                  "name": doc["name"],
+                  "rollno": doc["rollno"],
                   "status": false,
                 })
             .toList();
@@ -58,6 +59,8 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
               await Future.wait(attendenceStatus
                   .map((status) => attendanceRef.doc(status["uid"]).set({
                         "attendanceStatus": status["status"],
+                        "name": status["name"],
+                        "rollno": status["rollno"],
                       })));
               print("Attendance submitted successfully");
             },
@@ -95,13 +98,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           itemBuilder: (BuildContext context, int index) {
             final name = students[index].get("name") as String?;
             final rollno = students[index].get("rollno") as String?;
+
+            print(name);
+            print(rollno);
             return StatefulBuilder(
               builder: (BuildContext context, StateSetter setState) {
                 return Card(
                   child: InkWell(
                     onTap: () {
                       setState(() {
-                        // final studentUid = students[index].id;
                         final newStatus = !attendenceStatus[index]["status"];
                         attendenceStatus[index]["status"] = newStatus;
                       });
