@@ -1,7 +1,9 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:kpr_sports/attendence_report/date_time.dart';
+import 'package:kpr_sports/attendence_report/excel_creator.dart';
 import 'package:kpr_sports/services/report/table_fetch.dart';
+import 'package:kpr_sports/attendence_report/excel_creator.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -49,6 +51,36 @@ class _ReportScreenState extends State<ReportScreen> {
               onDateRangeSelected: _handleDateRangeSelected,
             ),
           ),
+          // ElevatedButton(
+          //   onPressed: () async {
+          //     await saveDataTableToExcel(
+          //         context,
+          //         DataTable(
+          //           columns: [
+          //             DataColumn(label: Text('Name')),
+          //             ..._dates
+          //                 .map((date) => DataColumn(label: Text(date)))
+          //                 .toList(),
+          //           ],
+          //           rows: _studentDataMap.entries
+          //               .map(
+          //                 (entry) => DataRow(
+          //                   cells: [
+          //                     DataCell(Text(entry.key)),
+          //                     ..._dates.map(
+          //                       (date) => DataCell(Text(
+          //                           entry.value[date] == true
+          //                               ? 'Present'
+          //                               : 'Absent')),
+          //                     )
+          //                   ],
+          //                 ),
+          //               )
+          //               .toList(),
+          //         ));
+          //   },
+          //   child: Text('Download Excel'),
+          // ),
           Expanded(
               child: SingleChildScrollView(
             scrollDirection: Axis.horizontal,

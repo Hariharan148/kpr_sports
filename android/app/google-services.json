@@ -7,9 +7,9 @@
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:454619571339:android:8febb6e6eadbd77f41e08e",
+        "mobilesdk_app_id": "1:454619571339:android:efbfb93534639f7741e08e",
         "android_client_info": {
-          "package_name": "com.kprsport.app.kpr_sport"
+          "package_name": "com.kprsports.kpr_sports"
         }
       },
       "oauth_client": [

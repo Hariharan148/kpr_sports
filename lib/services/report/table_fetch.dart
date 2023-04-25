@@ -8,42 +8,37 @@ Future<Map<String, dynamic>?> fetchAttendanceData(
   }
 
   final start = selectedDataRange.start
-      .subtract(Duration(days: 1))
-      .toIso8601String()
-      .toString();
-  final end = selectedDataRange.end.toIso8601String().toString();
+      .subtract(const Duration(days: 1))
+      .toIso8601String();
+  final end = selectedDataRange.end.toIso8601String();
   final attendanceRef = FirebaseFirestore.instance.collection('attendance');
   final QuerySnapshot<Map<String, dynamic>> snapshot = await attendanceRef
-      .where('date', isGreaterThanOrEqualTo: start)
-      .where('date', isLessThan: end)
+      .where('date', isGreaterThanOrEqualTo: start, isLessThan: end)
       .get();
 
-  final attendanceDocs = snapshot.docs;
-  print(snapshot.docs);
   final studentDataMap = <String, Map<String, bool>>{};
-  for (final attendanceDoc in attendanceDocs) {
+  final sortedDates = <String>{};
+
+  for (final attendanceDoc in snapshot.docs) {
     final attendanceData = attendanceDoc.data();
-    print(attendanceData);
     final studentRef = attendanceDoc.reference.collection('students');
     final studentSnapshot = await studentRef.get();
     final studentDocs = studentSnapshot.docs;
-    print(studentDocs);
     for (final studentDoc in studentDocs) {
       final studentData = studentDoc.data();
-      print(studentData["name"]);
-      if (!studentDataMap.containsKey(studentData["name"])) {
-        studentDataMap[studentData["name"]] = <String, bool>{};
+      final name = studentData['name'];
+      final attendanceStatus = studentData['attendanceStatus'];
+
+      if (!studentDataMap.containsKey(name)) {
+        studentDataMap[name] = <String, bool>{};
       }
-      studentDataMap[studentData["name"]]![attendanceData['date']] =
-          studentData['attendanceStatus'];
+
+      studentDataMap[name]![attendanceData['date']] = attendanceStatus;
+      sortedDates.add(attendanceData['date']);
     }
   }
 
-  final sortedDates = studentDataMap.entries.fold(<String>{}, (dates, entry) {
-    dates.addAll(entry.value.keys);
-    return dates;
-  }).toList()
-    ..sort();
+  sortedDates.toList()..sort();
 
   return {'studentDataMap': studentDataMap, 'dates': sortedDates};
 }
