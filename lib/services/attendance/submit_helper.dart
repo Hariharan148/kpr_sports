@@ -6,21 +6,22 @@ class AttendanceService {
       AttendanceProvider attendanceProvider) async {
     final attendanceStatus = attendanceProvider.attendanceStatus;
     final today = DateTime.now().toString().substring(0, 10);
-    final attendanceRef = FirebaseFirestore.instance
-        .collection("attendance")
-        .doc(today)
-        .collection("students");
+    final attendanceRef =
+        FirebaseFirestore.instance.collection("attendance").doc(today);
 
     try {
-      await Future.wait(attendanceStatus
-          .map((status) => attendanceRef.doc(status["uid"]).set({
-                "name": status["name"],
-                "rollno": status["rollno"],
-                "attendanceStatus": status["status"],
-              })));
-      print("success");
+      await Future.wait([
+        attendanceRef.set({
+          "date": today,
+        }),
+        ...attendanceStatus.map((status) =>
+            attendanceRef.collection("students").doc(status["uid"]).set({
+              "name": status["name"],
+              "rollno": status["rollno"],
+              "attendanceStatus": status["status"],
+            })),
+      ]);
     } catch (error) {
-      print(error);
       rethrow;
     }
   }
