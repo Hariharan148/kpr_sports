@@ -1,21 +1,22 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
-  final String uid;
-  final String name;
-  final String fname;
-  final String mname;
-  final String roll;
-  final String number;
+  final String? uid;
+  final String? name;
+  final String? fname;
+  final String? mname;
+  final String? roll;
+  final String? number;
+  final String? image;
 
-  const UserModel({
-    required this.uid,
-    required this.name,
-    required this.fname,
-    required this.mname,
-    required this.roll,
-    required this.number,
-  });
+  const UserModel(
+      {required this.uid,
+      required this.name,
+      required this.fname,
+      required this.mname,
+      required this.roll,
+      required this.number,
+      required this.image});
 
   tojson() {
     return {
@@ -23,7 +24,8 @@ class UserModel {
       "Father Name": fname,
       "Mother Name": mname,
       "Roll No": roll,
-      "Number": number
+      "Number": number,
+      "Image": image
     };
   }
 
@@ -37,6 +39,7 @@ class UserModel {
       mname: data["MName"],
       roll: data["Roll No"],
       number: data["Number"],
+      image: data["Image"],
     );
   }
 }

@@ -76,9 +76,9 @@ class _StudentsScreenState extends State<StudentsScreen> {
                         child: Column(
                           children: [
                             ListTile(
-                              title: Text(user.name),
+                              title: Text(user.name!),
                               subtitle: Text("${user.fname} ${user.mname}"),
-                              trailing: Text(user.roll),
+                              trailing: Text(user.roll!),
                             ),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
@@ -112,20 +112,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
     );
   }
 
-//   void edit(BuildContext context)=> showDialog(
-//       context: context,
-//       barrierDismissible: false,
-//       builder: (BuildContext context) {
-//         return const Dialog(
-//           child: StudentAdd(),
-//         );
-//       });
-// }
+
   void showPopUp(BuildContext context, [verify, userList, index]) {
     // final check = verify;
     showDialog(
         context: context,
-        barrierDismissible: false,
+        // barrierDismissible: false,
         builder: (BuildContext context) {
           return Dialog(
               child: StudentAdd(
