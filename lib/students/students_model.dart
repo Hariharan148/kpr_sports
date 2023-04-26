@@ -1,6 +1,7 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 
 class UserModel {
+  final String uid;
   final String name;
   final String fname;
   final String mname;
@@ -8,6 +9,7 @@ class UserModel {
   final String number;
 
   const UserModel({
+    required this.uid,
     required this.name,
     required this.fname,
     required this.mname,
@@ -29,6 +31,7 @@ class UserModel {
       DocumentSnapshot<Map<String, dynamic>> document) {
     final data = document.data()!;
     return UserModel(
+      uid: document.id,
       name: data["Name"],
       fname: data["FName"],
       mname: data["MName"],

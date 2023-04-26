@@ -24,7 +24,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   Stream<List<UserModel>> allUser() {
-    return FirebaseFirestore.instance.collection("students").snapshots().map(
+    return FirebaseFirestore.instance.collection("Student").snapshots().map(
         (snapshot) =>
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
@@ -43,7 +43,9 @@ class _StudentsScreenState extends State<StudentsScreen> {
           Align(
               alignment: Alignment.centerRight,
               child: FloatingActionButton(
-                onPressed: () => showPopUp(context),
+                onPressed: () => showPopUp(
+                  context,
+                ),
                 child: const Icon(Icons.add),
               )),
           StreamBuilder<List<UserModel>>(
@@ -53,8 +55,13 @@ class _StudentsScreenState extends State<StudentsScreen> {
                 return const Center(child: CircularProgressIndicator());
               } else if (snapshot.hasError) {
                 return Center(child: Text("${snapshot.error}"));
+              } else if (snapshot.data!.isEmpty) {
+                return const Center(
+                  child: Text("No Data Found"),
+                );
               } else {
                 final userList = snapshot.data!;
+                print(snapshot.data);
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -66,10 +73,32 @@ class _StudentsScreenState extends State<StudentsScreen> {
                           borderRadius: BorderRadius.circular(10),
                           side: const BorderSide(color: Colors.grey, width: 1),
                         ),
-                        child: ListTile(
-                          title: Text(user.name),
-                          subtitle: Text("${user.fname} ${user.mname}"),
-                          trailing: Text(user.roll),
+                        child: Column(
+                          children: [
+                            ListTile(
+                              title: Text(user.name),
+                              subtitle: Text("${user.fname} ${user.mname}"),
+                              trailing: Text(user.roll),
+                            ),
+                            Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                OutlinedButton(
+                                    onPressed: () {
+                                      FirebaseFirestore.instance
+                                          .collection("Student")
+                                          .doc(user.uid)
+                                          .delete()
+                                          .then((value) => print(user.uid));
+                                    },
+                                    child: const Icon(Icons.delete)),
+                                OutlinedButton(
+                                    onPressed: () =>
+                                        showPopUp(context, true, userList, index),
+                                    child: const Icon(Icons.edit))
+                              ],
+                            )
+                          ],
                         ),
                       );
                     },
@@ -83,12 +112,27 @@ class _StudentsScreenState extends State<StudentsScreen> {
     );
   }
 
-  void showPopUp(BuildContext context) => showDialog(
-      context: context,
-      barrierDismissible: false,
-      builder: (BuildContext context) {
-        return const Dialog(
-          child: StudentAdd(),
-        );
-      });
+//   void edit(BuildContext context)=> showDialog(
+//       context: context,
+//       barrierDismissible: false,
+//       builder: (BuildContext context) {
+//         return const Dialog(
+//           child: StudentAdd(),
+//         );
+//       });
+// }
+  void showPopUp(BuildContext context, [verify, userList, index]) {
+    // final check = verify;
+    showDialog(
+        context: context,
+        barrierDismissible: false,
+        builder: (BuildContext context) {
+          return Dialog(
+              child: StudentAdd(
+            edit: verify ?? false,
+            usr: userList ?? [],
+            index: index ?? 0,
+          ));
+        });
+  }
 }
