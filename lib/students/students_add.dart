@@ -26,9 +26,15 @@ class _StudentAddState extends State<StudentAdd> {
   TextEditingController mname = TextEditingController();
   TextEditingController number = TextEditingController();
   String Img = "";
+  String filePath = "";
+  String result = "";
+  late File _image;
+  String link="";
+  bool ch = true;
 
   @override
   void initState() {
+    // pickUploadImage();
     if (widget.edit) {
       final user = widget.usr[widget.index];
       name.text = user.name;
@@ -36,9 +42,11 @@ class _StudentAddState extends State<StudentAdd> {
       fname.text = user.fname;
       mname.text = user.mname;
       number.text = user.number;
-      print(Img);
+      // print(Img);
+
       setState(() {
-        if (user.image != null) {
+        if (user.image != "") {
+          ch = false;
           Img = user.image;
         }
       });
@@ -53,118 +61,154 @@ class _StudentAddState extends State<StudentAdd> {
       source: ImageSource.gallery,
       imageQuality: 75,
     );
-    final ref = FirebaseStorage.instance.ref().child("image_$name.jpg");
 
-    await ref.putFile(File(image!.path));
-    ref.getDownloadURL().then((value) {
+    if (image != null) {
+      _image = File(image.path);
+      print(_image.toString());
+
       setState(() {
-        Img = value;
+        if (widget.edit) {
+          ch = true;
+        }
+
+        Img = image.path;
+        filePath = "Image_img.jpg";
       });
+    }
+  }
+
+  void uploadImg() {
+    print(
+        "hi everyonr. How are you guys ----------------------------------------------------------------------------------------------");
+    final ref =
+        FirebaseStorage.instance.ref().child("/Profile_Images/images_1.jpg");
+    ref.putFile(File(Img));
+    ref.getDownloadURL().then((value) {
+      link = value;
+      FirebaseFirestore.instance.collection("Student").add(toMap());
     });
   }
 
-check() {
-    return (Img == "") ? const AssetImage("assets/empty_pic.jpg") : NetworkImage(Img);
+  toMap() {
+    Map<String, dynamic> data = {
+      "Image": link,
+      "Name": name.text,
+      "Roll No": roll.text,
+      "FName": fname.text,
+      "MName": mname.text,
+      "Number": number.text
+    };
+    return data;
   }
 
-  @override
-  Widget build(BuildContext context) {
-    return Container(
-      padding: const EdgeInsets.all(20.0),
-      child: SingleChildScrollView(
-        child: Column(
-          children: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Icon(Icons.expand_circle_down),
-            ),
-            GestureDetector(
-                onTap: () {
-                  pickUploadImage();
-                },
-                child: Stack(
-                  children: [
-                    CircleAvatar(
-                      radius: 50.0,
-                      backgroundImage: check(),
-                    )
-                  ],
-                )),
-            ListView(shrinkWrap: true, children: [
-              TextFormField(
-                controller: name,
-                decoration: const InputDecoration(
-                    labelText: 'Student Name', border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: roll,
-                decoration: const InputDecoration(
-                    labelText: "Roll No.", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: fname,
-                decoration: const InputDecoration(
-                    labelText: "Father's Name", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: mname,
-                decoration: const InputDecoration(
-                    labelText: "Mother's Name", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                controller: number,
-                decoration: const InputDecoration(
-                    labelText: "Contact Number", border: OutlineInputBorder()),
-              ),
-              Visibility(
-                visible: !widget.edit,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Map<String, dynamic> data = {
-                      "Image": Img,
-                      "Name": name.text,
-                      "Roll No": roll.text,
-                      "FName": fname.text,
-                      "MName": mname.text,
-                      "Number": number.text
-                    };
-                    FirebaseFirestore.instance
-                        .collection("Student")
-                        // .doc(roll.text)
-                        .add(data);
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Submit"),
-                ),
-              ),
-              Visibility(
-                visible: widget.edit,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    Map<String, dynamic> data = {
-                      "Image": Img,
-                      "Name": name.text,
-                      "Roll No": roll.text,
-                      "FName": fname.text,
-                      "MName": mname.text,
-                      "Number": number.text
-                    };
-                    FirebaseFirestore.instance
-                        .collection("Student")
-                        .doc(widget.usr[widget.index].uid)
-                        // .doc(roll.text)
-                        .set(data, SetOptions(merge: true));
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Save"),
-                ),
-              ),
-            ]),
-          ],
-        ),
-      ),
-    );
+  void saveImg() {
+    final ref =
+        FirebaseStorage.instance.ref().child("/Profile_Images/images_1.jpg");
+    ref.putFile(File(Img));
+    ref.getDownloadURL().then((value) {
+      link = value;
+      FirebaseFirestore.instance
+          .collection("Student")
+          .doc(widget.usr[widget.index].uid)
+          // .doc(roll.text)
+          .set(toMap(), SetOptions(merge: true));
+    });
   }
-}
+
+    check() {
+      // if (widget.edit) {
+      //   setState(() {
+      //     ch = true;
+      //   });
+      // }
+      return (Img == "")
+          ? const AssetImage("assets/empty_pic.jpg")
+          : FileImage(_image);
+    }
+
+    @override
+    Widget build(BuildContext context) {
+      return Container(
+        padding: const EdgeInsets.all(20.0),
+        child: SingleChildScrollView(
+          child: Column(
+            children: [
+              ElevatedButton(
+                onPressed: () => Navigator.pop(context),
+                child: const Icon(Icons.expand_circle_down),
+              ),
+              GestureDetector(
+                  onTap: () {
+                    pickUploadImage();
+                  },
+                  child: Stack(
+                    children: [
+                      CircleAvatar(
+                        radius: 50.0,
+                        backgroundImage: (ch) ? check() : NetworkImage(Img),
+                      )
+                    ],
+                  )),
+              ListView(shrinkWrap: true, children: [
+                TextFormField(
+                  controller: name,
+                  decoration: const InputDecoration(
+                      labelText: 'Student Name', border: OutlineInputBorder()),
+                ),
+                TextFormField(
+                  controller: roll,
+                  decoration: const InputDecoration(
+                      labelText: "Roll No.", border: OutlineInputBorder()),
+                ),
+                TextFormField(
+                  controller: fname,
+                  decoration: const InputDecoration(
+                      labelText: "Father's Name", border: OutlineInputBorder()),
+                ),
+                TextFormField(
+                  controller: mname,
+                  decoration: const InputDecoration(
+                      labelText: "Mother's Name", border: OutlineInputBorder()),
+                ),
+                TextFormField(
+                  keyboardType: TextInputType.number,
+                  maxLength: 10,
+                  controller: number,
+                  decoration: const InputDecoration(
+                      labelText: "Contact Number",
+                      border: OutlineInputBorder()),
+                ),
+                Visibility(
+                  visible: !widget.edit,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      uploadImg();
+                      print("-------------------------------------------");
+                      print(Img);
+                      print(result);
+                      print("-------------------------------------------");
+
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Submit"),
+                  ),
+                ),
+                Visibility(
+                  visible: widget.edit,
+                  child: FloatingActionButton(
+                    onPressed: () {
+                      saveImg();
+                      
+                      Navigator.pop(context);
+                    },
+                    child: const Text("Save"),
+                  ),
+                ),
+              ]),
+            ],
+          ),
+        ),
+      );
+    }
+  }
+
