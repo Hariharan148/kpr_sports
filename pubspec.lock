@@ -105,6 +105,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "1.0.5"
+  data_table_2:
+    dependency: "direct main"
+    description:
+      name: data_table_2
+      sha256: daea1a67128e88b6b5537ee0752c67ecdc2fba9cd9303b3554361c648549618d
+      url: "https://pub.dev"
+    source: hosted
+    version: "2.4.2"
   equatable:
     dependency: transitive
     description:
@@ -192,6 +200,14 @@ packages:
     description: flutter
     source: sdk
     version: "0.0.0"
+  horizontal_data_table:
+    dependency: "direct main"
+    description:
+      name: horizontal_data_table
+      sha256: "32d9a29aad16caeb94d49d2310a041a8561d182719c16a21b360d5d8c5e0b2ad"
+      url: "https://pub.dev"
+    source: hosted
+    version: "4.2.0"
   js:
     dependency: transitive
     description:
@@ -439,4 +455,4 @@ packages:
     version: "6.2.2"
 sdks:
   dart: ">=2.19.6 <3.0.0"
-  flutter: ">=3.3.0"
+  flutter: ">=3.7.0"

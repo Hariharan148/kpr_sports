@@ -40,6 +40,8 @@ dependencies:
   cloud_firestore: ^4.5.2
   excel: ^2.1.0
   path_provider: ^2.0.14
+  data_table_2: ^2.4.2
+  horizontal_data_table: ^4.2.0
 
 dev_dependencies:
   flutter_test:

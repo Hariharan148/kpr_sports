@@ -1,15 +1,25 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-import 'package:kpr_sports/attendence/attendance_list.dart';
 import 'package:kpr_sports/routes.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
+import 'package:kpr_sports/store/report_provider.dart';
 import 'package:provider/provider.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp();
-  runApp(ChangeNotifierProvider<AttendanceProvider>(
-      child: const MyApp(), create: (_) => AttendanceProvider()));
+  runApp(MultiProvider(
+    providers: [
+      ChangeNotifierProvider<AttendanceProvider>(
+        create: (_) => AttendanceProvider(),
+      ),
+      ChangeNotifierProvider<ReportProvider>(
+        create: (_) => ReportProvider(),
+      ),
+      // add more providers as needed
+    ],
+    child: const MyApp(),
+  ));
 }
 
 class MyApp extends StatelessWidget {

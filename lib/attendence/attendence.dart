@@ -17,7 +17,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   late AttendanceProvider _attendanceProvider;
   bool get isBeforeNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour < 12;
+    return currentTime.hour > 12;
   }
 
   Future<void> _refreshAttendanceList() async {
