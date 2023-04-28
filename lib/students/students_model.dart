@@ -3,31 +3,38 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 class UserModel {
   final String? uid;
   final String? name;
-  final String? fname;
-  final String? mname;
-  final String? roll;
-  final String? number;
+  final String? email;
+  final String? pemail;
+  final String? phone;
+  final String? pphone;
   final String? image;
+  final String? roll;
+  final String? sec;
+  final String? sport;
 
-  const UserModel(
-      {required this.uid,
-      required this.name,
-      required this.fname,
-      required this.mname,
-      required this.roll,
-      required this.number,
-      required this.image});
+  const UserModel({
+    required this.uid,
+    required this.name,
+    required this.email,
+    required this.pemail,
+    required this.phone,
+    required this.pphone,
+    required this.image,
+    required this.roll,
+    required this.sec,
+    required this.sport,
+  });
 
-  tojson() {
-    return {
-      "Name": name,
-      "Father Name": fname,
-      "Mother Name": mname,
-      "Roll No": roll,
-      "Number": number,
-      "Image": image
-    };
-  }
+  // tojson() {
+  //   return {
+  //     "Name": name,
+  //     "Father Name": fname,
+  //     "Mother Name": mname,
+  //     "Roll No": roll,
+  //     "Number": number,
+  //     "Image": image
+  //   };
+  // }
 
   factory UserModel.fromSnapshot(
       DocumentSnapshot<Map<String, dynamic>> document) {
@@ -35,11 +42,14 @@ class UserModel {
     return UserModel(
       uid: document.id,
       name: data["Name"],
-      fname: data["FName"],
-      mname: data["MName"],
+      email: data["Email"],
+      pemail: data["PEmail"],
+      phone: data["Phone"],
+      pphone: data["PPhone"],
+      sec: data["Section"],
       roll: data["Roll No"],
-      number: data["Number"],
-      image: data["Image"],
+      sport: data["Sport"],
+      image: data["Image"]
     );
   }
 }

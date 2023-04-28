@@ -29,6 +29,14 @@ class _StudentsScreenState extends State<StudentsScreen> {
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
 
+  img_select(user) {
+    if (user.image != null) {
+      return NetworkImage(user.image);
+    } else {
+      return const AssetImage("assets/empty_pic.jpg");
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     // final List<dynamic> documents = fetchRecords() as List;
@@ -74,12 +82,60 @@ class _StudentsScreenState extends State<StudentsScreen> {
                           side: const BorderSide(color: Colors.grey, width: 1),
                         ),
                         child: Column(
+                          mainAxisAlignment: MainAxisAlignment.end,
                           children: [
-                            ListTile(
-                              title: Text(user.name!),
-                              subtitle: Text("${user.fname} ${user.mname}"),
-                              trailing: Text(user.roll!),
+                            CircleAvatar(
+                                radius: 50.0,
+                                backgroundImage: img_select(user)),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Name : ${user.name}",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                              ),
                             ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Roll No. : ${user.roll}",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Section : ${user.sec}",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Sport : ${user.sport}",
+                              style: const TextStyle(
+                                fontSize: 16.0,
+                              ),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              'Email: ${user.email}',
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Parent's email: ${user.pemail}",
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              'Phone number: ${user.phone}',
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                            const SizedBox(height: 8.0),
+                            Text(
+                              "Parent's phone number: ${user.pphone}",
+                              style: const TextStyle(fontSize: 16.0),
+                            ),
+                            const SizedBox(height: 8.0),
                             Row(
                               mainAxisAlignment: MainAxisAlignment.center,
                               children: [
@@ -93,8 +149,8 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                     },
                                     child: const Icon(Icons.delete)),
                                 OutlinedButton(
-                                    onPressed: () =>
-                                        showPopUp(context, true, userList, index),
+                                    onPressed: () => showPopUp(
+                                        context, true, userList, index),
                                     child: const Icon(Icons.edit))
                               ],
                             )
@@ -111,7 +167,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
       ),
     );
   }
-
 
   void showPopUp(BuildContext context, [verify, userList, index]) {
     // final check = verify;

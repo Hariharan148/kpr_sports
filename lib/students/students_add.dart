@@ -22,9 +22,12 @@ class StudentAdd extends StatefulWidget {
 class _StudentAddState extends State<StudentAdd> {
   TextEditingController name = TextEditingController();
   TextEditingController roll = TextEditingController();
-  TextEditingController fname = TextEditingController();
-  TextEditingController mname = TextEditingController();
-  TextEditingController number = TextEditingController();
+  TextEditingController sec = TextEditingController();
+  TextEditingController email = TextEditingController();
+  TextEditingController pemail = TextEditingController();
+  TextEditingController sport = TextEditingController();
+  TextEditingController phone = TextEditingController();
+  TextEditingController pphone = TextEditingController();
   String Img = "";
   String filePath = "";
   String result = "";
@@ -39,9 +42,12 @@ class _StudentAddState extends State<StudentAdd> {
       final user = widget.usr[widget.index];
       name.text = user.name;
       roll.text = user.roll;
-      fname.text = user.fname;
-      mname.text = user.mname;
-      number.text = user.number;
+      sec.text = user.sec;
+      email.text = user.email;
+      pemail.text = user.pemail;
+      sport.text = user.sport;
+      phone.text = user.phone;
+      pphone.text = user.pphone;
       // print(Img);
 
       setState(() {
@@ -94,9 +100,12 @@ class _StudentAddState extends State<StudentAdd> {
       "Image": link,
       "Name": name.text,
       "Roll No": roll.text,
-      "FName": fname.text,
-      "MName": mname.text,
-      "Number": number.text
+      "Section": sec.text,
+      "Sport": sport.text,
+      "Email": email.text,
+      "PEmail": pemail.text,
+      "Phone": phone.text,
+      "PPhone": pphone.text,
     };
     return data;
   }
@@ -149,62 +158,75 @@ class _StudentAddState extends State<StudentAdd> {
                       )
                     ],
                   )),
-              ListView(shrinkWrap: true, children: [
-                TextFormField(
-                  controller: name,
-                  decoration: const InputDecoration(
-                      labelText: 'Student Name', border: OutlineInputBorder()),
+              TextFormField(
+                controller: name,
+                decoration: const InputDecoration(
+                    labelText: 'Student Name', border: OutlineInputBorder()),
+              ),
+              TextFormField(
+                controller: roll,
+                decoration: const InputDecoration(
+                    labelText: "Roll No.", border: OutlineInputBorder()),
+              ),
+              TextFormField(
+                controller: sec,
+                decoration: const InputDecoration(
+                    labelText: "Section", border: OutlineInputBorder()),
+              ),
+              TextFormField(
+                controller: sport,
+                decoration: const InputDecoration(
+                    labelText: "Sport", border: OutlineInputBorder()),
+              ),
+              TextFormField(
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                controller: email,
+                decoration: const InputDecoration(
+                    labelText: "Email",
+                    border: OutlineInputBorder()),
+              ),TextFormField(
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                controller: pemail,
+                decoration: const InputDecoration(
+                    labelText: "Parent's Email",
+                    border: OutlineInputBorder()),
+              ),TextFormField(
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                controller: phone,
+                decoration: const InputDecoration(
+                    labelText: "Phone",
+                    border: OutlineInputBorder()),
+              ),TextFormField(
+                keyboardType: TextInputType.number,
+                maxLength: 10,
+                controller: pphone,
+                decoration: const InputDecoration(
+                    labelText: "Parent's Phone",
+                    border: OutlineInputBorder()),
+              ),
+              Visibility(
+                visible: !widget.edit,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    uploadImg();
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Submit"),
                 ),
-                TextFormField(
-                  controller: roll,
-                  decoration: const InputDecoration(
-                      labelText: "Roll No.", border: OutlineInputBorder()),
+              ),
+              Visibility(
+                visible: widget.edit,
+                child: FloatingActionButton(
+                  onPressed: () {
+                    saveImg(); 
+                    Navigator.pop(context);
+                  },
+                  child: const Text("Save"),
                 ),
-                TextFormField(
-                  controller: fname,
-                  decoration: const InputDecoration(
-                      labelText: "Father's Name", border: OutlineInputBorder()),
-                ),
-                TextFormField(
-                  controller: mname,
-                  decoration: const InputDecoration(
-                      labelText: "Mother's Name", border: OutlineInputBorder()),
-                ),
-                TextFormField(
-                  keyboardType: TextInputType.number,
-                  maxLength: 10,
-                  controller: number,
-                  decoration: const InputDecoration(
-                      labelText: "Contact Number",
-                      border: OutlineInputBorder()),
-                ),
-                Visibility(
-                  visible: !widget.edit,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      uploadImg();
-                      print("-------------------------------------------");
-                      print(Img);
-                      print(result);
-                      print("-------------------------------------------");
-
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Submit"),
-                  ),
-                ),
-                Visibility(
-                  visible: widget.edit,
-                  child: FloatingActionButton(
-                    onPressed: () {
-                      saveImg();
-                      
-                      Navigator.pop(context);
-                    },
-                    child: const Text("Save"),
-                  ),
-                ),
-              ]),
+              ),
             ],
           ),
         ),
