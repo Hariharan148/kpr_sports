@@ -1,9 +1,9 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/attendence_report/data_table.dart';
 import 'package:kpr_sports/attendence_report/date_time.dart';
+import 'package:kpr_sports/attendence_report/excel_creator.dart';
 import 'package:kpr_sports/services/report/table_fetch.dart';
-import 'package:kpr_sports/store/report_provider.dart';
-import 'package:provider/provider.dart';
 
 class ReportScreen extends StatefulWidget {
   const ReportScreen({Key? key}) : super(key: key);
@@ -15,7 +15,7 @@ class ReportScreen extends StatefulWidget {
 class _ReportScreenState extends State<ReportScreen> {
   DateTimeRange? _selectedDataRange;
   bool _isFetching = false;
-  List<List<dynamic>>? _attendanceData;
+  List<List<dynamic>>? _attendanceData = [];
 
   Future<void> _handleDateRangeSelected(DateTimeRange dateRange) async {
     setState(() {
@@ -29,10 +29,12 @@ class _ReportScreenState extends State<ReportScreen> {
         _attendanceData = data;
       });
     } catch (e) {
-      print('Error fetching attendance data: $e');
-      setState(() {
-        _attendanceData = null;
-      });
+      Fluttertoast.showToast(
+        msg: 'Error fetching attendance data',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      return;
     } finally {
       setState(() {
         _isFetching = false;
@@ -42,8 +44,6 @@ class _ReportScreenState extends State<ReportScreen> {
 
   @override
   Widget build(BuildContext context) {
-    final report = Provider.of<ReportProvider>(context, listen: false);
-
     return Scaffold(
       appBar: AppBar(
         title: const Text('Attendance report'),
@@ -63,7 +63,9 @@ class _ReportScreenState extends State<ReportScreen> {
           Padding(
             padding: const EdgeInsets.only(bottom: 16.0),
             child: ElevatedButton(
-              onPressed: () {},
+              onPressed: () {
+                downloadExcel(context);
+              },
               child: const Text("Download"),
             ),
           ),
@@ -71,18 +73,10 @@ class _ReportScreenState extends State<ReportScreen> {
             const Center(
               child: CircularProgressIndicator(),
             )
-          else if (_attendanceData == null)
-            const Center(
-              child: Text('Error fetching attendance data'),
-            )
-          else if (_attendanceData!.isEmpty)
-            const Center(
-              child: Text('No attendance data available'),
-            )
+          else if (_attendanceData == [])
+            const Text('No attendance data available')
           else
-            const Expanded(
-              child: AttendanceData(),
-            ),
+            const AttendanceData()
         ],
       ),
     );

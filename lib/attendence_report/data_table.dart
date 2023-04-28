@@ -7,7 +7,7 @@ class AttendanceData extends StatefulWidget {
   const AttendanceData({Key? key}) : super(key: key);
 
   @override
-  _AttendanceDataState createState() => _AttendanceDataState();
+  State<AttendanceData> createState() => _AttendanceDataState();
 }
 
 class _AttendanceDataState extends State<AttendanceData> {
