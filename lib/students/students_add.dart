@@ -1,5 +1,5 @@
 import 'dart:io';
-
+import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
@@ -20,6 +20,8 @@ class StudentAdd extends StatefulWidget {
 }
 
 class _StudentAddState extends State<StudentAdd> {
+  final _formKey = GlobalKey<FormState>();
+
   TextEditingController name = TextEditingController();
   TextEditingController roll = TextEditingController();
   TextEditingController sec = TextEditingController();
@@ -32,7 +34,7 @@ class _StudentAddState extends State<StudentAdd> {
   String filePath = "";
   String result = "";
   late File _image;
-  String link="";
+  String link = "";
   bool ch = true;
 
   @override
@@ -61,8 +63,17 @@ class _StudentAddState extends State<StudentAdd> {
     super.initState();
   }
 
+  String generateRandomText(int length) {
+    final random = Random();
+    const charset =
+        'abcdefghijklmnopqrstuvwxyzABCDEFGHIJKLMNOPQRSTUVWXYZ0123456789';
+    final text =
+        List.generate(length, (_) => charset[random.nextInt(charset.length)])
+            .join();
+    return text;
+  }
+
   void pickUploadImage() async {
-    print("Hello");
     final image = await ImagePicker().pickImage(
       source: ImageSource.gallery,
       imageQuality: 75,
@@ -70,13 +81,11 @@ class _StudentAddState extends State<StudentAdd> {
 
     if (image != null) {
       _image = File(image.path);
-      print(_image.toString());
 
       setState(() {
         if (widget.edit) {
           ch = true;
         }
-
         Img = image.path;
         filePath = "Image_img.jpg";
       });
@@ -84,14 +93,16 @@ class _StudentAddState extends State<StudentAdd> {
   }
 
   void uploadImg() {
-    print(
-        "hi everyonr. How are you guys ----------------------------------------------------------------------------------------------");
     final ref =
-        FirebaseStorage.instance.ref().child("/Profile_Images/images_1.jpg");
+        FirebaseStorage.instance.ref().child("/Profile_Images/img_pic.jpg");
     ref.putFile(File(Img));
+    print(
+        "-------------------------------------------------------------------------");
     ref.getDownloadURL().then((value) {
       link = value;
       FirebaseFirestore.instance.collection("Student").add(toMap());
+      print(
+          "-------------------------------------------------------------------------");
     });
   }
 
@@ -105,14 +116,15 @@ class _StudentAddState extends State<StudentAdd> {
       "Email": email.text,
       "PEmail": pemail.text,
       "Phone": phone.text,
-      "PPhone": pphone.text,
+      "PPhone": pphone.text
     };
     return data;
   }
 
   void saveImg() {
-    final ref =
-        FirebaseStorage.instance.ref().child("/Profile_Images/images_1.jpg");
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("/Profile_Images/img_pic.jpg");
     ref.putFile(File(Img));
     ref.getDownloadURL().then((value) {
       link = value;
@@ -124,113 +136,85 @@ class _StudentAddState extends State<StudentAdd> {
     });
   }
 
-    check() {
-      // if (widget.edit) {
-      //   setState(() {
-      //     ch = true;
-      //   });
-      // }
-      return (Img == "")
-          ? const AssetImage("assets/empty_pic.jpg")
-          : FileImage(_image);
-    }
-
-    @override
-    Widget build(BuildContext context) {
-      return Container(
-        padding: const EdgeInsets.all(20.0),
-        child: SingleChildScrollView(
-          child: Column(
-            children: [
-              ElevatedButton(
-                onPressed: () => Navigator.pop(context),
-                child: const Icon(Icons.expand_circle_down),
-              ),
-              GestureDetector(
-                  onTap: () {
-                    pickUploadImage();
-                  },
-                  child: Stack(
-                    children: [
-                      CircleAvatar(
-                        radius: 50.0,
-                        backgroundImage: (ch) ? check() : NetworkImage(Img),
-                      )
-                    ],
-                  )),
-              TextFormField(
-                controller: name,
-                decoration: const InputDecoration(
-                    labelText: 'Student Name', border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: roll,
-                decoration: const InputDecoration(
-                    labelText: "Roll No.", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: sec,
-                decoration: const InputDecoration(
-                    labelText: "Section", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                controller: sport,
-                decoration: const InputDecoration(
-                    labelText: "Sport", border: OutlineInputBorder()),
-              ),
-              TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                controller: email,
-                decoration: const InputDecoration(
-                    labelText: "Email",
-                    border: OutlineInputBorder()),
-              ),TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                controller: pemail,
-                decoration: const InputDecoration(
-                    labelText: "Parent's Email",
-                    border: OutlineInputBorder()),
-              ),TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                controller: phone,
-                decoration: const InputDecoration(
-                    labelText: "Phone",
-                    border: OutlineInputBorder()),
-              ),TextFormField(
-                keyboardType: TextInputType.number,
-                maxLength: 10,
-                controller: pphone,
-                decoration: const InputDecoration(
-                    labelText: "Parent's Phone",
-                    border: OutlineInputBorder()),
-              ),
-              Visibility(
-                visible: !widget.edit,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    uploadImg();
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Submit"),
-                ),
-              ),
-              Visibility(
-                visible: widget.edit,
-                child: FloatingActionButton(
-                  onPressed: () {
-                    saveImg(); 
-                    Navigator.pop(context);
-                  },
-                  child: const Text("Save"),
-                ),
-              ),
-            ],
-          ),
-        ),
-      );
-    }
+  check() {
+    // if (widget.edit) {
+    //   setState(() {
+    //     ch = true;
+    //   });
+    // }
+    return (Img == "")
+        ? const AssetImage("assets/empty_pic.jpg")
+        : FileImage(_image);
   }
 
+  textField(control, text) {
+    return TextFormField(
+      controller: control,
+      decoration:
+          InputDecoration(labelText: text, border: const OutlineInputBorder()),
+    );
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      padding: const EdgeInsets.all(20.0),
+      child: SingleChildScrollView(
+        child: Column(
+          children: [
+            ElevatedButton(
+              onPressed: () => Navigator.pop(context),
+              child: const Icon(Icons.expand_circle_down),
+            ),
+            GestureDetector(
+                onTap: () {
+                  pickUploadImage();
+                },
+                child: Stack(
+                  children: [
+                    CircleAvatar(
+                      radius: 50.0,
+                      backgroundImage: (ch) ? check() : NetworkImage(Img),
+                    )
+                  ],
+                )),
+            Form(
+                key: _formKey,
+                child: Column(
+                  children: [
+                    textField(name, "Test Name"),
+                    textField(roll, "Roll No."),
+                    textField(sec, "Section"),
+                    textField(sport, "Sport"),
+                    textField(email, "Email"),
+                    textField(pemail, "Parent's Email"),
+                    textField(phone, "Phone"),
+                    textField(pphone, "Parent's Phone"),
+                  ],
+                )),
+            Visibility(
+              visible: !widget.edit,
+              child: FloatingActionButton(
+                onPressed: () {
+                  uploadImg();
+                  Navigator.pop(context);
+                },
+                child: const Text("Submit"),
+              ),
+            ),
+            Visibility(
+              visible: widget.edit,
+              child: FloatingActionButton(
+                onPressed: () {
+                  saveImg();
+                  Navigator.pop(context);
+                },
+                child: const Text("Save"),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+}
