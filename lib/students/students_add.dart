@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kpr_sports/students/students_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kpr_sports/students/custom_text_fields.dart';
 
 class StudentAdd extends StatefulWidget {
   final bool edit;
@@ -39,7 +40,6 @@ class _StudentAddState extends State<StudentAdd> {
 
   @override
   void initState() {
-    // pickUploadImage();
     if (widget.edit) {
       final user = widget.usr[widget.index];
       name.text = user.name;
@@ -50,7 +50,6 @@ class _StudentAddState extends State<StudentAdd> {
       sport.text = user.sport;
       phone.text = user.phone;
       pphone.text = user.pphone;
-      // print(Img);
 
       setState(() {
         if (user.image != "") {
@@ -92,17 +91,15 @@ class _StudentAddState extends State<StudentAdd> {
     }
   }
 
-  void uploadImg() {
-    final ref =
-        FirebaseStorage.instance.ref().child("/Profile_Images/img_pic.jpg");
-    ref.putFile(File(Img));
-    print(
-        "-------------------------------------------------------------------------");
-    ref.getDownloadURL().then((value) {
+  void uploadImg() async {
+    final ref = FirebaseStorage.instance
+        .ref()
+        .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
+    await ref.putFile(File(Img));
+
+    await ref.getDownloadURL().then((value) {
       link = value;
       FirebaseFirestore.instance.collection("Student").add(toMap());
-      print(
-          "-------------------------------------------------------------------------");
     });
   }
 
@@ -121,27 +118,21 @@ class _StudentAddState extends State<StudentAdd> {
     return data;
   }
 
-  void saveImg() {
+  void saveImg() async {
     final ref = FirebaseStorage.instance
         .ref()
-        .child("/Profile_Images/img_pic.jpg");
-    ref.putFile(File(Img));
-    ref.getDownloadURL().then((value) {
+        .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
+    await ref.putFile(File(Img));
+    await ref.getDownloadURL().then((value) {
       link = value;
       FirebaseFirestore.instance
           .collection("Student")
           .doc(widget.usr[widget.index].uid)
-          // .doc(roll.text)
           .set(toMap(), SetOptions(merge: true));
     });
   }
 
   check() {
-    // if (widget.edit) {
-    //   setState(() {
-    //     ch = true;
-    //   });
-    // }
     return (Img == "")
         ? const AssetImage("assets/empty_pic.jpg")
         : FileImage(_image);
@@ -182,22 +173,34 @@ class _StudentAddState extends State<StudentAdd> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    textField(name, "Test Name"),
-                    textField(roll, "Roll No."),
-                    textField(sec, "Section"),
-                    textField(sport, "Sport"),
-                    textField(email, "Email"),
-                    textField(pemail, "Parent's Email"),
-                    textField(phone, "Phone"),
-                    textField(pphone, "Parent's Phone"),
+                    nameField(name, "Name"),
+                    SizedBox(height: 5,),
+                    rollField(roll, "Roll No."),
+                    SizedBox(height: 5,),
+                    sectionField(sec, "Section"),
+                    SizedBox(height: 5,),
+                    sportField(sport, "Sport"),
+                    SizedBox(height: 5,),
+                    emailField(email, "Email"),
+                    SizedBox(height: 5,),
+                    emailField(pemail, "Parent's Email"),
+                    SizedBox(height: 5,),
+                    phoneField(phone, "Phone"),
+                    SizedBox(height: 5,),
+                    phoneField(pphone, "Parent's Phone"),
                   ],
                 )),
             Visibility(
               visible: !widget.edit,
               child: FloatingActionButton(
                 onPressed: () {
-                  uploadImg();
-                  Navigator.pop(context);
+                  final isValid = _formKey.currentState!.validate();
+                  if (isValid) {
+                    _formKey.currentState!.save();
+                    
+                    uploadImg();
+                    Navigator.pop(context);
+                  }
                 },
                 child: const Text("Submit"),
               ),
@@ -206,8 +209,16 @@ class _StudentAddState extends State<StudentAdd> {
               visible: widget.edit,
               child: FloatingActionButton(
                 onPressed: () {
-                  saveImg();
-                  Navigator.pop(context);
+                  final isValid = _formKey.currentState!.validate();
+                  if (isValid){
+                    _formKey.currentState!.save();
+                    // if (ch == true) {
+                    saveImg();
+                  // }
+
+                    Navigator.pop(context);
+                  }
+                  
                 },
                 child: const Text("Save"),
               ),
