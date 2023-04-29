@@ -22,9 +22,13 @@ class _AttendanceListState extends State<AttendanceList> {
     }
 
     return SizedBox(
-      height: 400,
-      width: 300,
+      height: MediaQuery.of(context).size.height - 400,
+      width: MediaQuery.of(context).size.width,
       child: ListView.builder(
+        physics: const RangeMaintainingScrollPhysics(
+          parent: BouncingScrollPhysics(),
+        ),
+        padding: const EdgeInsets.only(left: 25, right: 25),
         itemCount: attendanceStatus.length,
         itemBuilder: (BuildContext context, int index) {
           final name = attendanceStatus[index]["name"] as String?;

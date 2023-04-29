@@ -10,6 +10,7 @@ class AttendanceService {
         FirebaseFirestore.instance.collection("attendance").doc(today);
 
     try {
+      print("came");
       await Future.wait([
         attendanceRef.set({
           "date": today,
@@ -22,6 +23,7 @@ class AttendanceService {
             })),
       ]);
     } catch (error) {
+      print("p");
       rethrow;
     }
   }

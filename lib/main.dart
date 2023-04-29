@@ -34,7 +34,10 @@ class MyApp extends StatelessWidget {
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primaryColor: const Color(0xFF142A50),
-          secondaryHeaderColor: const Color(0xFF319753)),
+          secondaryHeaderColor: const Color(0xFF319753),
+          colorScheme: ColorScheme.fromSwatch(
+            accentColor: const Color(0xFF142A50),
+          )),
       routes: appRoutes,
       initialRoute: '/',
     );

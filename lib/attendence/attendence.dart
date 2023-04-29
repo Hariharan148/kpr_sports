@@ -1,6 +1,8 @@
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/attendence/after_noon.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
+import 'package:kpr_sports/attendence/bottom_bar.dart';
 import 'package:kpr_sports/services/attendance/init_helper.dart';
 import 'package:kpr_sports/services/attendance/submit_helper.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
@@ -17,9 +19,29 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   late AttendanceProvider _attendanceProvider;
   bool _isfetching = false;
+  bool allPresent = false;
   bool get isBeforeNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour > 12;
+    return currentTime.hour < 12;
+  }
+
+  void updateStatus(ispresent) {
+    if (!ispresent) {
+      allPresent = false;
+      for (var set in _attendanceProvider.attendanceStatus) {
+        set["status"] = false;
+        _attendanceProvider.presentVal = 0;
+      }
+    } else {
+      for (var set in _attendanceProvider.attendanceStatus) {
+        set["status"] = true;
+        _attendanceProvider.presentVal =
+            _attendanceProvider.attendanceStatus.length;
+      }
+    }
+
+    _attendanceProvider.attendanceStatusList =
+        _attendanceProvider.attendanceStatus;
   }
 
   String getDate() {
@@ -37,11 +59,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   Future<void> _refreshAttendanceList() async {
     setState(() {
       _isfetching = true;
+      allPresent = false;
     });
 
     try {
       getAttendanceStatus((status) {
         setState(() {
+          _attendanceProvider.presentVal = 0;
           _attendanceProvider.attendanceStatusList = status;
           _isfetching = false;
         });
@@ -67,10 +91,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     _attendanceProvider =
         Provider.of<AttendanceProvider>(context, listen: false);
     if (!isBeforeNoon) {
-      _refreshAttendanceList();
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _refreshAttendanceList();
+        _attendanceProvider.presentVal = 0;
+      });
     }
-
-    _attendanceProvider.presentVal = 0;
   }
 
   @override
@@ -95,7 +120,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 height: 35,
                 width: 35,
                 child: IconButton(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.pushNamed(context, "/");
+                  },
                   icon: const Icon(Icons.arrow_back),
                   color: Colors.black,
                   splashColor: Colors.white12,
@@ -104,199 +131,163 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             )),
         body: Column(
           children: [
-            Padding(
-              padding: const EdgeInsets.only(left: 25, right: 25),
+            SizedBox(
+              height: 80,
+              width: MediaQuery.of(context).size.width - 50,
               child: SizedBox(
-                height: 80,
-                width: MediaQuery.of(context).size.width - 50,
-                child: SizedBox(
-                  child: Container(
-                    decoration: BoxDecoration(
-                        color: const Color(0xFF142A50),
-                        borderRadius: BorderRadius.circular(10)),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          height: 40,
-                          width: 80,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "Total",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontFamily: "Poppins"),
-                                ),
-                                Text(
-                                  "${_attendanceProvider.attendanceStatus.length}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
+                child: Container(
+                  decoration: BoxDecoration(
+                      color: const Color(0xFF142A50),
+                      borderRadius: BorderRadius.circular(10)),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      SizedBox(
+                        height: 40,
+                        width: 80,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "Total",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontFamily: "Poppins"),
+                              ),
+                              Text(
+                                "${_attendanceProvider.attendanceStatus.length}",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900),
+                              )
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          width: 80,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "Present",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontFamily: "Poppins"),
-                                ),
-                                Text(
-                                  "${context.watch<AttendanceProvider>().present}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 80,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "Present",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontFamily: "Poppins"),
+                              ),
+                              Text(
+                                "${context.watch<AttendanceProvider>().present}",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900),
+                              )
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 40,
-                          width: 80,
-                          child: Container(
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10)),
-                            child: Column(
-                              children: [
-                                const Text(
-                                  "Absent",
-                                  style: TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 10,
-                                      fontFamily: "Poppins"),
-                                ),
-                                Text(
-                                  "${_attendanceProvider.attendanceStatus.length - _attendanceProvider.present}",
-                                  style: const TextStyle(
-                                      color: Colors.white,
-                                      fontSize: 20,
-                                      fontWeight: FontWeight.w900),
-                                )
-                              ],
-                            ),
+                      ),
+                      SizedBox(
+                        height: 40,
+                        width: 80,
+                        child: Container(
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10)),
+                          child: Column(
+                            children: [
+                              const Text(
+                                "Absent",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 10,
+                                    fontFamily: "Poppins"),
+                              ),
+                              Text(
+                                "${_attendanceProvider.attendanceStatus.length - _attendanceProvider.present}",
+                                style: const TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 20,
+                                    fontWeight: FontWeight.w900),
+                              )
+                            ],
                           ),
                         ),
-                      ],
-                    ),
+                      ),
+                    ],
                   ),
                 ),
               ),
             ),
             Container(
-              margin: const EdgeInsets.only(top: 20),
+              margin: const EdgeInsets.only(top: 20, bottom: 5),
               child: SizedBox(
                   height: 60,
-                  width: MediaQuery.of(context).size.width - 50,
-                  child: Container(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        SizedBox(
-                          height: 50,
-                          width: 120,
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Theme(
-                                  data: ThemeData(
-                                    checkboxTheme: CheckboxThemeData(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                        // set the border radius here
-                                      ),
-                                    ),
-                                  ),
-                                  child: Checkbox(
-                                    value: true,
-                                    checkColor: Colors.white,
-                                    activeColor: Color(0xFF142A50),
-                                    onChanged: (value) {},
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceAround,
+                    children: [
+                      SizedBox(
+                        height: 50,
+                        width: 120,
+                        child: Row(
+                          children: [
+                            Theme(
+                              data: ThemeData(
+                                checkboxTheme: CheckboxThemeData(
+                                  shape: RoundedRectangleBorder(
+                                    borderRadius: BorderRadius.circular(5),
                                   ),
                                 ),
-                                const Text(
-                                  "All present",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
+                              ),
+                              child: Checkbox(
+                                value: allPresent,
+                                checkColor: Colors.white,
+                                activeColor: const Color(0xFF142A50),
+                                onChanged: (value) {
+                                  allPresent = value!;
+                                  updateStatus(value);
+                                },
+                              ),
                             ),
+                            const Text(
+                              "All present",
+                              style: TextStyle(fontSize: 12),
+                            ),
+                          ],
+                        ),
+                      ),
+                      SizedBox(
+                        height: 50,
+                        width: 100,
+                        child: Container(
+                          padding: const EdgeInsets.all(2),
+                          margin: const EdgeInsets.all(10.0),
+                          decoration: BoxDecoration(
+                              borderRadius: BorderRadius.circular(10),
+                              border:
+                                  Border.all(color: Colors.black, width: 1.0)),
+                          child: Column(
+                            children: [
+                              Text(
+                                getDate(),
+                                style: const TextStyle(fontSize: 10),
+                              ),
+                              Text(
+                                getDay(),
+                                style: const TextStyle(
+                                    fontSize: 10, color: Colors.grey),
+                              )
+                            ],
                           ),
                         ),
-                        SizedBox(
-                          height: 50,
-                          width: 120,
-                          child: Container(
-                            child: Row(
-                              children: [
-                                Theme(
-                                  data: ThemeData(
-                                    checkboxTheme: CheckboxThemeData(
-                                      shape: RoundedRectangleBorder(
-                                        borderRadius: BorderRadius.circular(5),
-                                        // set the border radius here
-                                      ),
-                                    ),
-                                  ),
-                                  child: Checkbox(
-                                    value: true,
-                                    checkColor: Colors.white,
-                                    activeColor: Color(0xFF142A50),
-                                    onChanged: (value) {},
-                                  ),
-                                ),
-                                const Text(
-                                  "All absent",
-                                  style: TextStyle(fontSize: 12),
-                                ),
-                              ],
-                            ),
-                          ),
-                        ),
-                        SizedBox(
-                          height: 50,
-                          width: 100,
-                          child: Container(
-                            padding: const EdgeInsets.all(2),
-                            margin: const EdgeInsets.all(10.0),
-                            decoration: BoxDecoration(
-                                borderRadius: BorderRadius.circular(10),
-                                border: Border.all(
-                                    color: Colors.black, width: 1.0)),
-                            child: Column(
-                              children: [
-                                Text(
-                                  getDate(),
-                                  style: const TextStyle(fontSize: 10),
-                                ),
-                                Text(
-                                  getDay(),
-                                  style: const TextStyle(
-                                      fontSize: 10, color: Colors.grey),
-                                )
-                              ],
-                            ),
-                          ),
-                        )
-                      ],
-                    ),
+                      )
+                    ],
                   )),
             ),
             RefreshIndicator(
@@ -314,43 +305,31 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           ],
         ),
         bottomNavigationBar: !isBeforeNoon
-            ? BottomAppBar(
-                child: Container(
-                  height: 50.0,
-                  color: Theme.of(context).secondaryHeaderColor,
-                  child: InkWell(
-                    onTap: () async {
-                      try {
-                        final attendanceProvider =
-                            Provider.of<AttendanceProvider>(context,
-                                listen: false);
-                        await AttendanceService.submitAttendance(
-                            attendanceProvider);
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          const SnackBar(
-                            content: Text("Attendance submitted successfully"),
-                          ),
-                        );
-                      } catch (error) {
-                        ScaffoldMessenger.of(context).showSnackBar(
-                          SnackBar(
-                            content: Text('Error: ${error.toString()}'),
-                            backgroundColor: Colors.red,
-                          ),
-                        );
-                      }
-                    },
-                    child: const Center(
-                      child: Text(
-                        "Submit",
-                        style: TextStyle(
-                            color: Colors.white,
-                            fontWeight: FontWeight.bold,
-                            fontSize: 20.0),
-                      ),
-                    ),
-                  ),
-                ),
+            ? CustomBottomBar(
+                onCancelPressed: () {
+                  updateStatus(false);
+                },
+                onSubmitPressed: () async {
+                  try {
+                    final attendanceProvider =
+                        Provider.of<AttendanceProvider>(context, listen: false);
+
+                    await AttendanceService.submitAttendance(
+                        attendanceProvider);
+
+                    Fluttertoast.showToast(
+                      msg: 'Attendance submitted successfully',
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.green,
+                    );
+                  } catch (error) {
+                    Fluttertoast.showToast(
+                      msg: 'Error: ${error.toString()}',
+                      gravity: ToastGravity.BOTTOM,
+                      backgroundColor: Colors.red[150],
+                    );
+                  }
+                },
               )
             : null);
   }

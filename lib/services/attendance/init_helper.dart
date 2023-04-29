@@ -7,7 +7,7 @@ void getAttendanceStatus(
   Function(List<Map<String, dynamic>>)? onSuccess,
   Function(dynamic)? onError,
 ) {
-  students.get().then((QuerySnapshot querySnapshot) {
+  students.orderBy("name").get().then((QuerySnapshot querySnapshot) {
     final attendenceStatus = querySnapshot.docs
         .map((doc) => {
               "uid": doc.id,
