@@ -30,6 +30,11 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
+      debugShowCheckedModeBanner: false,
+      theme: ThemeData(
+          scaffoldBackgroundColor: Colors.white,
+          primaryColor: const Color(0xFF142A50),
+          secondaryHeaderColor: const Color(0xFF319753)),
       routes: appRoutes,
       initialRoute: '/',
     );
