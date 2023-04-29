@@ -5,7 +5,6 @@ import 'package:kpr_sports/routes.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:kpr_sports/store/report_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:permission_handler/permission_handler.dart';
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();

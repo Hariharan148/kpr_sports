@@ -13,7 +13,7 @@ class CustomBottomBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      padding: EdgeInsets.only(bottom: 20, left: 25, right: 25),
+      padding: const EdgeInsets.only(bottom: 20, left: 25, right: 25),
       height: 80,
       decoration: const BoxDecoration(
         color: Colors.white,

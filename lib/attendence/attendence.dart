@@ -3,11 +3,13 @@ import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/attendence/after_noon.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
 import 'package:kpr_sports/attendence/bottom_bar.dart';
+import 'package:kpr_sports/attendence/info_bar.dart';
 import 'package:kpr_sports/services/attendance/init_helper.dart';
 import 'package:kpr_sports/services/attendance/submit_helper.dart';
+import 'package:kpr_sports/shared/date_bar.dart';
+import 'package:kpr_sports/shared/shimmer_attendance.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:provider/provider.dart';
-import 'package:intl/intl.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key}) : super(key: key);
@@ -19,7 +21,9 @@ class AttendanceScreen extends StatefulWidget {
 class _AttendanceScreenState extends State<AttendanceScreen> {
   late AttendanceProvider _attendanceProvider;
   bool _isfetching = false;
+
   bool allPresent = false;
+
   bool get isBeforeNoon {
     final currentTime = DateTime.now();
     return currentTime.hour < 12;
@@ -27,7 +31,10 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   void updateStatus(ispresent) {
     if (!ispresent) {
-      allPresent = false;
+      setState(() {
+        allPresent = false;
+      });
+
       for (var set in _attendanceProvider.attendanceStatus) {
         set["status"] = false;
         _attendanceProvider.presentVal = 0;
@@ -42,18 +49,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
     _attendanceProvider.attendanceStatusList =
         _attendanceProvider.attendanceStatus;
-  }
-
-  String getDate() {
-    DateTime today = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(today);
-    return formattedDate;
-  }
-
-  String getDay() {
-    DateTime today = DateTime.now();
-    String day = DateFormat("EEEE").format(today);
-    return day;
   }
 
   Future<void> _refreshAttendanceList() async {
@@ -73,12 +68,12 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
         throw error;
       });
     } catch (error) {
-      ScaffoldMessenger.of(context).showSnackBar(
-        SnackBar(
-          content: Text('Error: ${error.toString()}'),
-          backgroundColor: Colors.red,
-        ),
+      Fluttertoast.showToast(
+        msg: 'Error: ${error.toString()}',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFD9887C),
       );
+
       setState(() {
         _isfetching = false;
       });
@@ -86,10 +81,15 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   }
 
   @override
-  void initState() {
-    super.initState();
+  void didChangeDependencies() {
+    super.didChangeDependencies();
     _attendanceProvider =
         Provider.of<AttendanceProvider>(context, listen: false);
+  }
+
+  @override
+  void initState() {
+    super.initState();
     if (!isBeforeNoon) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _refreshAttendanceList();
@@ -131,100 +131,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
             )),
         body: Column(
           children: [
-            SizedBox(
-              height: 80,
-              width: MediaQuery.of(context).size.width - 50,
-              child: SizedBox(
-                child: Container(
-                  decoration: BoxDecoration(
-                      color: const Color(0xFF142A50),
-                      borderRadius: BorderRadius.circular(10)),
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                    children: [
-                      SizedBox(
-                        height: 40,
-                        width: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              const Text(
-                                "Total",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontFamily: "Poppins"),
-                              ),
-                              Text(
-                                "${_attendanceProvider.attendanceStatus.length}",
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              const Text(
-                                "Present",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontFamily: "Poppins"),
-                              ),
-                              Text(
-                                "${context.watch<AttendanceProvider>().present}",
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                      SizedBox(
-                        height: 40,
-                        width: 80,
-                        child: Container(
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10)),
-                          child: Column(
-                            children: [
-                              const Text(
-                                "Absent",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 10,
-                                    fontFamily: "Poppins"),
-                              ),
-                              Text(
-                                "${_attendanceProvider.attendanceStatus.length - _attendanceProvider.present}",
-                                style: const TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 20,
-                                    fontWeight: FontWeight.w900),
-                              )
-                            ],
-                          ),
-                        ),
-                      ),
-                    ],
-                  ),
-                ),
-              ),
-            ),
+            const InfoBar(),
             Container(
               margin: const EdgeInsets.only(top: 20, bottom: 5),
               child: SizedBox(
@@ -250,7 +157,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                 checkColor: Colors.white,
                                 activeColor: const Color(0xFF142A50),
                                 onChanged: (value) {
-                                  allPresent = value!;
+                                  setState(() {
+                                    allPresent = value!;
+                                  });
                                   updateStatus(value);
                                 },
                               ),
@@ -262,46 +171,30 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           ],
                         ),
                       ),
-                      SizedBox(
-                        height: 50,
-                        width: 100,
-                        child: Container(
-                          padding: const EdgeInsets.all(2),
-                          margin: const EdgeInsets.all(10.0),
-                          decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(10),
-                              border:
-                                  Border.all(color: Colors.black, width: 1.0)),
-                          child: Column(
-                            children: [
-                              Text(
-                                getDate(),
-                                style: const TextStyle(fontSize: 10),
-                              ),
-                              Text(
-                                getDay(),
-                                style: const TextStyle(
-                                    fontSize: 10, color: Colors.grey),
-                              )
-                            ],
-                          ),
-                        ),
-                      )
+                      const DateBar()
                     ],
                   )),
             ),
             RefreshIndicator(
                 onRefresh: _refreshAttendanceList,
+                color: Theme.of(context).primaryColor,
                 child: isBeforeNoon
                     ? const AfterNoonWidget()
                     : _isfetching
-                        ? const Center(child: CircularProgressIndicator())
+                        ? Center(
+                            child: SizedBox(
+                              height: MediaQuery.of(context).size.height -
+                                  400, // specify the height of the ShimmerCardList widget
+                              width: double
+                                  .infinity, // specify the width of the ShimmerCardList widget
+                              child: const ShimmerCardList(
+                                itemCount: 5,
+                              ),
+                            ),
+                          )
                         : _attendanceProvider.attendanceStatus.isNotEmpty
                             ? const AttendanceList()
-                            : _isfetching
-                                ? const Center(
-                                    child: CircularProgressIndicator())
-                                : const Text("no data")),
+                            : const Text("no data"))
           ],
         ),
         bottomNavigationBar: !isBeforeNoon
@@ -311,6 +204,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 },
                 onSubmitPressed: () async {
                   try {
+                    if (_attendanceProvider.attendanceStatus.isEmpty) {
+                      Fluttertoast.showToast(
+                        msg: 'No attendance data available to download',
+                        toastLength: Toast.LENGTH_SHORT,
+                        gravity: ToastGravity.BOTTOM,
+                      );
+                      return;
+                    }
                     final attendanceProvider =
                         Provider.of<AttendanceProvider>(context, listen: false);
 
@@ -320,13 +221,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                     Fluttertoast.showToast(
                       msg: 'Attendance submitted successfully',
                       gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.green,
+                      backgroundColor: Colors.grey,
                     );
                   } catch (error) {
                     Fluttertoast.showToast(
                       msg: 'Error: ${error.toString()}',
                       gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.red[150],
+                      backgroundColor: const Color(0xFFD9887C),
                     );
                   }
                 },

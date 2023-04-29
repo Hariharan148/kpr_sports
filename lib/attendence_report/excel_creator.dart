@@ -14,14 +14,14 @@ Future<void> downloadExcel(BuildContext context) async {
     final List<List<dynamic>>? tableData = report.studentData;
     final List<String> headers = ["Student Name", ...report.dates];
 
-    // if (tableData!.isEmpty) {
-    //   Fluttertoast.showToast(
-    //     msg: 'No attendance data available to download',
-    //     toastLength: Toast.LENGTH_SHORT,
-    //     gravity: ToastGravity.BOTTOM,
-    //   );
-    //   return;
-    // }
+    if (tableData!.isEmpty) {
+      Fluttertoast.showToast(
+        msg: 'No attendance data available to download',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      return;
+    }
 
     final xcel.Workbook workbook = xcel.Workbook();
     final xcel.Worksheet sheet = workbook.worksheets[0];
@@ -30,7 +30,7 @@ Future<void> downloadExcel(BuildContext context) async {
       sheet.getRangeByIndex(1, i + 1).setText(headers[i]);
     }
 
-    for (var i = 0; i < tableData!.length; i++) {
+    for (var i = 0; i < tableData.length; i++) {
       for (var j = 0; j < tableData[i].length; j++) {
         sheet.getRangeByIndex(i + 2, j + 1).setText(tableData[i][j].toString());
       }

@@ -456,6 +456,14 @@ packages:
       url: "https://pub.dev"
     source: hosted
     version: "2.0.0"
+  shimmr:
+    dependency: "direct main"
+    description:
+      name: shimmr
+      sha256: "1c1e6a2dfecc45eeb034b9183a0196e732e8c17f7b494180862318df25c19a55"
+      url: "https://pub.dev"
+    source: hosted
+    version: "0.0.1"
   sky_engine:
     dependency: transitive
     description: flutter
