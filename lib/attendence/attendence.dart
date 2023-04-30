@@ -33,7 +33,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   bool get isAfterNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour < 12;
+    return currentTime.hour > 12;
   }
 
   void updateStatus(ispresent) {
