@@ -1,6 +1,10 @@
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
+import 'package:kpr_sports/students/students.dart';
+import 'package:kpr_sports/attendence/attendence.dart';
+import 'package:kpr_sports/attendence_report/report.dart';
+
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -14,7 +18,7 @@ class _HomeScreenState extends State<HomeScreen> {
   late String formatedDate;
   late String day;
   bool isHomePage = true;
-  
+
   @override
   void initState() {
     currentDate = DateTime.now();
@@ -31,15 +35,44 @@ class _HomeScreenState extends State<HomeScreen> {
         child: SafeArea(
           child: Column(children: [
             Container(
-              padding:
-                  const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 25),
+              padding: const EdgeInsets.only(
+                  left: 20, right: 20, top: 50, bottom: 25),
               child: Row(
                 mainAxisAlignment: MainAxisAlignment.spaceBetween,
                 children: [
                   Column(
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      SvgPicture.asset('assets/Home/Hello.svg'),
+                      Stack(children: [
+
+                        Text(
+                          "Hello,",
+                          style: TextStyle(
+                            letterSpacing: 1,
+                            fontFamily: 'Poppins',
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            decoration: TextDecoration.none,
+                            foreground: Paint()
+                              ..style = PaintingStyle.stroke
+                              ..color = Colors.black
+                              ..strokeWidth = 2,
+                          ),
+                        ),
+                        const Text(
+                          "Hello,",
+                          style: TextStyle(
+                            letterSpacing: 1,
+                            fontSize: 30,
+                            fontWeight: FontWeight.w600,
+                            fontStyle: FontStyle.normal,
+                            decoration: TextDecoration.none,
+                            color: Colors.white,
+                            fontFamily: 'Poppins',
+                          ),
+                        ),
+                      ]),
                       const Text(
                         "Pavan.",
                         style: TextStyle(
@@ -55,7 +88,8 @@ class _HomeScreenState extends State<HomeScreen> {
                     ],
                   ),
                   Container(
-                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    padding: const EdgeInsets.symmetric(
+                        horizontal: 20, vertical: 10),
                     alignment: Alignment.center,
                     decoration: BoxDecoration(
                       border: Border.all(
@@ -91,24 +125,22 @@ class _HomeScreenState extends State<HomeScreen> {
                 ],
               ),
             ),
-            _buildMenuCard("Students List", "/students", context,
+            _buildMenuCard("Students List", const StudentsScreen(), context,
                 "assets/Home/add_background.svg", "assets/Home/add.svg"),
             _buildMenuCard(
                 "Attendence",
-                "/attendance",
+                const AttendanceScreen(),
                 context,
                 "assets/Home/attendance_background.svg",
                 "assets/Home/attendance.svg"),
-            _buildMenuCard("Attendence Report", "/report", context,
+            _buildMenuCard("Attendence Report", const ReportScreen(), context,
                 "assets/Home/report_background.svg", "assets/Home/report.svg"),
             const SizedBox(
               height: 150,
             ),
             Container(
-
                 height: 70,
                 width: 300,
-
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color.fromRGBO(20, 42, 80, 1),
@@ -167,24 +199,27 @@ class _HomeScreenState extends State<HomeScreen> {
     );
   }
 
-  Widget _buildMenuCard(String title, String routeName, BuildContext context,
-      background, mainIcon) {
+  Widget _buildMenuCard(
+      String title, Route, BuildContext context, background, mainIcon) {
     return GestureDetector(
       onTap: () {
-        Navigator.pushNamed(context, routeName);
+        Navigator.push(
+          context,
+          MaterialPageRoute(builder: (context) => Route),
+        );
       },
       child: Padding(
-        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-            // side: const BorderSide(color: Colors.grey, width: 1),
+
           ),
           elevation: 10,
           child: Container(
-            padding: EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
+            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
             child: Row(
-              // mainAxisAlignment: MainAxisAlignment.center,
+
               children: [
                 Stack(alignment: Alignment.center, children: [
                   SvgPicture.asset(background),

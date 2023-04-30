@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kpr_sports/firebase_options.dart';
 import 'package:kpr_sports/routes.dart';
-
+import 'package:kpr_sports/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await Firebase.initializeApp(
@@ -17,8 +17,10 @@ class MyApp extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MaterialApp(
-      routes: appRoutes,
-      initialRoute: '/',
+      debugShowCheckedModeBanner: false,
+      // routes: appRoutes,
+      // initialRoute: '/',
+      home: SplashScreen(),
     );
   }
 }
