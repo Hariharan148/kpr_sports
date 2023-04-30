@@ -21,6 +21,7 @@ if (flutterVersionName == null) {
     flutterVersionName = '1.0'
 }
 
+
 apply plugin: 'com.android.application'
 apply plugin: 'com.google.gms.google-services'
 apply plugin: 'kotlin-android'
@@ -52,6 +53,7 @@ android {
         targetSdkVersion flutter.targetSdkVersion
         versionCode flutterVersionCode.toInteger()
         versionName flutterVersionName
+        multiDexEnabled true
     }
 
     buildTypes {
@@ -69,6 +71,7 @@ flutter {
 
 dependencies {
     implementation "org.jetbrains.kotlin:kotlin-stdlib-jdk7:$kotlin_version"
-    implementation 'com.google.firebase:firebase-bom:31.5.0'
+    implementation platform('com.google.firebase:firebase-bom:31.5.0')
+
 }
 
