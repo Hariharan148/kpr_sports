@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:kpr_sports/students/students_model.dart';
 import 'package:image_picker/image_picker.dart';
+import 'package:kpr_sports/students/stu_add_txt_field.dart';
 
 class StudentAdd extends StatefulWidget {
   final bool edit;
@@ -122,9 +123,8 @@ class _StudentAddState extends State<StudentAdd> {
   }
 
   void saveImg() {
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("/Profile_Images/img_pic.jpg");
+    final ref =
+        FirebaseStorage.instance.ref().child("/Profile_Images/img_pic.jpg");
     ref.putFile(File(Img));
     ref.getDownloadURL().then((value) {
       link = value;
@@ -182,7 +182,45 @@ class _StudentAddState extends State<StudentAdd> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    textField(name, "Test Name"),
+                    Tex_fi(
+                        verti: 40,
+                        focus_color: Colors.black,
+                        input_text_color: Colors.black,
+                        bar_color: Colors.black,
+                        radius_circle: 0,
+                        lable: "Name *",
+                        lable_color: Colors.black,
+                        control: name),
+                    const SizedBox(
+                      height: 20,
+                    ),
+                    Row(
+                      children: [
+                        Tex_fi(
+                            verti: 40,
+                            horizo: 140,
+                            focus_color: Colors.black,
+                            input_text_color: Colors.black,
+                            bar_color: Colors.black,
+                            radius_circle: 0,
+                            lable: "Age",
+                            lable_color: Colors.black,
+                            control: name),
+                        const SizedBox(
+                          width: 9,
+                        ),
+                        Tex_fi(
+                            verti: 40,
+                            horizo: 140,
+                            focus_color: Colors.black,
+                            input_text_color: Colors.black,
+                            bar_color: Colors.black,
+                            radius_circle: 0,
+                            lable: "Joined At",
+                            lable_color: Colors.black,
+                            control: name),
+                      ],
+                    ),
                     textField(roll, "Roll No."),
                     textField(sec, "Section"),
                     textField(sport, "Sport"),
