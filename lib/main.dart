@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
-
 import 'package:kpr_sports/routes.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:kpr_sports/store/report_provider.dart';
@@ -21,6 +20,7 @@ void main() async {
     ],
     child: const MyApp(),
   ));
+
 }
 
 class MyApp extends StatelessWidget {
