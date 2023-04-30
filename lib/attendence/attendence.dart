@@ -7,8 +7,9 @@ import 'package:kpr_sports/attendence/info_bar.dart';
 import 'package:kpr_sports/attendence/no_data.dart';
 import 'package:kpr_sports/services/attendance/init_helper.dart';
 import 'package:kpr_sports/services/attendance/submit_helper.dart';
+import 'package:kpr_sports/shared/appbar.dart';
 import 'package:kpr_sports/shared/date_bar.dart';
-import 'package:kpr_sports/shared/shimmer_attendance.dart';
+import 'package:kpr_sports/attendence/shimmer_attendance.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
@@ -32,7 +33,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   bool get isAfterNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour > 12;
+    return currentTime.hour < 12;
   }
 
   void updateStatus(ispresent) {
@@ -104,7 +105,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       Fluttertoast.showToast(
         msg: 'Attendance submitted successfully',
         gravity: ToastGravity.BOTTOM,
-        backgroundColor: Colors.grey,
       );
     } catch (error) {
       Fluttertoast.showToast(
@@ -136,41 +136,14 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-        appBar: AppBar(
-            toolbarHeight: 120,
-            centerTitle: true,
-            title: const Text(
-              "Attendance",
-              style: TextStyle(
-                  color: Colors.black,
-                  fontFamily: "Poppins",
-                  fontWeight: FontWeight.w600,
-                  fontSize: 30),
-            ),
-            backgroundColor: Colors.white,
-            elevation: 0,
-            leading: Padding(
-              padding: const EdgeInsets.only(left: 15),
-              child: SizedBox(
-                height: 35,
-                width: 35,
-                child: IconButton(
-                  onPressed: () {
-                    Navigator.pushNamed(context, "/");
-                  },
-                  icon: const Icon(Icons.arrow_back),
-                  color: Colors.black,
-                  splashColor: Colors.white12,
-                ),
-              ),
-            )),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(120),
+          child: CustomAppBar(name: "Attendance"),
+        ),
         body: isAfterNoon
             ? const AfterNoonWidget()
-            : submitting
-                ? Center(
-                    child: Lottie.asset("assets/basketball.json"),
-                  )
-                : _attendanceProvider.attendanceStatus.isNotEmpty
+            : !submitting
+                ? _attendanceProvider.attendanceStatus.isNotEmpty
                     ? Column(
                         children: [
                           const InfoBar(),
@@ -220,33 +193,38 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   ],
                                 )),
                           ),
-                          RefreshIndicator(
-                              onRefresh: _refreshAttendanceList,
-                              color: Theme.of(context).primaryColor,
-                              child: isAfterNoon
-                                  ? const AfterNoonWidget()
-                                  : _isfetching
-                                      ? Center(
-                                          child: SizedBox(
-                                            height: MediaQuery.of(context)
-                                                    .size
-                                                    .height -
-                                                400,
-                                            width: double.infinity,
-                                            child: const ShimmerCardList(
-                                              itemCount: 5,
+                          Expanded(
+                            child: RefreshIndicator(
+                                onRefresh: _refreshAttendanceList,
+                                color: Theme.of(context).primaryColor,
+                                child: isAfterNoon
+                                    ? const AfterNoonWidget()
+                                    : _isfetching
+                                        ? Center(
+                                            child: SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  400,
+                                              width: double.infinity,
+                                              child: const ShimmerCardList(
+                                                itemCount: 5,
+                                              ),
                                             ),
-                                          ),
-                                        )
-                                      : const SingleChildScrollView(
-                                          physics:
-                                              AlwaysScrollableScrollPhysics(
-                                            parent: BouncingScrollPhysics(),
-                                          ),
-                                          child: AttendanceList()))
+                                          )
+                                        : const SingleChildScrollView(
+                                            physics:
+                                                AlwaysScrollableScrollPhysics(
+                                              parent: BouncingScrollPhysics(),
+                                            ),
+                                            child: AttendanceList())),
+                          )
                         ],
                       )
-                    : const NoData(),
+                    : const NoData()
+                : Center(
+                    child: Lottie.asset("assets/basketball.json"),
+                  ),
         bottomNavigationBar: !isAfterNoon
             ? submitting
                 ? null

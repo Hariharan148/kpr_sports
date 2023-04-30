@@ -76,6 +76,7 @@ flutter:
   assets:
     - assets/basketball.json
     - assets/timer.json
+    - assets/nodata.json
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

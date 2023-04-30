@@ -42,7 +42,8 @@ Future<void> downloadExcel(BuildContext context) async {
     if (!status.isGranted) {
       final directory = await getExternalStorageDirectory();
 
-      final filePath = '${directory?.path}/${headers[1].toString()}.xlsx';
+      final filePath =
+          '${directory?.path}/${headers[1]}${headers[1] == headers[headers.length - 1] ? "" : " to ${headers[headers.length - 1]}"}.xlsx';
       print(filePath);
 
       await File(filePath).writeAsBytes(bytes);

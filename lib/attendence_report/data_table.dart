@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:horizontal_data_table/horizontal_data_table.dart';
 import 'package:kpr_sports/store/report_provider.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class AttendanceData extends StatefulWidget {
@@ -21,12 +22,8 @@ class _AttendanceDataState extends State<AttendanceData> {
       ...context.watch<ReportProvider>().dates
     ];
 
-    final HDTRefreshController _refreshController = HDTRefreshController();
-
     if (tableData!.isEmpty) {
-      return const Center(
-        child: Text('No Data'),
-      );
+      return Lottie.asset("assets/nodata.json");
     }
 
     double getWidth() {
@@ -37,32 +34,31 @@ class _AttendanceDataState extends State<AttendanceData> {
       return 50.0 * (tableData.length + 1);
     }
 
-    return Expanded(
-      child: Padding(
-        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
-        child: SizedBox(
-          height: getHeight(),
-          width: MediaQuery.of(context).size.width - 50,
-          child: Container(
-            padding: const EdgeInsets.only(left: 10, right: 10),
-            decoration: BoxDecoration(
-                color: const Color(0xFFF3F5F7),
-                border: Border.all(color: const Color(0xFFA8A9AC), width: 1.0)),
-            child: HorizontalDataTable(
-              leftHandSideColBackgroundColor: Color(0xFFF3F5F7),
-              rightHandSideColBackgroundColor: Color(0xFFF3F5F7),
-              itemCount: tableData.length,
-              leftHandSideColumnWidth: 120,
-              rightHandSideColumnWidth: getWidth(),
-              isFixedHeader: true,
-              headerWidgets: _buildHeaderWidgets(headers),
-              leftSideChildren: _buildLeftSideItems(tableData),
-              rightSideChildren: _buildRightSideItems(tableData),
-              rowSeparatorWidget: const Divider(
-                color: Colors.black54,
-                height: 1.0,
-                thickness: 0.0,
-              ),
+    return Padding(
+      padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+      child: SizedBox(
+        height: getHeight(),
+        width: MediaQuery.of(context).size.width - 50,
+        child: Container(
+          padding: const EdgeInsets.only(left: 10, right: 10),
+          decoration: BoxDecoration(
+              color: const Color(0xFFF3F5F7),
+              borderRadius: BorderRadius.circular(10),
+              border: Border.all(color: const Color(0xFFA8A9AC), width: 1.0)),
+          child: HorizontalDataTable(
+            leftHandSideColBackgroundColor: const Color(0xFFF3F5F7),
+            rightHandSideColBackgroundColor: const Color(0xFFF3F5F7),
+            itemCount: tableData.length,
+            leftHandSideColumnWidth: 120,
+            rightHandSideColumnWidth: getWidth(),
+            isFixedHeader: true,
+            headerWidgets: _buildHeaderWidgets(headers),
+            leftSideChildren: _buildLeftSideItems(tableData),
+            rightSideChildren: _buildRightSideItems(tableData),
+            rowSeparatorWidget: const Divider(
+              color: Colors.black54,
+              height: 1.0,
+              thickness: 0.0,
             ),
           ),
         ),
@@ -150,7 +146,7 @@ class _AttendanceDataState extends State<AttendanceData> {
                   color: cell == "Present"
                       ? Colors.green
                       : cell == "Absent"
-                          ? Colors.red
+                          ? Colors.red[200]
                           : Colors.black,
                 ),
               ),
