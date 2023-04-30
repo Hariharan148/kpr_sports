@@ -4,11 +4,13 @@ import 'package:kpr_sports/attendence/after_noon.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
 import 'package:kpr_sports/attendence/bottom_bar.dart';
 import 'package:kpr_sports/attendence/info_bar.dart';
+import 'package:kpr_sports/attendence/no_data.dart';
 import 'package:kpr_sports/services/attendance/init_helper.dart';
 import 'package:kpr_sports/services/attendance/submit_helper.dart';
 import 'package:kpr_sports/shared/date_bar.dart';
 import 'package:kpr_sports/shared/shimmer_attendance.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
+import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
 
 class AttendanceScreen extends StatefulWidget {
@@ -24,9 +26,13 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   bool allPresent = false;
 
-  bool get isBeforeNoon {
+  bool submitting = false;
+
+  bool success = false;
+
+  bool get isAfterNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour < 12;
+    return currentTime.hour > 12;
   }
 
   void updateStatus(ispresent) {
@@ -80,6 +86,35 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
     }
   }
 
+  Future<void> _onSubmit() async {
+    try {
+      final attendanceProvider =
+          Provider.of<AttendanceProvider>(context, listen: false);
+
+      setState(() {
+        submitting = true;
+      });
+
+      await AttendanceService.submitAttendance(attendanceProvider);
+
+      setState(() {
+        submitting = false;
+      });
+
+      Fluttertoast.showToast(
+        msg: 'Attendance submitted successfully',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: Colors.grey,
+      );
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: 'Error: ${error.toString()}',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFD9887C),
+      );
+    }
+  }
+
   @override
   void didChangeDependencies() {
     super.didChangeDependencies();
@@ -90,7 +125,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-    if (!isBeforeNoon) {
+    if (!isAfterNoon) {
       WidgetsBinding.instance.addPostFrameCallback((_) {
         _refreshAttendanceList();
         _attendanceProvider.presentVal = 0;
@@ -129,109 +164,99 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                 ),
               ),
             )),
-        body: Column(
-          children: [
-            const InfoBar(),
-            Container(
-              margin: const EdgeInsets.only(top: 20, bottom: 5),
-              child: SizedBox(
-                  height: 60,
-                  child: Row(
-                    mainAxisAlignment: MainAxisAlignment.spaceAround,
-                    children: [
-                      SizedBox(
-                        height: 50,
-                        width: 120,
-                        child: Row(
-                          children: [
-                            Theme(
-                              data: ThemeData(
-                                checkboxTheme: CheckboxThemeData(
-                                  shape: RoundedRectangleBorder(
-                                    borderRadius: BorderRadius.circular(5),
-                                  ),
-                                ),
-                              ),
-                              child: Checkbox(
-                                value: allPresent,
-                                checkColor: Colors.white,
-                                activeColor: const Color(0xFF142A50),
-                                onChanged: (value) {
-                                  setState(() {
-                                    allPresent = value!;
-                                  });
-                                  updateStatus(value);
-                                },
-                              ),
-                            ),
-                            const Text(
-                              "All present",
-                              style: TextStyle(fontSize: 12),
-                            ),
-                          ],
-                        ),
-                      ),
-                      const DateBar()
-                    ],
-                  )),
-            ),
-            RefreshIndicator(
-                onRefresh: _refreshAttendanceList,
-                color: Theme.of(context).primaryColor,
-                child: isBeforeNoon
-                    ? const AfterNoonWidget()
-                    : _isfetching
-                        ? Center(
+        body: isAfterNoon
+            ? const AfterNoonWidget()
+            : submitting
+                ? Center(
+                    child: Lottie.asset("assets/basketball.json"),
+                  )
+                : _attendanceProvider.attendanceStatus.isNotEmpty
+                    ? Column(
+                        children: [
+                          const InfoBar(),
+                          Container(
+                            margin: const EdgeInsets.only(top: 20, bottom: 5),
                             child: SizedBox(
-                              height: MediaQuery.of(context).size.height -
-                                  400, // specify the height of the ShimmerCardList widget
-                              width: double
-                                  .infinity, // specify the width of the ShimmerCardList widget
-                              child: const ShimmerCardList(
-                                itemCount: 5,
-                              ),
-                            ),
-                          )
-                        : _attendanceProvider.attendanceStatus.isNotEmpty
-                            ? const AttendanceList()
-                            : const Text("no data"))
-          ],
-        ),
-        bottomNavigationBar: !isBeforeNoon
-            ? CustomBottomBar(
-                onCancelPressed: () {
-                  updateStatus(false);
-                },
-                onSubmitPressed: () async {
-                  try {
-                    if (_attendanceProvider.attendanceStatus.isEmpty) {
-                      Fluttertoast.showToast(
-                        msg: 'No attendance data available to download',
-                        toastLength: Toast.LENGTH_SHORT,
-                        gravity: ToastGravity.BOTTOM,
-                      );
-                      return;
-                    }
-                    final attendanceProvider =
-                        Provider.of<AttendanceProvider>(context, listen: false);
-
-                    await AttendanceService.submitAttendance(
-                        attendanceProvider);
-
-                    Fluttertoast.showToast(
-                      msg: 'Attendance submitted successfully',
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: Colors.grey,
-                    );
-                  } catch (error) {
-                    Fluttertoast.showToast(
-                      msg: 'Error: ${error.toString()}',
-                      gravity: ToastGravity.BOTTOM,
-                      backgroundColor: const Color(0xFFD9887C),
-                    );
-                  }
-                },
-              )
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(
+                                      height: 50,
+                                      width: 120,
+                                      child: Row(
+                                        children: [
+                                          Theme(
+                                            data: ThemeData(
+                                              checkboxTheme: CheckboxThemeData(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Checkbox(
+                                              value: allPresent,
+                                              checkColor: Colors.white,
+                                              activeColor:
+                                                  const Color(0xFF142A50),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  allPresent = value!;
+                                                });
+                                                updateStatus(value);
+                                              },
+                                            ),
+                                          ),
+                                          const Text(
+                                            "All present",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const DateBar()
+                                  ],
+                                )),
+                          ),
+                          RefreshIndicator(
+                              onRefresh: _refreshAttendanceList,
+                              color: Theme.of(context).primaryColor,
+                              child: isAfterNoon
+                                  ? const AfterNoonWidget()
+                                  : _isfetching
+                                      ? Center(
+                                          child: SizedBox(
+                                            height: MediaQuery.of(context)
+                                                    .size
+                                                    .height -
+                                                400,
+                                            width: double.infinity,
+                                            child: const ShimmerCardList(
+                                              itemCount: 5,
+                                            ),
+                                          ),
+                                        )
+                                      : const SingleChildScrollView(
+                                          physics:
+                                              AlwaysScrollableScrollPhysics(
+                                            parent: BouncingScrollPhysics(),
+                                          ),
+                                          child: AttendanceList()))
+                        ],
+                      )
+                    : const NoData(),
+        bottomNavigationBar: !isAfterNoon
+            ? submitting
+                ? null
+                : _attendanceProvider.attendanceStatus.isNotEmpty
+                    ? CustomBottomBar(
+                        onCancelPressed: () {
+                          updateStatus(false);
+                        },
+                        onSubmitPressed: _onSubmit)
+                    : null
             : null);
   }
 }

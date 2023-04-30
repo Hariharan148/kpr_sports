@@ -11,40 +11,17 @@ class AttendanceData extends StatefulWidget {
 }
 
 class _AttendanceDataState extends State<AttendanceData> {
-  // [
-  //   'Student Name',
-  //   '2023-04-22',
-  //   '2023-04-23',
-  //   '2023-04-24',
-  //   '2023-04-25'
-  // ];
-
-  // [
-  //   ['hari', 'false', 'true', 'false', 'true'],
-  //   ['pavan', 'true', 'true', 'false', 'false'],
-  //   ['suraj', 'true', 'true', 'false', 'false'],
-  //   ['asdfasf', 'false', 'false', 'false', 'false'],
-  //   ['asdf', 'false', 'false', 'false', 'false'],
-  //   ['asdc', 'false', 'false', 'false', 'false'],
-  //   ['asdfa', 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  //   ["hell", 'false', 'false', 'false', 'false'],
-  // ];
-
   @override
   Widget build(BuildContext context) {
     final List<List<dynamic>>? tableData =
         context.watch<ReportProvider>().studentData;
 
     final List<String> headers = [
-      "Students Name",
+      "NAME",
       ...context.watch<ReportProvider>().dates
     ];
+
+    final HDTRefreshController _refreshController = HDTRefreshController();
 
     if (tableData!.isEmpty) {
       return const Center(
@@ -52,18 +29,42 @@ class _AttendanceDataState extends State<AttendanceData> {
       );
     }
 
+    double getWidth() {
+      return 100.0 * (headers.length - 1);
+    }
+
+    double getHeight() {
+      return 50.0 * (tableData.length + 1);
+    }
+
     return Expanded(
-      child: HorizontalDataTable(
-        leftHandSideColumnWidth: 100,
-        rightHandSideColumnWidth: 600,
-        isFixedHeader: true,
-        headerWidgets: _buildHeaderWidgets(headers),
-        leftSideChildren: _buildLeftSideItems(tableData),
-        rightSideChildren: _buildRightSideItems(tableData),
-        rowSeparatorWidget: const Divider(
-          color: Colors.black54,
-          height: 1.0,
-          thickness: 0.0,
+      child: Padding(
+        padding: const EdgeInsets.only(left: 25, right: 25, bottom: 25),
+        child: SizedBox(
+          height: getHeight(),
+          width: MediaQuery.of(context).size.width - 50,
+          child: Container(
+            padding: const EdgeInsets.only(left: 10, right: 10),
+            decoration: BoxDecoration(
+                color: const Color(0xFFF3F5F7),
+                border: Border.all(color: const Color(0xFFA8A9AC), width: 1.0)),
+            child: HorizontalDataTable(
+              leftHandSideColBackgroundColor: Color(0xFFF3F5F7),
+              rightHandSideColBackgroundColor: Color(0xFFF3F5F7),
+              itemCount: tableData.length,
+              leftHandSideColumnWidth: 120,
+              rightHandSideColumnWidth: getWidth(),
+              isFixedHeader: true,
+              headerWidgets: _buildHeaderWidgets(headers),
+              leftSideChildren: _buildLeftSideItems(tableData),
+              rightSideChildren: _buildRightSideItems(tableData),
+              rowSeparatorWidget: const Divider(
+                color: Colors.black54,
+                height: 1.0,
+                thickness: 0.0,
+              ),
+            ),
+          ),
         ),
       ),
     );
@@ -83,7 +84,7 @@ class _AttendanceDataState extends State<AttendanceData> {
               header,
               style: const TextStyle(
                 fontWeight: FontWeight.bold,
-                color: Colors.blue,
+                color: Color(0xFF142A50),
               ),
             ),
           ),
@@ -95,21 +96,40 @@ class _AttendanceDataState extends State<AttendanceData> {
     if (tableData.isEmpty) {
       return [];
     }
-    return tableData
-        .map(
-          (data) => Container(
-            width: 100,
+    return tableData.asMap().entries.map((entry) {
+      int index = entry.key;
+      List<dynamic> data = entry.value;
+      return Row(
+        children: [
+          Container(
+            width: 20,
             height: 50,
             alignment: Alignment.center,
             child: Text(
-              data[0]!,
+              "${index + 1}.",
               style: const TextStyle(
+                fontSize: 12,
+                fontFamily: "Poppins",
                 color: Colors.black,
               ),
             ),
           ),
-        )
-        .toList();
+          Container(
+            width: 100,
+            height: 50,
+            alignment: Alignment.centerLeft,
+            child: Text(
+              "${data[0]!}",
+              style: const TextStyle(
+                fontSize: 12,
+                fontFamily: "Poppins",
+                color: Colors.black,
+              ),
+            ),
+          ),
+        ],
+      );
+    }).toList();
   }
 
   List<Widget> _buildRightSideItems(List<List<dynamic>> tableData) {
@@ -117,20 +137,25 @@ class _AttendanceDataState extends State<AttendanceData> {
       return SizedBox(
         width: 600,
         child: Row(
-          children: data
-              .skip(1)
-              .map((cell) => Container(
-                    width: 100,
-                    height: 50,
-                    alignment: Alignment.center,
-                    child: Text(
-                      cell ?? '-',
-                      style: const TextStyle(
-                        color: Colors.black,
-                      ),
-                    ),
-                  ))
-              .toList(),
+          children: data.skip(1).map((cell) {
+            return Container(
+              width: 100,
+              height: 50,
+              alignment: Alignment.center,
+              child: Text(
+                cell ?? '-',
+                style: TextStyle(
+                  fontSize: 12,
+                  fontFamily: "Poppins",
+                  color: cell == "Present"
+                      ? Colors.green
+                      : cell == "Absent"
+                          ? Colors.red
+                          : Colors.black,
+                ),
+              ),
+            );
+          }).toList(),
         ),
       );
     }).toList();

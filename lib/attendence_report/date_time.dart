@@ -34,6 +34,7 @@ class _DateTimePickerButtonState extends State<DateTimePickerButton> {
         child: const Text("Choose Date"),
       ),
       const SizedBox(height: 16),
+      Text("Number of days: ${selectedDates.duration.inDays + 1}"),
       Text(
           "Selected dates: ${selectedDates.start.toIso8601String().substring(0, 10)} to ${selectedDates.end.toIso8601String().substring(0, 10)}")
     ]);

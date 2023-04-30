@@ -20,13 +20,6 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
       .toIso8601String()
       .substring(0, 10);
 
-  if (start == end) {
-  } else {}
-
-  print(start);
-  print(end);
-
-// Get a list of all dates with attendance data
   final attendanceRef = FirebaseFirestore.instance.collection('attendance');
   final QuerySnapshot<Map<String, dynamic>> snapshot = await attendanceRef
       .where('date', isGreaterThan: start, isLessThan: end)
@@ -35,9 +28,7 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
 
   final dateList =
       snapshot.docs.map((doc) => doc.data()['date'].substring(0, 10)).toList();
-  print("date list${dateList}");
 
-// Loop through the selected date range and ensure that we have data for each date
   final studentDataMap = <String, Map<String, bool>>{};
   final sortedDates = <String>{};
   for (var i = 0; i < selectedDataRange.duration.inDays; i++) {
@@ -46,7 +37,6 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
         .toIso8601String()
         .substring(0, 10);
     if (!dateList.contains(date)) {
-      // If we don't have data for this date, add an empty value to the list of attendance data
       dateList.add(date);
       sortedDates.add(date);
     }
@@ -54,12 +44,10 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
         DateTime.parse(start).add(const Duration(days: 1)).toIso8601String();
   }
 
-  print("sort${sortedDates}");
-
-// Loop through the attendance data and add it to the studentDataMap
   for (final attendanceDoc in snapshot.docs) {
     final attendanceData = attendanceDoc.data();
-    final studentRef = attendanceDoc.reference.collection('students');
+    final studentRef =
+        attendanceDoc.reference.collection('students').orderBy("name");
     final studentSnapshot = await studentRef.get();
     final studentDocs = studentSnapshot.docs;
     for (final studentDoc in studentDocs) {
@@ -81,7 +69,6 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
 
   final sortedDateList = sortedDates.toList()..sort();
 
-// Loop through the studentDataMap and create the list of attendance data
   final dataList = <List<dynamic>>[];
   studentDataMap.forEach((key, value) {
     final row = <dynamic>[key];
@@ -94,10 +81,6 @@ Future<List<List<dynamic>>?> fetchAttendanceData(
     }
     dataList.add(row);
   });
-
-  print("map${studentDataMap}");
-  print("date${dateList}");
-  print("order${sortedDateList}");
 
   reportProvider.setStudentData = dataList;
   reportProvider.setDates = sortedDateList;

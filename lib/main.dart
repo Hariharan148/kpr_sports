@@ -32,7 +32,7 @@ class MyApp extends StatelessWidget {
       debugShowCheckedModeBanner: false,
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
-          primaryColor: const Color(0xFF142A50),
+          primaryColor: const Color(0xFF1b345f),
           secondaryHeaderColor: const Color(0xFF319753),
           colorScheme: ColorScheme.fromSwatch(
             accentColor: const Color(0xFF142A50),

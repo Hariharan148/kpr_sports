@@ -42,6 +42,23 @@ class _ReportScreenState extends State<ReportScreen> {
     }
   }
 
+  Future<void> _refreshAttendanceData() async {
+    try {
+      final List<List<dynamic>>? data =
+          await fetchAttendanceData(context, _selectedDataRange);
+      setState(() {
+        _attendanceData = data;
+      });
+    } catch (e) {
+      Fluttertoast.showToast(
+        msg: 'Error fetching attendance data',
+        toastLength: Toast.LENGTH_SHORT,
+        gravity: ToastGravity.BOTTOM,
+      );
+      return;
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -76,7 +93,12 @@ class _ReportScreenState extends State<ReportScreen> {
           else if (_attendanceData == [])
             const Text('No attendance data available')
           else
-            const AttendanceData()
+            Expanded(
+              child: RefreshIndicator(
+                onRefresh: _refreshAttendanceData,
+                child: AttendanceData(),
+              ),
+            ),
         ],
       ),
     );
