@@ -14,6 +14,8 @@ class _HomeScreenState extends State<HomeScreen> {
   late String formatedDate;
   late String day;
   bool isHomePage = true;
+  
+  @override
   void initState() {
     currentDate = DateTime.now();
     formatedDate = DateFormat('dd/MM/yyyy').format(currentDate);
@@ -23,165 +25,147 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
-      color: Color.fromRGBO(255, 255, 255, 1.0),
-      child: SafeArea(
-        child: Column(children: [
-          Container(
-            padding: EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 25),
-            child: Row(
-              mainAxisAlignment: MainAxisAlignment.spaceBetween,
-              children: [
-                Column(
-                  crossAxisAlignment: CrossAxisAlignment.start,
-                  children: [
-                    Text(
-                      "Hello,",
-                      style: TextStyle(
-                        letterSpacing: 1,
-                        fontSize: 28,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        decoration: TextDecoration.none,
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                        shadows: [
-                          Shadow(
-                            blurRadius: 4,
-                            color: Colors.black.withOpacity(0.25),
-                            offset: const Offset(0, 4),
-                          )
-                        ],
-                      ),
-                    ),
-                    const Text(
-                      "Hariharan.",
-                      style: TextStyle(
-                        letterSpacing: 1,
-                        fontSize: 30,
-                        fontWeight: FontWeight.w600,
-                        fontStyle: FontStyle.normal,
-                        decoration: TextDecoration.none,
-                        color: Colors.black,
-                        fontFamily: 'Poppins',
-                      ),
-                    ),
-                  ],
-                ),
-                Container(
-                  padding: EdgeInsets.symmetric(horizontal: 20, vertical: 10),
-                  alignment: Alignment.center,
-                  decoration: BoxDecoration(
-                    border: Border.all(
-                        color: Color.fromRGBO(20, 42, 80, 1), width: 1),
-                    borderRadius: BorderRadius.circular(15),
-                  ),
-                  child: Column(
+    return SafeArea(
+      child: Container(
+        color: const Color.fromRGBO(255, 255, 255, 1.0),
+        child: SafeArea(
+          child: Column(children: [
+            Container(
+              padding:
+                  const EdgeInsets.only(left: 20, right: 20, top: 50, bottom: 25),
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                children: [
+                  Column(
+                    crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
-                      Text(
-                        "$formatedDate",
-                        style: const TextStyle(
-                          fontSize: 12,
-                          decoration: TextDecoration.none,
-                          color: Color.fromRGBO(49, 151, 83, 1),
-                          fontStyle: FontStyle.normal,
-                          fontFamily: 'Poppins',
+                      SvgPicture.asset('assets/Home/Hello.svg'),
+                      const Text(
+                        "Pavan.",
+                        style: TextStyle(
+                          letterSpacing: 1,
+                          fontSize: 30,
                           fontWeight: FontWeight.w600,
+                          fontStyle: FontStyle.normal,
+                          decoration: TextDecoration.none,
+                          color: Colors.black,
+                          fontFamily: 'Poppins',
                         ),
-                      ),
-                      Text(
-                        "${day}",
-                        style: const TextStyle(
-                            fontSize: 12,
-                            decoration: TextDecoration.none,
-                            color: Color.fromRGBO(168, 169, 172, 1),
-                            fontStyle: FontStyle.normal,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w500),
                       ),
                     ],
                   ),
-                )
-              ],
-            ),
-          ),
-          _buildMenuCard("Students List", "/students", context,
-              "assets/Home/add_background.svg", "assets/Home/add.svg"),
-          _buildMenuCard(
-              "Attendence",
-              "/attendance",
-              context,
-              "assets/Home/attendance_background.svg",
-              "assets/Home/attendance.svg"),
-          _buildMenuCard("Attendence Report", "/report", context,
-              "assets/Home/report_background.svg", "assets/Home/report.svg"),
-          SizedBox(
-            height: 100,
-          ),
-          Container(
-              // color: Color.fromRGBO(20, 42, 80, 1),
-              // padding: EdgeInsets.symmetric(vertical: 1000),
-              height: 70,
-              width: 300,
-              // color: Color.fromRGBO(20, 42, 80, 1),
-              decoration: BoxDecoration(
-                  borderRadius: BorderRadius.circular(20),
-                  color: Color.fromRGBO(20, 42, 80, 1)),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                children: [
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isHomePage = true;
-                      });
-                    },
-                    child: Column(
-                      mainAxisAlignment: (isHomePage)
-                          ? MainAxisAlignment.spaceEvenly
-                          : MainAxisAlignment.center,
-                      children: [
-                        SvgPicture.asset('assets/Home/home_icon.svg'),
-                        Visibility(
-                            visible: isHomePage,
-                            child:
-                                SvgPicture.asset('assets/Home/select_icon.svg'))
-                      ],
+                  Container(
+                    padding: const EdgeInsets.symmetric(horizontal: 20, vertical: 10),
+                    alignment: Alignment.center,
+                    decoration: BoxDecoration(
+                      border: Border.all(
+                          color: const Color.fromRGBO(20, 42, 80, 1), width: 1),
+                      borderRadius: BorderRadius.circular(15),
                     ),
-                  ),
-                  GestureDetector(
-                    onTap: () {
-                      setState(() {
-                        isHomePage = false;
-                      });
-                    },
                     child: Column(
-                      mainAxisAlignment: (!isHomePage)
-                          ? MainAxisAlignment.spaceEvenly
-                          : MainAxisAlignment.center,
                       children: [
-                        SvgPicture.asset('assets/Home/settings_icon.svg'),
-                        Visibility(
-                            visible: !isHomePage,
-                            child:
-                                SvgPicture.asset('assets/Home/select_icon.svg'))
+                        Text(
+                          formatedDate,
+                          style: const TextStyle(
+                            fontSize: 12,
+                            decoration: TextDecoration.none,
+                            color: Color.fromRGBO(49, 151, 83, 1),
+                            fontStyle: FontStyle.normal,
+                            fontFamily: 'Poppins',
+                            fontWeight: FontWeight.w600,
+                          ),
+                        ),
+                        Text(
+                          day,
+                          style: const TextStyle(
+                              fontSize: 12,
+                              decoration: TextDecoration.none,
+                              color: Color.fromRGBO(168, 169, 172, 1),
+                              fontStyle: FontStyle.normal,
+                              fontFamily: 'Poppins',
+                              fontWeight: FontWeight.w500),
+                        ),
                       ],
                     ),
                   )
                 ],
-              ))
-        ]),
+              ),
+            ),
+            _buildMenuCard("Students List", "/students", context,
+                "assets/Home/add_background.svg", "assets/Home/add.svg"),
+            _buildMenuCard(
+                "Attendence",
+                "/attendance",
+                context,
+                "assets/Home/attendance_background.svg",
+                "assets/Home/attendance.svg"),
+            _buildMenuCard("Attendence Report", "/report", context,
+                "assets/Home/report_background.svg", "assets/Home/report.svg"),
+            const SizedBox(
+              height: 150,
+            ),
+            Container(
+
+                height: 70,
+                width: 300,
+
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromRGBO(20, 42, 80, 1),
+                  boxShadow: [
+                    BoxShadow(
+                      color: Colors.grey.withOpacity(0.5),
+                      spreadRadius: 20,
+                      blurRadius: 50,
+                      offset: const Offset(0, 3),
+                    ),
+                  ],
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isHomePage = true;
+                        });
+                      },
+                      child: _navBar(
+                          context,
+                          isHomePage,
+                          'assets/Home/home_icon.svg',
+                          'assets/Home/select_icon.svg'),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isHomePage = false;
+                        });
+                      },
+                      child: _navBar(
+                          context,
+                          !isHomePage,
+                          'assets/Home/settings_icon.svg',
+                          'assets/Home/select_icon.svg'),
+                    ),
+                  ],
+                ))
+          ]),
+        ),
       ),
     );
   }
 
-  // selectPage() {
-  //   if (!isHomePage) {
-  //     return SvgPicture.asset('assets/Home/select_icon.svg');
-  //   } else {
-  //     return Container();
-  //   }
-  // }
+  Widget _navBar(BuildContext context, homePage, mainAsset, subAsset) {
+    return Column(
+      mainAxisAlignment:
+          (homePage) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
+      children: [
+        SvgPicture.asset(mainAsset),
+        Visibility(visible: homePage, child: SvgPicture.asset(subAsset))
+      ],
+    );
+  }
 
   Widget _buildMenuCard(String title, String routeName, BuildContext context,
       background, mainIcon) {
@@ -198,7 +182,7 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
           elevation: 10,
           child: Container(
-            padding: const EdgeInsets.all(16.0),
+            padding: EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
             child: Row(
               // mainAxisAlignment: MainAxisAlignment.center,
               children: [
@@ -207,7 +191,7 @@ class _HomeScreenState extends State<HomeScreen> {
                   SvgPicture.asset(mainIcon)
                 ]),
                 Padding(
-                  padding: EdgeInsets.only(left: 30),
+                  padding: EdgeInsets.only(left: 20),
                   child: Text(
                     title,
                     style: const TextStyle(
