@@ -39,6 +39,8 @@ dependencies:
   cloud_firestore: ^4.5.2
   firebase_storage: ^11.1.1
   image_picker: ^0.8.7+4
+  intl: ^0.18.1
+  flutter_svg: ^2.0.5
 
 dev_dependencies:
   flutter_test:
@@ -64,7 +66,15 @@ flutter:
 
   # To add assets to your application, add an assets section, like this:
   assets:
-    - assets/empty_pic.jpg
+    - assets/
+    - assets/Home/
+    - assets/Home/report_background.svg
+    - assets/Home/report.svg
+    - assets/Home/attendance_background.svg
+    - assets/Home/attendance.svg
+    - assets/Home/add.svg
+    - assets/Home/add_background.svg
+    - assets/Home/home_icon.svg
 
   # An image asset can refer to one or more resolution-specific "variants", see
   # https://flutter.dev/assets-and-images/#resolution-aware
