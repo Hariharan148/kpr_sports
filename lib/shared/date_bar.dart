@@ -11,7 +11,7 @@ class DateBar extends StatefulWidget {
 class _DateBarState extends State<DateBar> {
   String getDate() {
     DateTime today = DateTime.now();
-    String formattedDate = DateFormat('dd/MMyyyy').format(today);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(today);
     return formattedDate;
   }
 
