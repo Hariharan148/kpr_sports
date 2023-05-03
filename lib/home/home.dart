@@ -79,48 +79,46 @@ class _HomeScreenState extends State<HomeScreen> {
                 context,
                 "assets/Home/report_background.svg",
                 "assets/Home/report.svg"),
-            Stack(alignment: Alignment.bottomCenter, children: [
-              Positioned(
-                bottom: 0,
-                left: 0,
-                child: Container(
-                    height: 70,
-                    width: MediaQuery.of(context).size.width - 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromRGBO(20, 42, 80, 1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHomePage = true;
-                            });
-                          },
-                          child: _navBar(
-                              context,
-                              isHomePage,
-                              'assets/Home/home_icon.svg',
-                              'assets/Home/select_icon.svg'),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHomePage = false;
-                            });
-                          },
-                          child: _navBar(
-                              context,
-                              !isHomePage,
-                              'assets/Home/settings_icon.svg',
-                              'assets/Home/select_icon.svg'),
-                        ),
-                      ],
-                    )),
-              ),
-            ])
+            Positioned(
+              bottom: 0,
+              left: 0,
+              child: Container(
+                  height: 70,
+                  width: MediaQuery.of(context).size.width - 100,
+                  decoration: BoxDecoration(
+                    borderRadius: BorderRadius.circular(20),
+                    color: const Color.fromRGBO(20, 42, 80, 1),
+                  ),
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isHomePage = true;
+                          });
+                        },
+                        child: _navBar(
+                            context,
+                            isHomePage,
+                            'assets/Home/home_icon.svg',
+                            'assets/Home/select_icon.svg'),
+                      ),
+                      GestureDetector(
+                        onTap: () {
+                          setState(() {
+                            isHomePage = false;
+                          });
+                        },
+                        child: _navBar(
+                            context,
+                            !isHomePage,
+                            'assets/Home/settings_icon.svg',
+                            'assets/Home/select_icon.svg'),
+                      ),
+                    ],
+                  )),
+            )
           ]),
         ),
       ),
