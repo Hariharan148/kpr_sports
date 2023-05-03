@@ -17,17 +17,18 @@ class _SplashScreenState extends State<SplashScreen> {
     Future.delayed(
         Duration(seconds: 2),
         () => Navigator.push(
-  context,
-  MaterialPageRoute(builder: (context) => HomeScreen()),
-)
-);
+              context,
+              MaterialPageRoute(builder: (context) => HomeScreen()),
+            ));
   }
 
   @override
   Widget build(BuildContext context) {
-    return const Scaffold(
-      backgroundColor: Colors.black,
-      body: RiveAnimation.asset('assets/Home/radioSplashAnimation.riv'),
+    return SafeArea(
+      child: const Scaffold(
+        backgroundColor: Colors.white,
+        body: RiveAnimation.asset('assets/Home/splash.riv'),
+      ),
     );
   }
 }
