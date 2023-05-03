@@ -1,6 +1,7 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:kpr_sports/shared/appbar.dart';
 
 import 'students_add.dart';
 import 'students_model.dart';
@@ -41,8 +42,84 @@ class _StudentsScreenState extends State<StudentsScreen> {
     // final List<dynamic> documents = fetchRecords() as List;
     return SafeArea(
       child: Scaffold(
-        body: Stack(
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(120),
+          child: CustomAppBar(name: "Students"),
+        ),
+        body: Column(
           children: [
+            Container(
+              margin: const EdgeInsets.only(bottom: 25),
+              child: SizedBox(
+                width: MediaQuery.of(context).size.width - 70,
+                height: 100,
+                child: Card(
+                  elevation: 0,
+                  child: Container(
+                    decoration: BoxDecoration(
+                      shape: BoxShape.rectangle,
+                      color: const Color(0xFF142A50),
+                      borderRadius: BorderRadius.circular(15),
+                    ),
+                    child: Row(
+                      crossAxisAlignment: CrossAxisAlignment.center,
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [
+                        Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Container(
+                                child: const Text(
+                              "Total students",
+                              style:
+                                  TextStyle(color: Colors.white, fontSize: 12),
+                            )),
+                            Container(
+                              child: const Text(
+                                "52",
+                                style: TextStyle(
+                                    color: Colors.white,
+                                    fontSize: 35,
+                                    fontWeight: FontWeight.bold),
+                              ),
+                            )
+                          ],
+                        ),
+                        Container(
+                          child: InkWell(
+                            onTap: () {
+                              showPopUp(context);
+                            },
+                            child: Container(
+                              height: 50,
+                              width: 50,
+                              decoration: BoxDecoration(
+                                  gradient: const LinearGradient(
+                                      begin: Alignment.topCenter,
+                                      end: Alignment.bottomCenter,
+                                      colors: [
+                                        Color(0xFF319753),
+                                        Color(0xFF55F68B),
+                                      ]),
+                                  shape: BoxShape.rectangle,
+                                  color: Colors.white,
+                                  border: Border.all(width: 0),
+                                  borderRadius: BorderRadius.circular(35)),
+                              child: const Icon(
+                                Icons.add,
+                                size: 40,
+                                color: Color(0xFF142A50),
+                              ),
+                            ),
+                          ),
+                        ),
+                      ],
+                    ),
+                  ),
+                ),
+              ),
+            ),
             StreamBuilder<List<UserModel>>(
               stream: _streamUser,
               builder: (context, snapshot) {
@@ -63,17 +140,8 @@ class _StudentsScreenState extends State<StudentsScreen> {
                       itemCount: userList.length,
                       itemBuilder: (context, index) {
                         final user = userList[index];
-                        if (index == 0) {
-                          return Column(
-                            children: const [
-                              SizedBox(
-                                height: 400,
-                              ),
-                            ],
-                          );
-                        }
-
                         return Card(
+                          elevation: 0,
                           margin: const EdgeInsets.only(
                               left: 25, right: 25, bottom: 25),
                           shape: RoundedRectangleBorder(
@@ -81,29 +149,21 @@ class _StudentsScreenState extends State<StudentsScreen> {
                             side:
                                 const BorderSide(color: Colors.grey, width: 1),
                           ),
-                          child: Column(
-                            mainAxisAlignment: MainAxisAlignment.end,
-                            children: [
-                              Row(
-                                mainAxisAlignment: MainAxisAlignment.end,
-                                children: [
-                                  Column(
-                                    children: [
-                                      Container(
-                                        margin: const EdgeInsets.only(top: 15),
-                                      ),
-                                      CircleAvatar(
-                                          radius: 50.0,
-                                          backgroundImage: img_select(user)),
-                                    ],
-                                  ),
-                                  const SizedBox(
-                                    width: 78,
-                                  ),
-//WORKING CONTAINER--------------------------------------------------
-                                  Container(
-                                    margin: const EdgeInsets.only(bottom: 50),
-                                    child: IconButton(
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CircleAvatar(
+                                        radius: 50.0,
+                                        backgroundImage: img_select(user)),
+                                    IconButton(
                                         onPressed: () {
                                           setState(() {
                                             showDialog(
@@ -122,8 +182,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                                 .circular(15),
                                                       ),
                                                       child: Container(
-                                                        height: 308,
-                                                        width: 380,
+                                                        height: 300,
                                                         decoration: BoxDecoration(
                                                             borderRadius:
                                                                 BorderRadius
@@ -169,13 +228,23 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                             ),
                                                             Text(
                                                               "${user.name}",
-                                                              style:
-                                                                  const TextStyle(
-                                                                fontSize: 16.0,
-                                                              ),
+                                                              style: const TextStyle(
+                                                                  fontSize:
+                                                                      16.0,
+                                                                  fontWeight:
+                                                                      FontWeight
+                                                                          .w600,
+                                                                  fontFamily:
+                                                                      "Poppins"),
+                                                            ),
+                                                            Text(
+                                                              "${user.roll}",
+                                                              style: const TextStyle(
+                                                                  fontFamily:
+                                                                      "Poppins"),
                                                             ),
                                                             const SizedBox(
-                                                              height: 52,
+                                                              height: 30,
                                                             ),
                                                             Row(
                                                               mainAxisAlignment:
@@ -219,6 +288,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                                         const Text(
                                                                       "Edit",
                                                                       style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Poppins",
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
                                                                           color:
                                                                               Colors.black),
                                                                     ),
@@ -271,8 +346,14 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                                         const Text(
                                                                       "Delete",
                                                                       style: TextStyle(
+                                                                          fontFamily:
+                                                                              "Poppins",
+                                                                          fontSize:
+                                                                              16,
+                                                                          fontWeight: FontWeight
+                                                                              .w600,
                                                                           color:
-                                                                              Colors.black),
+                                                                              Colors.white),
                                                                     ),
                                                                   ),
                                                                 ),
@@ -285,65 +366,66 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                           });
                                         },
                                         icon: const Icon(
-                                            Icons.more_vert_outlined)),
-                                  )
-                                ],
-                              ),
-                              const SizedBox(height: 8.0),
-                              Column(
-                                crossAxisAlignment: CrossAxisAlignment.center,
-                                children: [
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Name : ${user.name}",
-                                    style: const TextStyle(
-                                        fontSize: 16.0, fontFamily: "Poppins"),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Roll No. : ${user.roll}",
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
+                                            Icons.more_vert_outlined))
+                                  ],
+                                ),
+                                Column(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  children: [
+                                    const SizedBox(height: 30.0),
+                                    Text(
+                                      "${user.name}",
+                                      style: const TextStyle(
+                                          fontSize: 16.0,
+                                          fontWeight: FontWeight.w600,
+                                          fontFamily: "Poppins"),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Section : ${user.sec}",
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Roll No. : ${user.roll}",
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Sport : ${user.sport}",
-                                    style: const TextStyle(
-                                      fontSize: 16.0,
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Section : ${user.sec}",
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                      ),
                                     ),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    'Email: ${user.email}',
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Parent's email: ${user.pemail}",
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    'Phone number: ${user.phone}',
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                  Text(
-                                    "Parent's phone number: ${user.pphone}",
-                                    style: const TextStyle(fontSize: 16.0),
-                                  ),
-                                  const SizedBox(height: 8.0),
-                                ],
-                              ),
-                            ],
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Sport : ${user.sport}",
+                                      style: const TextStyle(
+                                        fontSize: 16.0,
+                                      ),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      'Email: ${user.email}',
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Parent's email: ${user.pemail}",
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      'Phone number: ${user.phone}',
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                    Text(
+                                      "Parent's phone number: ${user.pphone}",
+                                      style: const TextStyle(fontSize: 16.0),
+                                    ),
+                                    const SizedBox(height: 8.0),
+                                  ],
+                                ),
+                              ],
+                            ),
                           ),
                         );
                       },
@@ -351,109 +433,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
                   );
                 }
               },
-            ),
-            Container(
-              color: Colors.white.withOpacity(1),
-              width: MediaQuery.of(context).size.width,
-              height: 200,
-              child: Row(
-                children: [
-                  Container(
-                    margin: const EdgeInsets.only(top: 0, left: 10, bottom: 30),
-                    child: IconButton(
-                        onPressed: () {},
-                        icon: const Icon(
-                          Icons.arrow_back_outlined,
-                          color: Colors.black,
-                        )),
-                  ),
-                  Container(
-                    margin: const EdgeInsets.fromLTRB(45, 20, 105, 40),
-                    height: 45,
-                    width: 180,
-                    child: const Text(
-                      "Students List",
-                      style:
-                          TextStyle(fontSize: 30, fontWeight: FontWeight.bold),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            Positioned(
-              top: 120,
-//----------------BLACK CARD STARTS FROM HERE--------------------------------
-              child: SizedBox(
-                width: MediaQuery.of(context).size.width,
-                height: 182,
-                child: Card(
-                  margin: const EdgeInsets.only(top: 20),
-                  child: Container(
-                    height: 105,
-                    width: 300,
-                    margin: const EdgeInsets.fromLTRB(45, 10, 45, 40),
-                    decoration: BoxDecoration(
-                      shape: BoxShape.rectangle,
-                      color: const Color(0xFF142A50),
-                      borderRadius: BorderRadius.circular(15),
-                    ),
-                    child: Row(
-                      children: [
-                        Column(
-                          children: [
-                            Container(
-                                margin: const EdgeInsets.fromLTRB(0, 25, 60, 0),
-                                child: const Text(
-                                  "Total students",
-                                  style: TextStyle(color: Colors.white),
-                                )),
-                            Container(
-                              margin:
-                                  const EdgeInsets.only(right: 140, left: 25),
-                              child: const Text(
-                                "52",
-                                style: TextStyle(
-                                    color: Colors.white,
-                                    fontSize: 35,
-                                    fontWeight: FontWeight.bold),
-                              ),
-                            )
-                          ],
-                        ),
-                        Container(
-                          margin: const EdgeInsets.only(left: 25),
-                          child: InkWell(
-                            onTap: () {
-                              showPopUp(context);
-                            },
-                            child: Container(
-                              height: 60,
-                              width: 60,
-                              decoration: BoxDecoration(
-                                  gradient: const LinearGradient(
-                                      begin: Alignment.topCenter,
-                                      end: Alignment.bottomCenter,
-                                      colors: [
-                                        Color(0xFF319753),
-                                        Color(0xFF55F68B),
-                                      ]),
-                                  shape: BoxShape.rectangle,
-                                  color: Colors.white,
-                                  border: Border.all(width: 0),
-                                  borderRadius: BorderRadius.circular(35)),
-                              child: const Icon(
-                                Icons.add,
-                                size: 50,
-                                color: Color(0xFF142A50),
-                              ),
-                            ),
-                          ),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
             ),
           ],
         ),

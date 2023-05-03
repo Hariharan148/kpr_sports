@@ -199,14 +199,13 @@ class _StudentAddState extends State<StudentAdd> {
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
-                    const SizedBox(
+                    Container(
                       height: 5,
+                      width: MediaQuery.of(context).size.width - 100,
                     ),
                     Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        const SizedBox(
-                          width: 18,
-                        ),
                         rollField(
                           verti: 30,
                           horizo: 140,
@@ -215,12 +214,9 @@ class _StudentAddState extends State<StudentAdd> {
                           inputTextColor: Colors.black,
                           barColor: Colors.black,
                         ),
-                        const SizedBox(
-                          width: 9,
-                        ),
                         sectionField(
                           verti: 30,
-                          horizo: 140,
+                          horizo: 100,
                           control: sec,
                           lableText: "Section",
                           inputTextColor: Colors.black,
@@ -232,6 +228,7 @@ class _StudentAddState extends State<StudentAdd> {
                       height: 5,
                     ),
                     sportField(
+                      verti: 30,
                       control: sport,
                       lableText: "Sport",
                       inputTextColor: Colors.black,
@@ -241,6 +238,7 @@ class _StudentAddState extends State<StudentAdd> {
                       height: 5,
                     ),
                     emailField(
+                      verti: 30,
                       control: email,
                       lableText: "Email",
                       inputTextColor: Colors.black,
@@ -250,6 +248,7 @@ class _StudentAddState extends State<StudentAdd> {
                       height: 5,
                     ),
                     emailField(
+                      verti: 30,
                       control: pemail,
                       lableText: "Parent's Email",
                       inputTextColor: Colors.black,
@@ -291,76 +290,64 @@ class _StudentAddState extends State<StudentAdd> {
             Visibility(
               visible: !widget.edit,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(
-                    width: 45,
-                  ),
-                  SizedBox(
+                  Container(
                     width: 120,
                     height: 40,
-                    child: Container(
-                      width: 120,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: const LinearGradient(
-                            // begin: Alignment.topLeft,
-                            // end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFFA8A9AC),
-                              Color(0xFFE0E1E2),
-                            ]),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFA8A9AC),
+                            Color(0xFFE0E1E2),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                       ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
-                        ),
-                        onPressed: () => Navigator.pop(context),
-                        child: const Text(
-                          "Cancel",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
-                  const SizedBox(
-                    width: 11,
-                  ),
-                  SizedBox(
+                  Container(
                     width: 120,
                     height: 40,
-                    child: Container(
-                      width: 120,
-                      height: 40,
-                      decoration: BoxDecoration(
-                        borderRadius: BorderRadius.circular(10),
-                        gradient: const LinearGradient(
-                            // begin: Alignment.topLeft,
-                            // end: Alignment.bottomRight,
-                            colors: [
-                              Color(0xFF319753),
-                              Color(0xFF4DC274),
-                            ]),
+                    margin: const EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF319753),
+                            Color(0xFF4DC274),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
                       ),
-                      child: ElevatedButton(
-                        style: ElevatedButton.styleFrom(
-                          shadowColor: Colors.transparent,
-                          backgroundColor: Colors.transparent,
-                        ),
-                        onPressed: () {
-                          final isValid = _formKey.currentState!.validate();
-                          if (isValid) {
-                            _formKey.currentState!.save();
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          _formKey.currentState!.save();
 
-                            uploadImg();
-                            Navigator.pop(context);
-                          }
-                        },
-                        child: const Text(
-                          "Add",
-                          style: TextStyle(color: Colors.black),
-                        ),
+                          uploadImg();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(color: Colors.black),
                       ),
                     ),
                   ),
