@@ -69,10 +69,7 @@ Future<void> downloadExcel(BuildContext context) async {
 
 Future<String> getPath_2() async {
   var path = await ExternalPath.getExternalStorageDirectories();
-  print(path);
-  return path[0]; // [/storage/emulated/0, /storage/B3AE-4D28]
-
-  // please note: B3AE-4D28 is external storage (SD card) folder name it can be any.
+  return path[0];
 }
 
 Future<void> checkPermissions(BuildContext context) async {
