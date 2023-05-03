@@ -1,4 +1,3 @@
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:kpr_sports/settings/settings.dart';
@@ -21,125 +20,121 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        height: MediaQuery.of(context).size.height,
-        color: const Color.fromRGBO(255, 255, 255, 1.0),
-        child: SafeArea(
-          child: Column(
-            children: [
-              Container(
-                padding: const EdgeInsets.only(
-                    left: 25, right: 25, top: 25, bottom: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
+    return Container(
+      padding: const EdgeInsets.only(top: 25),
+      height: MediaQuery.of(context).size.height,
+      color: const Color.fromRGBO(255, 255, 255, 1.0),
+      child: Column(
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Column(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      crossAxisAlignment: CrossAxisAlignment.start,
-                      children: [
-                        Text(
-                          "Hello,",
-                          style: TextStyle(
-                            decoration: TextDecoration.none,
-                            fontSize: 28,
-                            fontFamily: "Poppins",
-                            fontWeight: FontWeight.bold,
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..strokeWidth = 1
-                              ..color = Colors.black,
-                          ),
-                        ),
-                        const Text(
-                          "Hariharan.",
-                          style: TextStyle(
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            decoration: TextDecoration.none,
-                            color: Colors.black,
-                            fontFamily: 'Poppins',
-                          ),
-                        ),
-                      ],
+                    Text(
+                      "Hello,",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 28,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 1
+                          ..color = Colors.black,
+                      ),
                     ),
-                    const DateBar()
+                    const Text(
+                      "Hariharan.",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.none,
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                      ),
+                    ),
+                  ],
+                ),
+                const DateBar()
+              ],
+            ),
+          ),
+          _buildMenuCard("Students", "மாணவர்கள்", "/students", context,
+              "assets/Home/add_background.svg", "assets/Home/add.svg"),
+          _buildMenuCard(
+              "Attendance",
+              "பள்ளி வருகை",
+              "/attendance",
+              context,
+              "assets/Home/attendance_background.svg",
+              "assets/Home/attendance.svg"),
+          _buildMenuCard(
+              "Attendance Report",
+              "கால பதிவு அறிக்கை",
+              "/report",
+              context,
+              "assets/Home/report_background.svg",
+              "assets/Home/report.svg"),
+          Expanded(
+            child: Align(
+              alignment: Alignment.bottomCenter,
+              child: Container(
+                margin: const EdgeInsets.only(bottom: 30),
+                height: 70,
+                width: MediaQuery.of(context).size.width - 100,
+                decoration: BoxDecoration(
+                  borderRadius: BorderRadius.circular(20),
+                  color: const Color.fromRGBO(20, 42, 80, 1),
+                ),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                  children: [
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isHomePage = true;
+                        });
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()));
+                      },
+                      child: _navBar(
+                          context,
+                          isHomePage,
+                          'assets/Home/home_icon.svg',
+                          'assets/Home/select_icon.svg'),
+                    ),
+                    GestureDetector(
+                      onTap: () {
+                        setState(() {
+                          isHomePage = false;
+                        });
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SettingsScreen()));
+                      },
+                      child: _navBar(
+                          context,
+                          !isHomePage,
+                          'assets/Home/settings_icon.svg',
+                          'assets/Home/select_icon.svg'),
+                    ),
                   ],
                 ),
               ),
-              _buildMenuCard("Students", "மாணவர்கள்", "/students", context,
-                  "assets/Home/add_background.svg", "assets/Home/add.svg"),
-              _buildMenuCard(
-                  "Attendance",
-                  "பள்ளி வருகை",
-                  "/attendance",
-                  context,
-                  "assets/Home/attendance_background.svg",
-                  "assets/Home/attendance.svg"),
-              _buildMenuCard(
-                  "Attendance Report",
-                  "கால பதிவு அறிக்கை",
-                  "/report",
-                  context,
-                  "assets/Home/report_background.svg",
-                  "assets/Home/report.svg"),
-              Expanded(
-                child: Align(
-                  alignment: Alignment.bottomCenter,
-                  child: Container(
-                    margin: const EdgeInsets.only(bottom: 30),
-                    height: 70,
-                    width: MediaQuery.of(context).size.width - 100,
-                    decoration: BoxDecoration(
-                      borderRadius: BorderRadius.circular(20),
-                      color: const Color.fromRGBO(20, 42, 80, 1),
-                    ),
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHomePage = true;
-                            });
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) => const HomeScreen()));
-                          },
-                          child: _navBar(
-                              context,
-                              isHomePage,
-                              'assets/Home/home_icon.svg',
-                              'assets/Home/select_icon.svg'),
-                        ),
-                        GestureDetector(
-                          onTap: () {
-                            setState(() {
-                              isHomePage = false;
-                            });
-
-                            Navigator.push(
-                                context,
-                                MaterialPageRoute(
-                                    builder: (context) =>
-                                        const SettingsScreen()));
-                          },
-                          child: _navBar(
-                              context,
-                              !isHomePage,
-                              'assets/Home/settings_icon.svg',
-                              'assets/Home/select_icon.svg'),
-                        ),
-                      ],
-                    ),
-                  ),
-                ),
-              ),
-            ],
+            ),
           ),
-        ),
+        ],
       ),
     );
   }
