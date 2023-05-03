@@ -8,7 +8,6 @@ import 'package:kpr_sports/students/students_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kpr_sports/students/custom_text_fields.dart';
 
-
 class StudentAdd extends StatefulWidget {
   final bool edit;
   final List usr;
@@ -119,15 +118,12 @@ class _StudentAddState extends State<StudentAdd> {
     return data;
   }
 
-
   void saveImg() async {
     final ref = FirebaseStorage.instance
         .ref()
         .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
     await ref.putFile(File(Img));
     await ref.getDownloadURL().then((value) {
-
-
       link = value;
       FirebaseFirestore.instance
           .collection("Student")
@@ -157,9 +153,29 @@ class _StudentAddState extends State<StudentAdd> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Icon(Icons.expand_circle_down),
+            Row(
+              children: const [
+                SizedBox(
+                  width: 20,
+                ),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: Text(
+                    "Add New Student",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 11.06,
+            ),
+            const SizedBox(
+              width: 286.01,
+              child: Divider(
+                thickness: 0.2,
+                color: Colors.black,
+              ),
             ),
             GestureDetector(
                 onTap: () {
@@ -177,54 +193,251 @@ class _StudentAddState extends State<StudentAdd> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    nameField(name, "Name"),
-                    SizedBox(height: 5,),
-                    rollField(roll, "Roll No."),
-                    SizedBox(height: 5,),
-                    sectionField(sec, "Section"),
-                    SizedBox(height: 5,),
-                    sportField(sport, "Sport"),
-                    SizedBox(height: 5,),
-                    emailField(email, "Email"),
-                    SizedBox(height: 5,),
-                    emailField(pemail, "Parent's Email"),
-                    SizedBox(height: 5,),
-                    phoneField(phone, "Phone"),
-                    SizedBox(height: 5,),
-                    phoneField(pphone, "Parent's Phone"),
+                    nameField(
+                      control: name,
+                      lableText: "Name",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    Row(
+                      children: [
+                        const SizedBox(
+                          width: 18,
+                        ),
+                        rollField(
+                          verti: 30,
+                          horizo: 140,
+                          control: roll,
+                          lableText: "Roll No.",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                        const SizedBox(
+                          width: 9,
+                        ),
+                        sectionField(
+                          verti: 30,
+                          horizo: 140,
+                          control: sec,
+                          lableText: "Section",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    sportField(
+                      control: sport,
+                      lableText: "Sport",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    emailField(
+                      control: email,
+                      lableText: "Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    emailField(
+                      control: pemail,
+                      lableText: "Parent's Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    phoneField(
+                      control: phone,
+                      lableText: "Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 5,
+                    ),
+                    phoneField(
+                      control: pphone,
+                      lableText: "Parent's Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
                   ],
                 )),
+            const SizedBox(
+              height: 85,
+            ),
+            const SizedBox(
+              width: 286.01,
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Visibility(
               visible: !widget.edit,
-              child: FloatingActionButton(
-                onPressed: () {
-                  final isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    _formKey.currentState!.save();
-                    
-                    uploadImg();
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text("Submit"),
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  SizedBox(
+                    width: 120,
+                    height: 40,
+                    child: Container(
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                            // begin: Alignment.topLeft,
+                            // end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xFFA8A9AC),
+                              Color(0xFFE0E1E2),
+                            ]),
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        onPressed: () => Navigator.pop(context),
+                        child: const Text(
+                          "Cancel",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 11,
+                  ),
+                  SizedBox(
+                    width: 120,
+                    height: 40,
+                    child: Container(
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(
+                            // begin: Alignment.topLeft,
+                            // end: Alignment.bottomRight,
+                            colors: [
+                              Color(0xFF319753),
+                              Color(0xFF4DC274),
+                            ]),
+                      ),
+                      child: ElevatedButton(
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        onPressed: () {
+                          final isValid = _formKey.currentState!.validate();
+                          if (isValid) {
+                            _formKey.currentState!.save();
+
+                            uploadImg();
+                            Navigator.pop(context);
+                          }
+                        },
+                        child: const Text(
+                          "Add",
+                          style: TextStyle(color: Colors.black),
+                        ),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Visibility(
               visible: widget.edit,
-              child: FloatingActionButton(
-                onPressed: () {
-                  final isValid = _formKey.currentState!.validate();
-                  if (isValid){
-                    _formKey.currentState!.save();
-                    // if (ch == true) {
-                    saveImg();
-                  // }
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFA8A9AC),
+                            Color(0xFFE0E1E2),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 11,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF319753),
+                            Color(0xFF4DC274),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          _formKey.currentState!.save();
+                          // if (ch == true) {
+                          saveImg();
+                          // }
 
-                    Navigator.pop(context);
-                  }
-                  
-                },
-                child: const Text("Save"),
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],
