@@ -1,10 +1,14 @@
+import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
 import 'package:intl/intl.dart';
 import 'package:kpr_sports/students/students.dart';
 import 'package:kpr_sports/attendence/attendence.dart';
 import 'package:kpr_sports/attendence_report/report.dart';
-
+import 'package:kpr_sports/settings/settings.dart';
+import 'package:firebase_core/firebase_core.dart';
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:kpr_sports/students/students_model.dart';
 
 class HomeScreen extends StatefulWidget {
   const HomeScreen({super.key});
@@ -18,13 +22,31 @@ class _HomeScreenState extends State<HomeScreen> {
   late String formatedDate;
   late String day;
   bool isHomePage = true;
+  var Temp;
+  String Name = "";
 
   @override
   void initState() {
     currentDate = DateTime.now();
     formatedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     day = DateFormat('EEEE').format(currentDate).substring(0, 3).toUpperCase();
+    retrive();
     super.initState();
+  }
+
+  retrive() {
+    FirebaseFirestore.instance
+        .collection('Faculty')
+        .snapshots()
+        .listen((QuerySnapshot querySnapshot) {
+      // Do something with the querySnapshot, like update a variable
+      querySnapshot.docs.forEach((element) {
+        setState(() {
+          Temp = element.data()!;
+          Name = Temp["Name"];
+        });
+      });
+    });
   }
 
   @override
@@ -44,7 +66,6 @@ class _HomeScreenState extends State<HomeScreen> {
                     crossAxisAlignment: CrossAxisAlignment.start,
                     children: [
                       Stack(children: [
-
                         Text(
                           "Hello,",
                           style: TextStyle(
@@ -73,8 +94,8 @@ class _HomeScreenState extends State<HomeScreen> {
                           ),
                         ),
                       ]),
-                      const Text(
-                        "Pavan.",
+                      Text(
+                        Name,
                         style: TextStyle(
                           letterSpacing: 1,
                           fontSize: 30,
@@ -172,6 +193,13 @@ class _HomeScreenState extends State<HomeScreen> {
                       onTap: () {
                         setState(() {
                           isHomePage = false;
+                          Navigator.push(
+                              context,
+                              MaterialPageRoute(
+                                  builder: (context) =>
+                                      const SettingsScreen()));
+                          isHomePage = true;
+                          // retrive();
                         });
                       },
                       child: _navBar(
@@ -213,13 +241,12 @@ class _HomeScreenState extends State<HomeScreen> {
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
-
           ),
           elevation: 10,
           child: Container(
-            padding: const EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
+            padding:
+                const EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
             child: Row(
-
               children: [
                 Stack(alignment: Alignment.center, children: [
                   SvgPicture.asset(background),
@@ -242,5 +269,7 @@ class _HomeScreenState extends State<HomeScreen> {
         ),
       ),
     );
+
+
   }
 }
