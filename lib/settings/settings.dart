@@ -28,14 +28,15 @@ class _SettingsScreenState extends State<SettingsScreen> {
         body: Column(
           children: [
             Container(
-                padding: EdgeInsets.symmetric(horizontal: 20, vertical: 70),
+                padding:
+                    const EdgeInsets.symmetric(horizontal: 20, vertical: 70),
                 child: Row(
                   children: [
                     GestureDetector(
                         onTap: () {
                           Navigator.pop(context);
                         },
-                        child: Icon(Icons.arrow_back_sharp)),
+                        child: const Icon(Icons.arrow_back_sharp)),
                     const Padding(
                         padding: EdgeInsets.only(left: 100),
                         child: Text(
@@ -48,65 +49,62 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         ))
                   ],
                 )),
-            Container(
-              child: Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Padding(
-                    padding: EdgeInsets.only(left: 5, bottom: 20),
-                    child: Text(
-                      "Update Name",
-                      style: TextStyle(
-                          fontFamily: 'Poppins',
-                          fontStyle: FontStyle.normal,
-                          fontWeight: FontWeight.w500,
-                          fontSize: 15),
-                    ),
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Padding(
+                  padding: EdgeInsets.only(left: 5, bottom: 20),
+                  child: Text(
+                    "Update Name",
+                    style: TextStyle(
+                        fontFamily: 'Poppins',
+                        fontStyle: FontStyle.normal,
+                        fontWeight: FontWeight.w500,
+                        fontSize: 15),
                   ),
-                  SizedBox(
-                    width: 300,
-                    child: TextFormField(
-                        controller: name,
-                        decoration: const InputDecoration(
-                            border: OutlineInputBorder(),
-                            contentPadding: EdgeInsets.symmetric(vertical: 1))),
-                  ),
-                  Padding(
-                    padding: EdgeInsets.only(
-                        left: MediaQuery.of(context).size.width - 200, top: 30),
-                    child: ElevatedButton(
-                      onPressed: () {
-                        // Handle button press
-                        update();
+                ),
+                SizedBox(
+                  width: 300,
+                  height: 50,
+                  child: TextFormField(
+                      controller: name,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      )),
+                ),
+                Padding(
+                  padding: EdgeInsets.only(
+                      left: MediaQuery.of(context).size.width - 200, top: 30),
+                  child: ElevatedButton(
+                    onPressed: () {
+                      // Handle button press
+                      update();
 
-                        Navigator.pop(context);
-                      },
-                      style: ElevatedButton.styleFrom(
-                        primary: Colors.green, // Set button color
-                        shape: RoundedRectangleBorder(
-                          borderRadius:
-                              BorderRadius.circular(10), // Set border radius
-                          side: const BorderSide(
-                              color: Color.fromRGBO(49, 151, 83, 1),
-                              width: 2), // Set border color and width
-                        ),
+                      Navigator.pop(context);
+                    },
+                    style: ElevatedButton.styleFrom(
+                      backgroundColor: const Color.fromRGBO(49, 151, 83, 1),
+                      shape: RoundedRectangleBorder(
+                        borderRadius: BorderRadius.circular(10),
+                        side: const BorderSide(
+                            color: Color.fromRGBO(49, 151, 83, 1), width: 2),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
-                          'Update',
-                          style: TextStyle(
-                              color: Colors.black,
-                              fontFamily: 'Poppins',
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
-                              fontSize: 16),
-                        ),
-                      ), // Set button text
                     ),
-                  )
-                ],
-              ),
+                    child: const Padding(
+                      padding: EdgeInsets.symmetric(horizontal: 15),
+                      child: Text(
+                        'Update',
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: 'Poppins',
+                            fontStyle: FontStyle.normal,
+                            fontWeight: FontWeight.w500,
+                            fontSize: 16),
+                      ),
+                    ),
+                  ),
+                )
+              ],
             )
           ],
         ),

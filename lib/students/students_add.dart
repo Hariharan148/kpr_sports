@@ -31,7 +31,7 @@ class _StudentAddState extends State<StudentAdd> {
   TextEditingController sport = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController pphone = TextEditingController();
-  String Img = "";
+  String img = "";
   String filePath = "";
   String result = "";
   late File _image;
@@ -54,7 +54,7 @@ class _StudentAddState extends State<StudentAdd> {
       setState(() {
         if (user.image != "") {
           ch = false;
-          Img = user.image;
+          img = user.image;
         }
       });
     }
@@ -85,7 +85,7 @@ class _StudentAddState extends State<StudentAdd> {
         if (widget.edit) {
           ch = true;
         }
-        Img = image.path;
+        img = image.path;
         filePath = "Image_img.jpg";
       });
     }
@@ -95,7 +95,7 @@ class _StudentAddState extends State<StudentAdd> {
     final ref = FirebaseStorage.instance
         .ref()
         .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
-    await ref.putFile(File(Img));
+    await ref.putFile(File(img));
 
     await ref.getDownloadURL().then((value) {
       link = value;
@@ -122,7 +122,7 @@ class _StudentAddState extends State<StudentAdd> {
     final ref = FirebaseStorage.instance
         .ref()
         .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
-    await ref.putFile(File(Img));
+    await ref.putFile(File(img));
     await ref.getDownloadURL().then((value) {
       link = value;
       FirebaseFirestore.instance
@@ -133,7 +133,7 @@ class _StudentAddState extends State<StudentAdd> {
   }
 
   check() {
-    return (Img == "")
+    return (img == "")
         ? const AssetImage("assets/empty_pic.jpg")
         : FileImage(_image);
   }
@@ -165,7 +165,7 @@ class _StudentAddState extends State<StudentAdd> {
                   children: [
                     CircleAvatar(
                       radius: 50.0,
-                      backgroundImage: (ch) ? check() : NetworkImage(Img),
+                      backgroundImage: (ch) ? check() : NetworkImage(img),
                     )
                   ],
                 )),
@@ -174,19 +174,33 @@ class _StudentAddState extends State<StudentAdd> {
                 child: Column(
                   children: [
                     nameField(name, "Name"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     rollField(roll, "Roll No."),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     sectionField(sec, "Section"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     sportField(sport, "Sport"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     emailField(email, "Email"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     emailField(pemail, "Parent's Email"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     phoneField(phone, "Phone"),
-                    SizedBox(height: 5,),
+                    const SizedBox(
+                      height: 5,
+                    ),
                     phoneField(pphone, "Parent's Phone"),
                   ],
                 )),
@@ -197,7 +211,7 @@ class _StudentAddState extends State<StudentAdd> {
                   final isValid = _formKey.currentState!.validate();
                   if (isValid) {
                     _formKey.currentState!.save();
-                    
+
                     uploadImg();
                     Navigator.pop(context);
                   }
@@ -210,15 +224,14 @@ class _StudentAddState extends State<StudentAdd> {
               child: FloatingActionButton(
                 onPressed: () {
                   final isValid = _formKey.currentState!.validate();
-                  if (isValid){
+                  if (isValid) {
                     _formKey.currentState!.save();
                     // if (ch == true) {
                     saveImg();
-                  // }
+                    // }
 
                     Navigator.pop(context);
                   }
-                  
                 },
                 child: const Text("Save"),
               ),

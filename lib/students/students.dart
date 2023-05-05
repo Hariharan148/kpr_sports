@@ -29,7 +29,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
 
-  img_select(user) {
+  imgselect(user) {
     if (user.image != null) {
       return NetworkImage(user.image);
     } else {
@@ -39,7 +39,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<dynamic> documents = fetchRecords() as List;
     return Scaffold(
       appBar: AppBar(
         title: const Text("Students"),
@@ -69,7 +68,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
                 );
               } else {
                 final userList = snapshot.data!;
-                print(snapshot.data);
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,
@@ -85,8 +83,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                           mainAxisAlignment: MainAxisAlignment.end,
                           children: [
                             CircleAvatar(
-                                radius: 50.0,
-                                backgroundImage: img_select(user)),
+                                radius: 50.0, backgroundImage: imgselect(user)),
                             const SizedBox(height: 8.0),
                             Text(
                               "Name : ${user.name}",
