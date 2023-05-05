@@ -29,7 +29,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
 
-  img_select(user) {
+  imgselect(user) {
     if (user.image != null) {
       return NetworkImage(user.image);
     } else {
@@ -39,7 +39,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    // final List<dynamic> documents = fetchRecords() as List;
     return Scaffold(
       appBar: const PreferredSize(
         preferredSize: Size.fromHeight(120),
@@ -131,7 +130,6 @@ class _StudentsScreenState extends State<StudentsScreen> {
                 );
               } else {
                 final userList = snapshot.data!;
-                // print(snapshot.data);
                 return Expanded(
                   child: ListView.builder(
                     shrinkWrap: true,

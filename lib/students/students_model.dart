@@ -53,3 +53,27 @@ class UserModel {
     );
   }
 }
+
+class Faculty {
+
+  final String? name;
+
+
+  const Faculty({
+
+    required this.name,
+
+  });
+
+
+
+  factory Faculty.fromSnapshot(
+      DocumentSnapshot<Map<String, dynamic>> document) {
+    final data = document.data()!;
+    return Faculty(
+
+      name: data["Name"],
+
+    );
+  }
+}

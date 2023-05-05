@@ -54,6 +54,8 @@ dependencies:
   
 
 
+  rive: ^0.10.4
+
 dev_dependencies:
   flutter_test:
     sdk: flutter

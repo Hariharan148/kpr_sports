@@ -1,9 +1,11 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kpr_sports/splash_screen.dart';
 import 'package:kpr_sports/routes.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:kpr_sports/store/report_provider.dart';
 import 'package:provider/provider.dart';
+
 
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
@@ -38,8 +40,12 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch(
             accentColor: const Color(0xFF142A50),
           )),
-      routes: appRoutes,
-      initialRoute: '/',
+          
+       // routes: appRoutes,
+      // initialRoute: '/',
+      home: SplashScreen(),
+
+
     );
   }
 }
