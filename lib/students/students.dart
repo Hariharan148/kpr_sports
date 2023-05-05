@@ -157,7 +157,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                 children: [
                                   CircleAvatar(
                                       radius: 50.0,
-                                      backgroundImage: img_select(user)),
+                                      backgroundImage: imgselect(user)),
                                   IconButton(
                                       onPressed: () {
                                         setState(() {
@@ -215,7 +215,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                           CircleAvatar(
                                                               radius: 50.0,
                                                               backgroundImage:
-                                                                  img_select(
+                                                                  imgselect(
                                                                       user)),
                                                           const SizedBox(
                                                             height: 15.25,
@@ -411,12 +411,12 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                   ),
                                   const SizedBox(height: 8.0),
                                   Text(
-                                    'Phone number: ${user.phone}',
+                                    'Phone: ${user.phone}',
                                     style: const TextStyle(fontSize: 16.0),
                                   ),
                                   const SizedBox(height: 8.0),
                                   Text(
-                                    "Parent's phone number: ${user.pphone}",
+                                    "Parent's phone: ${user.pphone}",
                                     style: const TextStyle(fontSize: 16.0),
                                   ),
                                   const SizedBox(height: 8.0),

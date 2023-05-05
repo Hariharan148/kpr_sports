@@ -199,10 +199,10 @@ class _StudentAddState extends State<StudentAdd> {
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
-                    Container(
-                      height: 5,
-                      width: MediaQuery.of(context).size.width - 100,
-                    ),
+                    // Container(
+                    //   height: 5,
+                    //   width: MediaQuery.of(context).size.width - 100,
+                    // ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -224,9 +224,9 @@ class _StudentAddState extends State<StudentAdd> {
                         ),
                       ],
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
                     sportField(
                       verti: 30,
                       control: sport,
@@ -234,9 +234,9 @@ class _StudentAddState extends State<StudentAdd> {
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
-                    const SizedBox(
-                      height: 5,
-                    ),
+                    // const SizedBox(
+                    //   height: 5,
+                    // ),
                     emailField(
                       verti: 30,
                       control: email,
