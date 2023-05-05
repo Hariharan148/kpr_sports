@@ -140,6 +140,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             context,
                             MaterialPageRoute(
                                 builder: (context) => const SettingsScreen()));
+
+                        setState(() {
+                          isHomePage = true;
+                        });
                       },
                       child: _navBar(
                           context,
@@ -163,7 +167,7 @@ class _HomeScreenState extends State<HomeScreen> {
           (homePage) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
       children: [
         SvgPicture.asset(mainAsset),
-        Visibility(visible: isHomePage, child: SvgPicture.asset(subAsset))
+        Visibility(visible: homePage, child: SvgPicture.asset(subAsset))
       ],
     );
   }

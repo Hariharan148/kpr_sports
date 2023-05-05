@@ -23,80 +23,78 @@ class _SettingsScreenState extends State<SettingsScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Scaffold(
-        appBar: const PreferredSize(
-          preferredSize: Size.fromHeight(120),
-          child: CustomAppBar(name: "Settings"),
-        ),
-        backgroundColor: Colors.white,
-        body: Container(
-          padding: const EdgeInsets.only(left: 25, right: 25),
-          width: MediaQuery.of(context).size.width,
-          child: Column(
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.center,
-            children: [
-              Column(
-                crossAxisAlignment: CrossAxisAlignment.start,
-                children: [
-                  const Text(
-                    "Update Name",
-                    style: TextStyle(
-                        fontFamily: 'Poppins',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 15),
-                  ),
-                  const SizedBox(
-                    height: 15,
-                  ),
-                  SizedBox(
-                    height: 50,
-                    child: TextFormField(
-                        controller: name,
-                        decoration: const InputDecoration(
-                          border: OutlineInputBorder(),
-                        )),
-                  ),
-                  Row(
-                    mainAxisAlignment: MainAxisAlignment.end,
-                    children: [
-                      ElevatedButton(
-                        onPressed: () {
-                          // Handle button press
-                          update();
+    return Scaffold(
+      appBar: const PreferredSize(
+        preferredSize: Size.fromHeight(120),
+        child: CustomAppBar(name: "Settings"),
+      ),
+      backgroundColor: Colors.white,
+      body: Container(
+        padding: const EdgeInsets.only(left: 25, right: 25),
+        width: MediaQuery.of(context).size.width,
+        child: Column(
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.center,
+          children: [
+            Column(
+              crossAxisAlignment: CrossAxisAlignment.start,
+              children: [
+                const Text(
+                  "Update Name",
+                  style: TextStyle(
+                      fontFamily: 'Poppins',
+                      fontStyle: FontStyle.normal,
+                      fontWeight: FontWeight.w500,
+                      fontSize: 15),
+                ),
+                const SizedBox(
+                  height: 15,
+                ),
+                SizedBox(
+                  height: 50,
+                  child: TextFormField(
+                      controller: name,
+                      decoration: const InputDecoration(
+                        border: OutlineInputBorder(),
+                      )),
+                ),
+                Row(
+                  mainAxisAlignment: MainAxisAlignment.end,
+                  children: [
+                    ElevatedButton(
+                      onPressed: () {
+                        // Handle button press
+                        update();
 
-                          Navigator.pop(context);
-                        },
-                        style: ElevatedButton.styleFrom(
-                          backgroundColor: const Color.fromRGBO(49, 151, 83, 1),
-                          shape: RoundedRectangleBorder(
-                            borderRadius: BorderRadius.circular(10),
-                            side: const BorderSide(
-                                color: Color.fromRGBO(49, 151, 83, 1),
-                                width: 2),
-                          ),
-                        ),
-                        child: const Padding(
-                          padding: EdgeInsets.symmetric(horizontal: 15),
-                          child: Text(
-                            'Update',
-                            style: TextStyle(
-                                color: Colors.black,
-                                fontFamily: 'Poppins',
-                                fontStyle: FontStyle.normal,
-                                fontWeight: FontWeight.w500,
-                                fontSize: 16),
-                          ),
+                        Navigator.pop(context);
+                      },
+                      style: ElevatedButton.styleFrom(
+                        backgroundColor: const Color.fromRGBO(49, 151, 83, 1),
+                        shape: RoundedRectangleBorder(
+                          borderRadius: BorderRadius.circular(10),
+                          side: const BorderSide(
+                              color: Color.fromRGBO(49, 151, 83, 1),
+                              width: 2),
                         ),
                       ),
-                    ],
-                  )
-                ],
-              )
-            ],
-          ),
+                      child: const Padding(
+                        padding: EdgeInsets.symmetric(horizontal: 15),
+                        child: Text(
+                          'Update',
+                          style: TextStyle(
+                              color: Colors.black,
+                              fontFamily: 'Poppins',
+                              fontStyle: FontStyle.normal,
+                              fontWeight: FontWeight.w500,
+                              fontSize: 16),
+                        ),
+                      ),
+                    ),
+                  ],
+                )
+              ],
+            )
+          ],
         ),
       ),
     );

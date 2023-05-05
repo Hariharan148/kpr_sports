@@ -26,7 +26,7 @@ class CustomAppBar extends StatelessWidget {
             width: 35,
             child: IconButton(
               onPressed: () {
-                Navigator.pushNamed(context, "/");
+                Navigator.pop(context);
               },
               icon: const Icon(Icons.arrow_back),
               color: Colors.black,
