@@ -153,9 +153,29 @@ class _StudentAddState extends State<StudentAdd> {
       child: SingleChildScrollView(
         child: Column(
           children: [
-            ElevatedButton(
-              onPressed: () => Navigator.pop(context),
-              child: const Icon(Icons.expand_circle_down),
+            Row(
+              children: const [
+                SizedBox(
+                  width: 20,
+                ),
+                Align(
+                  alignment: AlignmentDirectional.topStart,
+                  child: Text(
+                    "Add New Student",
+                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                  ),
+                ),
+              ],
+            ),
+            const SizedBox(
+              height: 11.06,
+            ),
+            const SizedBox(
+              width: 286.01,
+              child: Divider(
+                thickness: 0.2,
+                color: Colors.black,
+              ),
             ),
             GestureDetector(
                 onTap: () {
@@ -173,67 +193,238 @@ class _StudentAddState extends State<StudentAdd> {
                 key: _formKey,
                 child: Column(
                   children: [
-                    nameField(name, "Name"),
+                    nameField(
+                      control: name,
+                      lableText: "Name",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    Container(
+                      height: 5,
+                      width: MediaQuery.of(context).size.width - 100,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                      children: [
+                        rollField(
+                          verti: 30,
+                          horizo: 140,
+                          control: roll,
+                          lableText: "Roll No.",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                        sectionField(
+                          verti: 30,
+                          horizo: 100,
+                          control: sec,
+                          lableText: "Section",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                      ],
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    rollField(roll, "Roll No."),
+                    sportField(
+                      verti: 30,
+                      control: sport,
+                      lableText: "Sport",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    sectionField(sec, "Section"),
+                    emailField(
+                      verti: 30,
+                      control: email,
+                      lableText: "Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    sportField(sport, "Sport"),
+                    emailField(
+                      verti: 30,
+                      control: pemail,
+                      lableText: "Parent's Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    emailField(email, "Email"),
+                    phoneField(
+                      control: phone,
+                      lableText: "Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
                     const SizedBox(
                       height: 5,
                     ),
-                    emailField(pemail, "Parent's Email"),
-                    const SizedBox(
-                      height: 5,
+                    phoneField(
+                      control: pphone,
+                      lableText: "Parent's Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
                     ),
-                    phoneField(phone, "Phone"),
-                    const SizedBox(
-                      height: 5,
-                    ),
-                    phoneField(pphone, "Parent's Phone"),
                   ],
                 )),
+            const SizedBox(
+              height: 85,
+            ),
+            const SizedBox(
+              width: 286.01,
+              child: Divider(
+                thickness: 0.5,
+                color: Colors.black,
+              ),
+            ),
+            const SizedBox(
+              height: 20,
+            ),
             Visibility(
               visible: !widget.edit,
-              child: FloatingActionButton(
-                onPressed: () {
-                  final isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    _formKey.currentState!.save();
+              child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Container(
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFA8A9AC),
+                            Color(0xFFE0E1E2),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    margin: const EdgeInsets.only(left: 10),
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF319753),
+                            Color(0xFF4DC274),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          _formKey.currentState!.save();
 
-                    uploadImg();
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text("Submit"),
+                          uploadImg();
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        "Add",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
             Visibility(
               visible: widget.edit,
-              child: FloatingActionButton(
-                onPressed: () {
-                  final isValid = _formKey.currentState!.validate();
-                  if (isValid) {
-                    _formKey.currentState!.save();
-                    // if (ch == true) {
-                    saveImg();
-                    // }
+              child: Row(
+                children: [
+                  const SizedBox(
+                    width: 45,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFFA8A9AC),
+                            Color(0xFFE0E1E2),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () => Navigator.pop(context),
+                      child: const Text(
+                        "Cancel",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                  const SizedBox(
+                    width: 11,
+                  ),
+                  Container(
+                    width: 120,
+                    height: 40,
+                    decoration: BoxDecoration(
+                      borderRadius: BorderRadius.circular(10),
+                      gradient: const LinearGradient(
+                          // begin: Alignment.topLeft,
+                          // end: Alignment.bottomRight,
+                          colors: [
+                            Color(0xFF319753),
+                            Color(0xFF4DC274),
+                          ]),
+                    ),
+                    child: ElevatedButton(
+                      style: ElevatedButton.styleFrom(
+                        shadowColor: Colors.transparent,
+                        backgroundColor: Colors.transparent,
+                      ),
+                      onPressed: () {
+                        final isValid = _formKey.currentState!.validate();
+                        if (isValid) {
+                          _formKey.currentState!.save();
+                          // if (ch == true) {
+                          saveImg();
+                          // }
 
-                    Navigator.pop(context);
-                  }
-                },
-                child: const Text("Save"),
+                          Navigator.pop(context);
+                        }
+                      },
+                      child: const Text(
+                        "Save",
+                        style: TextStyle(color: Colors.black),
+                      ),
+                    ),
+                  ),
+                ],
               ),
             ),
           ],

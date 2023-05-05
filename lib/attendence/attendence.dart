@@ -1,139 +1,240 @@
-import 'dart:math';
-import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
+import 'package:kpr_sports/attendence/after_noon.dart';
+import 'package:kpr_sports/attendence/attendance_list.dart';
+import 'package:kpr_sports/attendence/bottom_bar.dart';
+import 'package:kpr_sports/attendence/info_bar.dart';
+import 'package:kpr_sports/attendence/no_data.dart';
+import 'package:kpr_sports/services/attendance/init_helper.dart';
+import 'package:kpr_sports/services/attendance/submit_helper.dart';
+import 'package:kpr_sports/shared/appbar.dart';
+import 'package:kpr_sports/shared/date_bar.dart';
+import 'package:kpr_sports/attendence/shimmer_attendance.dart';
+import 'package:kpr_sports/store/attendance_provider.dart';
+import 'package:lottie/lottie.dart';
+import 'package:provider/provider.dart';
 
 class AttendanceScreen extends StatefulWidget {
-  const AttendanceScreen({super.key});
+  const AttendanceScreen({Key? key}) : super(key: key);
 
   @override
   State<AttendanceScreen> createState() => _AttendanceScreenState();
 }
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
-  CollectionReference students =
-      FirebaseFirestore.instance.collection("students");
+  late AttendanceProvider _attendanceProvider;
+  bool _isfetching = false;
 
-  late List<Map<String, dynamic>> attendenceStatus = [];
+  bool allPresent = false;
+
+  bool submitting = false;
+
+  bool success = false;
+
+  bool get isAfterNoon {
+    final currentTime = DateTime.now();
+    return currentTime.hour > 12;
+  }
+
+  void updateStatus(ispresent) {
+    if (!ispresent) {
+      setState(() {
+        allPresent = false;
+      });
+
+      for (var set in _attendanceProvider.attendanceStatus) {
+        set["status"] = false;
+        _attendanceProvider.presentVal = 0;
+      }
+    } else {
+      for (var set in _attendanceProvider.attendanceStatus) {
+        set["status"] = true;
+        _attendanceProvider.presentVal =
+            _attendanceProvider.attendanceStatus.length;
+      }
+    }
+
+    _attendanceProvider.attendanceStatusList =
+        _attendanceProvider.attendanceStatus;
+  }
+
+  Future<void> _refreshAttendanceList() async {
+    setState(() {
+      _isfetching = true;
+      allPresent = false;
+    });
+
+    try {
+      getAttendanceStatus((status) {
+        setState(() {
+          _attendanceProvider.presentVal = 0;
+          _attendanceProvider.attendanceStatusList = status;
+          _isfetching = false;
+        });
+      }, (error) {
+        throw error;
+      });
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: 'Error: ${error.toString()}',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFD9887C),
+      );
+
+      setState(() {
+        _isfetching = false;
+      });
+    }
+  }
+
+  Future<void> _onSubmit() async {
+    try {
+      final attendanceProvider =
+          Provider.of<AttendanceProvider>(context, listen: false);
+
+      setState(() {
+        submitting = true;
+      });
+
+      await AttendanceService.submitAttendance(attendanceProvider);
+
+      setState(() {
+        submitting = false;
+      });
+
+      Fluttertoast.showToast(
+        msg: 'Attendance submitted successfully',
+        gravity: ToastGravity.BOTTOM,
+      );
+    } catch (error) {
+      Fluttertoast.showToast(
+        msg: 'Error: ${error.toString()}',
+        gravity: ToastGravity.BOTTOM,
+        backgroundColor: const Color(0xFFD9887C),
+      );
+    }
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    _attendanceProvider =
+        Provider.of<AttendanceProvider>(context, listen: false);
+  }
 
   @override
   void initState() {
     super.initState();
-    students.get().then((QuerySnapshot querySnapshot) {
-      setState(() {
-        attendenceStatus = querySnapshot.docs
-            .map((doc) => {
-                  "uid": doc.id,
-                  "status": false,
-                })
-            .toList();
+    if (!isAfterNoon) {
+      WidgetsBinding.instance.addPostFrameCallback((_) {
+        _refreshAttendanceList();
+        _attendanceProvider.presentVal = 0;
       });
-    });
-  }
-
-  bool get isBeforeNoon {
-    final currentTime = DateTime.now();
-    return currentTime.hour < 12;
+    }
   }
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      appBar: AppBar(
-        title: const Text("Attendance"),
-      ),
-      body: isBeforeNoon ? const BeforeNoonWidget() : buildAttendanceList(),
-      bottomNavigationBar: BottomAppBar(
-        child: Container(
-          height: 50.0,
-          color: Colors.blue,
-          child: InkWell(
-            onTap: () async {
-              print(attendenceStatus);
-              final today = DateTime.now().toString().substring(0, 10);
-              final attendanceRef = FirebaseFirestore.instance
-                  .collection("attendance")
-                  .doc(today)
-                  .collection("students");
-
-              await Future.wait(attendenceStatus
-                  .map((status) => attendanceRef.doc(status["uid"]).set({
-                        "attendanceStatus": status["status"],
-                      })));
-              print("Attendance submitted successfully");
-            },
-            child: const Center(
-              child: Text(
-                "Submit",
-                style: TextStyle(
-                    color: Colors.white,
-                    fontWeight: FontWeight.bold,
-                    fontSize: 20.0),
-              ),
-            ),
-          ),
+        appBar: const PreferredSize(
+          preferredSize: Size.fromHeight(120),
+          child: CustomAppBar(name: "Attendance"),
         ),
-      ),
-    );
-  }
-
-  Widget buildAttendanceList() {
-    return FutureBuilder<QuerySnapshot>(
-      future: students.get(),
-      builder: (BuildContext context, AsyncSnapshot<QuerySnapshot> snapshot) {
-        if (snapshot.hasError) {
-          return const Text("Something went wrong");
-        }
-
-        if (snapshot.connectionState == ConnectionState.waiting) {
-          return const CircularProgressIndicator();
-        }
-
-        final students = snapshot.data!.docs;
-
-        return ListView.builder(
-          itemCount: students.length,
-          itemBuilder: (BuildContext context, int index) {
-            final name = students[index].get("name") as String?;
-            final rollno = students[index].get("rollno") as String?;
-            return StatefulBuilder(
-              builder: (BuildContext context, StateSetter setState) {
-                return Card(
-                  child: InkWell(
-                    onTap: () {
-                      setState(() {
-                        // final studentUid = students[index].id;
-                        final newStatus = !attendenceStatus[index]["status"];
-                        attendenceStatus[index]["status"] = newStatus;
-                      });
-                    },
-                    child: ListTile(
-                      title: Text(name ?? "No Name"),
-                      subtitle: Text(rollno ?? "No Roll No"),
-                      trailing: attendenceStatus[index]["status"]
-                          ? const Icon(Icons.check_box)
-                          : const Icon(Icons.check_box_outline_blank),
-                    ),
+        body: isAfterNoon
+            ? const AfterNoonWidget()
+            : !submitting
+                ? _attendanceProvider.attendanceStatus.isNotEmpty
+                    ? Column(
+                        children: [
+                          const InfoBar(),
+                          Container(
+                            margin: const EdgeInsets.only(top: 20, bottom: 5),
+                            child: SizedBox(
+                                height: 60,
+                                child: Row(
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceAround,
+                                  children: [
+                                    SizedBox(
+                                      height: 50,
+                                      width: 120,
+                                      child: Row(
+                                        children: [
+                                          Theme(
+                                            data: ThemeData(
+                                              checkboxTheme: CheckboxThemeData(
+                                                shape: RoundedRectangleBorder(
+                                                  borderRadius:
+                                                      BorderRadius.circular(5),
+                                                ),
+                                              ),
+                                            ),
+                                            child: Checkbox(
+                                              value: allPresent,
+                                              checkColor: Colors.white,
+                                              activeColor:
+                                                  const Color(0xFF142A50),
+                                              onChanged: (value) {
+                                                setState(() {
+                                                  allPresent = value!;
+                                                });
+                                                updateStatus(value);
+                                              },
+                                            ),
+                                          ),
+                                          const Text(
+                                            "All present",
+                                            style: TextStyle(fontSize: 12),
+                                          ),
+                                        ],
+                                      ),
+                                    ),
+                                    const DateBar()
+                                  ],
+                                )),
+                          ),
+                          Expanded(
+                            child: RefreshIndicator(
+                                onRefresh: _refreshAttendanceList,
+                                color: Theme.of(context).primaryColor,
+                                child: isAfterNoon
+                                    ? const AfterNoonWidget()
+                                    : _isfetching
+                                        ? Center(
+                                            child: SizedBox(
+                                              height: MediaQuery.of(context)
+                                                      .size
+                                                      .height -
+                                                  400,
+                                              width: double.infinity,
+                                              child: const ShimmerCardList(
+                                                itemCount: 5,
+                                              ),
+                                            ),
+                                          )
+                                        : const SingleChildScrollView(
+                                            physics:
+                                                AlwaysScrollableScrollPhysics(
+                                              parent: BouncingScrollPhysics(),
+                                            ),
+                                            child: AttendanceList())),
+                          )
+                        ],
+                      )
+                    : const NoData()
+                : Center(
+                    child: Lottie.asset("assets/basketball.json"),
                   ),
-                );
-              },
-            );
-          },
-        );
-      },
-    );
-  }
-}
-
-class BeforeNoonWidget extends StatelessWidget {
-  const BeforeNoonWidget({super.key});
-
-  @override
-  Widget build(BuildContext context) {
-    return const Center(
-      child: Text(
-        'Attendance can only be taken after 12pm.',
-        style: TextStyle(fontSize: 20),
-      ),
-    );
+        bottomNavigationBar: !isAfterNoon
+            ? submitting
+                ? null
+                : _attendanceProvider.attendanceStatus.isNotEmpty
+                    ? CustomBottomBar(
+                        onCancelPressed: () {
+                          updateStatus(false);
+                        },
+                        onSubmitPressed: _onSubmit)
+                    : null
+            : null);
   }
 }

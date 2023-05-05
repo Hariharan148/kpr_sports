@@ -9,19 +9,20 @@ import 'package:kpr_sports/settings/settings.dart';
 import 'package:firebase_core/firebase_core.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:kpr_sports/students/students_model.dart';
+import 'package:kpr_sports/settings/settings.dart';
+import 'package:kpr_sports/shared/date_bar.dart';
+
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({super.key});
+  const HomeScreen({Key? key});
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
 }
 
 class _HomeScreenState extends State<HomeScreen> {
-  late DateTime currentDate;
-  late String formatedDate;
-  late String day;
   bool isHomePage = true;
+
   var Temp;
   String Name = "";
 
@@ -31,6 +32,11 @@ class _HomeScreenState extends State<HomeScreen> {
     formatedDate = DateFormat('dd/MM/yyyy').format(currentDate);
     day = DateFormat('EEEE').format(currentDate).substring(0, 3).toUpperCase();
     retrive();
+
+
+  @override
+  void initState() {
+
     super.initState();
   }
 
@@ -51,96 +57,44 @@ class _HomeScreenState extends State<HomeScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return SafeArea(
-      child: Container(
-        color: const Color.fromRGBO(255, 255, 255, 1.0),
-        child: SafeArea(
-          child: Column(children: [
-            Container(
-              padding: const EdgeInsets.only(
-                  left: 20, right: 20, top: 50, bottom: 25),
-              child: Row(
-                mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                children: [
-                  Column(
-                    crossAxisAlignment: CrossAxisAlignment.start,
-                    children: [
-                      Stack(children: [
-                        Text(
-                          "Hello,",
-                          style: TextStyle(
-                            letterSpacing: 1,
-                            fontFamily: 'Poppins',
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
-                            decoration: TextDecoration.none,
-                            foreground: Paint()
-                              ..style = PaintingStyle.stroke
-                              ..color = Colors.black
-                              ..strokeWidth = 2,
-                          ),
-                        ),
-                        const Text(
-                          "Hello,",
-                          style: TextStyle(
-                            letterSpacing: 1,
-                            fontSize: 30,
-                            fontWeight: FontWeight.w600,
-                            fontStyle: FontStyle.normal,
-                            decoration: TextDecoration.none,
-                            color: Colors.white,
-                            fontFamily: 'Poppins',
-                          ),
-                        ),
-                      ]),
-                      Text(
-                        Name,
-                        style: TextStyle(
-                          letterSpacing: 1,
-                          fontSize: 30,
-                          fontWeight: FontWeight.w600,
-                          fontStyle: FontStyle.normal,
-                          decoration: TextDecoration.none,
-                          color: Colors.black,
-                          fontFamily: 'Poppins',
-                        ),
+    return Container(
+      padding: const EdgeInsets.only(top: 25),
+      height: MediaQuery.of(context).size.height,
+      color: const Color.fromRGBO(255, 255, 255, 1.0),
+      child: Column(
+        children: [
+          Container(
+            padding:
+                const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 25),
+            child: Row(
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                Column(
+                  mainAxisAlignment: MainAxisAlignment.center,
+                  crossAxisAlignment: CrossAxisAlignment.start,
+                  children: [
+                    Text(
+                      "Hello,",
+                      style: TextStyle(
+                        decoration: TextDecoration.none,
+                        fontSize: 28,
+                        fontFamily: "Poppins",
+                        fontWeight: FontWeight.bold,
+                        foreground: Paint()
+                          ..style = PaintingStyle.stroke
+                          ..strokeWidth = 1
+                          ..color = Colors.black,
                       ),
-                    ],
-                  ),
-                  Container(
-                    padding: const EdgeInsets.symmetric(
-                        horizontal: 20, vertical: 10),
-                    alignment: Alignment.center,
-                    decoration: BoxDecoration(
-                      border: Border.all(
-                          color: const Color.fromRGBO(20, 42, 80, 1), width: 1),
-                      borderRadius: BorderRadius.circular(15),
                     ),
-                    child: Column(
-                      children: [
-                        Text(
-                          formatedDate,
-                          style: const TextStyle(
-                            fontSize: 12,
-                            decoration: TextDecoration.none,
-                            color: Color.fromRGBO(49, 151, 83, 1),
-                            fontStyle: FontStyle.normal,
-                            fontFamily: 'Poppins',
-                            fontWeight: FontWeight.w600,
-                          ),
-                        ),
-                        Text(
-                          day,
-                          style: const TextStyle(
-                              fontSize: 12,
-                              decoration: TextDecoration.none,
-                              color: Color.fromRGBO(168, 169, 172, 1),
-                              fontStyle: FontStyle.normal,
-                              fontFamily: 'Poppins',
-                              fontWeight: FontWeight.w500),
-                        ),
-                      ],
+                    const Text(
+                      "Hariharan.",
+                      style: TextStyle(
+                        fontSize: 30,
+                        fontWeight: FontWeight.w600,
+                        decoration: TextDecoration.none,
+                        color: Colors.black,
+                        fontFamily: 'Poppins',
+                      ),
                     ),
                   )
                 ],
@@ -165,14 +119,6 @@ class _HomeScreenState extends State<HomeScreen> {
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
                   color: const Color.fromRGBO(20, 42, 80, 1),
-                  boxShadow: [
-                    BoxShadow(
-                      color: Colors.grey.withOpacity(0.5),
-                      spreadRadius: 20,
-                      blurRadius: 50,
-                      offset: const Offset(0, 3),
-                    ),
-                  ],
                 ),
                 child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceEvenly,
@@ -182,6 +128,11 @@ class _HomeScreenState extends State<HomeScreen> {
                         setState(() {
                           isHomePage = true;
                         });
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const HomeScreen()));
                       },
                       child: _navBar(
                           context,
@@ -201,6 +152,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           isHomePage = true;
                           // retrive();
                         });
+
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const SettingsScreen()));
                       },
                       child: _navBar(
                           context,
@@ -209,9 +165,11 @@ class _HomeScreenState extends State<HomeScreen> {
                           'assets/Home/select_icon.svg'),
                     ),
                   ],
-                ))
-          ]),
-        ),
+                ),
+              ),
+            ),
+          ),
+        ],
       ),
     );
   }
@@ -229,6 +187,7 @@ class _HomeScreenState extends State<HomeScreen> {
 
   Widget _buildMenuCard(
       String title, Route, BuildContext context, background, mainIcon) {
+
     return GestureDetector(
       onTap: () {
         Navigator.push(
@@ -237,33 +196,66 @@ class _HomeScreenState extends State<HomeScreen> {
         );
       },
       child: Padding(
-        padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 15),
+        padding: EdgeInsets.symmetric(horizontal: 25, vertical: 10),
         child: Card(
           shape: RoundedRectangleBorder(
             borderRadius: BorderRadius.circular(20),
+            side: const BorderSide(color: Color(0xFFE8E8E8), width: 1),
+
           ),
-          elevation: 10,
+          elevation: 0,
           child: Container(
-            padding:
-                const EdgeInsets.only(top: 12, bottom: 12, left: 20, right: 12),
-            child: Row(
-              children: [
-                Stack(alignment: Alignment.center, children: [
-                  SvgPicture.asset(background),
-                  SvgPicture.asset(mainIcon)
-                ]),
-                Padding(
-                  padding: EdgeInsets.only(left: 20),
-                  child: Text(
-                    title,
-                    style: const TextStyle(
-                        fontFamily: 'Poppins',
-                        fontStyle: FontStyle.normal,
-                        fontWeight: FontWeight.w500,
-                        fontSize: 20),
-                  ),
+            height: 87,
+            width: MediaQuery.of(context).size.width - 50,
+            child: Container(
+              decoration: BoxDecoration(
+                  color: Colors.white,
+                  borderRadius: BorderRadius.circular(20),
+                  boxShadow: const [
+                    BoxShadow(
+                      color: Color(0xFFF1F0F5),
+                      spreadRadius: 5,
+                      blurRadius: 15,
+                      offset: Offset(2, 2),
+                    ),
+                  ]),
+              child: Padding(
+                padding: const EdgeInsets.only(left: 25, right: 25),
+                child: Row(
+                  mainAxisAlignment: MainAxisAlignment.start,
+                  children: [
+                    Stack(alignment: Alignment.center, children: [
+                      SvgPicture.asset(background),
+                      SvgPicture.asset(mainIcon)
+                    ]),
+                    Padding(
+                      padding: const EdgeInsets.only(left: 20),
+                      child: Column(
+                        crossAxisAlignment: CrossAxisAlignment.start,
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          Text(
+                            title,
+                            style: const TextStyle(
+                                color: Color(0xFF212121),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 18),
+                          ),
+                          Text(
+                            subTitle,
+                            style: const TextStyle(
+                                color: Color(0xFFA8A9AC),
+                                fontFamily: 'Poppins',
+                                fontWeight: FontWeight.w500,
+                                fontSize: 10),
+                          )
+                        ],
+                      ),
+                    ),
+                  ],
                 ),
-              ],
+              ),
             ),
           ),
         ),
