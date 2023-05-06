@@ -101,11 +101,14 @@ class _StudentAddState extends State<StudentAdd> {
       await ref.putFile(File(img));
       await ref.getDownloadURL().then((value) {
         link = value;
-        FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
+        FirebaseFirestore.instance
+            .collection("students")
+            .doc(id)
+            .set(toMap(id));
       });
     } else {
       link = "";
-      FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
+      FirebaseFirestore.instance.collection("students").doc(id).set(toMap(id));
     }
   }
 
@@ -135,30 +138,33 @@ class _StudentAddState extends State<StudentAdd> {
       await ref.getDownloadURL().then((value) {
         link = value;
         FirebaseFirestore.instance
-            .collection("Student")
+            .collection("students")
             .doc(widget.usr[widget.index].uid)
             .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
       });
     } else {
       link = widget.usr[widget.index].image;
       FirebaseFirestore.instance
-          .collection("Student")
+          .collection("students")
           .doc(widget.usr[widget.index].uid)
           .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
     }
   }
 
   check() {
-    return (img == "")
-        ? const AssetImage("assets/empty_pic.jpg")
-        : FileImage(_image);
+    return (img == "") ? const AssetImage("assets/pic.png") : FileImage(_image);
   }
 
-  textField(control, text) {
-    return TextFormField(
-      controller: control,
-      decoration:
-          InputDecoration(labelText: text, border: const OutlineInputBorder()),
+  Widget textField(control, text) {
+    return SizedBox(
+      height: 60,
+      child: TextFormField(
+        controller: control,
+        decoration: InputDecoration(
+          labelText: text,
+          border: const OutlineInputBorder(),
+        ),
+      ),
     );
   }
 
@@ -170,17 +176,25 @@ class _StudentAddState extends State<StudentAdd> {
         child: Column(
           children: [
             Row(
-              children: const [
-                SizedBox(
-                  width: 20,
-                ),
-                Align(
+              crossAxisAlignment: CrossAxisAlignment.center,
+              mainAxisAlignment: MainAxisAlignment.spaceBetween,
+              children: [
+                const Align(
                   alignment: AlignmentDirectional.topStart,
                   child: Text(
                     "Add New Student",
-                    style: TextStyle(fontWeight: FontWeight.w600, fontSize: 18),
+                    style: TextStyle(
+                        fontWeight: FontWeight.w600,
+                        fontSize: 18,
+                        fontFamily: "Poppins"),
                   ),
                 ),
+                GestureDetector(
+                    onTap: () => Navigator.pop(context),
+                    child: const Icon(
+                      Icons.cancel_outlined,
+                      size: 25,
+                    ))
               ],
             ),
             const SizedBox(
@@ -200,6 +214,7 @@ class _StudentAddState extends State<StudentAdd> {
                 child: Stack(
                   children: [
                     CircleAvatar(
+                      backgroundColor: Colors.transparent,
                       radius: 50.0,
                       backgroundImage: (ch) ? check() : NetworkImage(img),
                     )
@@ -215,10 +230,9 @@ class _StudentAddState extends State<StudentAdd> {
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
-                    // Container(
-                    //   height: 5,
-                    //   width: MediaQuery.of(context).size.width - 100,
-                    // ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
@@ -240,9 +254,9 @@ class _StudentAddState extends State<StudentAdd> {
                         ),
                       ],
                     ),
-                    // const SizedBox(
-                    //   height: 5,
-                    // ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     sportField(
                       verti: 30,
                       control: sport,
@@ -250,9 +264,9 @@ class _StudentAddState extends State<StudentAdd> {
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
-                    // const SizedBox(
-                    //   height: 5,
-                    // ),
+                    const SizedBox(
+                      height: 10,
+                    ),
                     emailField(
                       verti: 30,
                       control: email,
@@ -261,17 +275,16 @@ class _StudentAddState extends State<StudentAdd> {
                       barColor: Colors.black,
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     emailField(
-                      verti: 30,
                       control: pemail,
                       lableText: "Parent's Email",
                       inputTextColor: Colors.black,
                       barColor: Colors.black,
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     phoneField(
                       control: phone,
@@ -280,7 +293,7 @@ class _StudentAddState extends State<StudentAdd> {
                       barColor: Colors.black,
                     ),
                     const SizedBox(
-                      height: 5,
+                      height: 10,
                     ),
                     phoneField(
                       control: pphone,
@@ -291,7 +304,7 @@ class _StudentAddState extends State<StudentAdd> {
                   ],
                 )),
             const SizedBox(
-              height: 85,
+              height: 40,
             ),
             const SizedBox(
               width: 286.01,
@@ -313,13 +326,10 @@ class _StudentAddState extends State<StudentAdd> {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                          // begin: Alignment.topLeft,
-                          // end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFFA8A9AC),
-                            Color(0xFFE0E1E2),
-                          ]),
+                      gradient: const LinearGradient(colors: [
+                        Color(0xFFA8A9AC),
+                        Color(0xFFE0E1E2),
+                      ]),
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -329,7 +339,11 @@ class _StudentAddState extends State<StudentAdd> {
                       onPressed: () => Navigator.pop(context),
                       child: const Text(
                         "Cancel",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600,
+                            fontFamily: "Poppins"),
                       ),
                     ),
                   ),
@@ -339,13 +353,10 @@ class _StudentAddState extends State<StudentAdd> {
                     margin: const EdgeInsets.only(left: 10),
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                          // begin: Alignment.topLeft,
-                          // end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF319753),
-                            Color(0xFF4DC274),
-                          ]),
+                      gradient: const LinearGradient(colors: [
+                        Color(0xFF319753),
+                        Color(0xFF4DC274),
+                      ]),
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -363,7 +374,12 @@ class _StudentAddState extends State<StudentAdd> {
                       },
                       child: const Text(
                         "Add",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),
@@ -373,22 +389,17 @@ class _StudentAddState extends State<StudentAdd> {
             Visibility(
               visible: widget.edit,
               child: Row(
+                mainAxisAlignment: MainAxisAlignment.end,
                 children: [
-                  const SizedBox(
-                    width: 45,
-                  ),
                   Container(
                     width: 120,
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                          // begin: Alignment.topLeft,
-                          // end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFFA8A9AC),
-                            Color(0xFFE0E1E2),
-                          ]),
+                      gradient: const LinearGradient(colors: [
+                        Color(0xFFA8A9AC),
+                        Color(0xFFE0E1E2),
+                      ]),
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -398,7 +409,11 @@ class _StudentAddState extends State<StudentAdd> {
                       onPressed: () => Navigator.pop(context),
                       child: const Text(
                         "Cancel",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                            color: Colors.black,
+                            fontFamily: "Poppins",
+                            fontSize: 16,
+                            fontWeight: FontWeight.w600),
                       ),
                     ),
                   ),
@@ -410,13 +425,10 @@ class _StudentAddState extends State<StudentAdd> {
                     height: 40,
                     decoration: BoxDecoration(
                       borderRadius: BorderRadius.circular(10),
-                      gradient: const LinearGradient(
-                          // begin: Alignment.topLeft,
-                          // end: Alignment.bottomRight,
-                          colors: [
-                            Color(0xFF319753),
-                            Color(0xFF4DC274),
-                          ]),
+                      gradient: const LinearGradient(colors: [
+                        Color(0xFF319753),
+                        Color(0xFF4DC274),
+                      ]),
                     ),
                     child: ElevatedButton(
                       style: ElevatedButton.styleFrom(
@@ -427,16 +439,20 @@ class _StudentAddState extends State<StudentAdd> {
                         final isValid = _formKey.currentState!.validate();
                         if (isValid) {
                           _formKey.currentState!.save();
-                          // if (ch == true) {
+
                           saveImg();
-                          // }
 
                           Navigator.pop(context);
                         }
                       },
                       child: const Text(
                         "Save",
-                        style: TextStyle(color: Colors.black),
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontFamily: "Poppins",
+                          fontSize: 16,
+                          fontWeight: FontWeight.w600,
+                        ),
                       ),
                     ),
                   ),

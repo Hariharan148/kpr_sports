@@ -11,14 +11,14 @@ nameField({
 }) {
   return Column(
     children: [
-      Container(
-        margin: const EdgeInsets.only(right: 245),
-        child: Text(
-          lableText,
-          style: const TextStyle(
-            fontSize: 12,
+      Row(
+        mainAxisAlignment: MainAxisAlignment.start,
+        children: [
+          Text(
+            lableText,
+            style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
           ),
-        ),
+        ],
       ),
       const SizedBox(
         height: 10,
@@ -28,8 +28,10 @@ nameField({
         height: verti ?? 30,
         child: TextFormField(
           controller: control,
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -76,9 +78,7 @@ rollField({
     children: [
       Text(
         lableText,
-        style: const TextStyle(
-          fontSize: 12,
-        ),
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,
@@ -88,8 +88,10 @@ rollField({
         height: verti ?? 30,
         child: TextFormField(
           controller: control,
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -134,14 +136,9 @@ sectionField({
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Container(
-        // margin: const EdgeInsets.only(right: 245),
-        child: Text(
-          lableText,
-          style: const TextStyle(
-            fontSize: 12,
-          ),
-        ),
+      Text(
+        lableText,
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,
@@ -151,8 +148,10 @@ sectionField({
         height: verti ?? 30,
         child: TextFormField(
           controller: control,
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -173,7 +172,7 @@ sectionField({
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "*Required";
-            } else if (value.length < 4) {
+            } else if (value.length > 4) {
               return "Enter Valid Section";
             } else {
               return null;
@@ -199,9 +198,7 @@ sportField({
     children: [
       Text(
         lableText,
-        style: const TextStyle(
-          fontSize: 12,
-        ),
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,
@@ -210,9 +207,11 @@ sportField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
           controller: control,
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -259,9 +258,7 @@ emailField({
     children: [
       Text(
         lableText,
-        style: const TextStyle(
-          fontSize: 12,
-        ),
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,
@@ -271,8 +268,11 @@ emailField({
         height: verti ?? 30,
         child: TextFormField(
           controller: control,
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              contentPadding: const EdgeInsets.only(left: 15, right: 15),
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(
@@ -321,9 +321,7 @@ phoneField({
     children: [
       Text(
         lableText,
-        style: const TextStyle(
-          fontSize: 12,
-        ),
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,
@@ -332,9 +330,13 @@ phoneField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
+          maxLength: 10,
           controller: control,
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
           decoration: InputDecoration(
+              counterText: "",
+              errorStyle: const TextStyle(fontSize: 0.01),
 //------FOCUS BORDER STARTS-----------------------------------------------------
               focusedBorder: OutlineInputBorder(
                   borderSide: BorderSide(

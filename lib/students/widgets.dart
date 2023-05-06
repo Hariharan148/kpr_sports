@@ -4,10 +4,8 @@ import 'package:kpr_sports/students/students_add.dart';
 import 'package:kpr_sports/students/students.dart';
 
 void showPopUp(BuildContext context, [verify, userList, index]) {
-  // final check = verify;
   showDialog(
       context: context,
-      // barrierDismissible: false,
       builder: (BuildContext context) {
         return Dialog(
             insetPadding: const EdgeInsets.fromLTRB(23, 52, 25, 30),
@@ -25,7 +23,7 @@ void showPopUp(BuildContext context, [verify, userList, index]) {
       });
 }
 
-img_select(user) {
+imgselect(user) {
   if (user.image != null && user.image != "") {
     return Image.network(
       user.image,
@@ -44,13 +42,13 @@ img_select(user) {
     );
   } else {
     return Image.asset(
-      "assets/empty_pic.jpg",
+      "assets/pic.png",
       fit: BoxFit.cover,
     );
   }
 }
 
-Future PopUp(BuildContext context, user, userList, index) {
+Future popUp(BuildContext context, user, userList, index) {
   return showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -88,10 +86,11 @@ Future PopUp(BuildContext context, user, userList, index) {
                     height: 3,
                   ),
                   CircleAvatar(
+                    backgroundColor: Colors.transparent,
                     radius: 50.0,
                     child: ClipOval(
                       child: SizedBox(
-                          width: 100, height: 100, child: img_select(user)),
+                          width: 100, height: 100, child: imgselect(user)),
                     ),
                   ),
                   const SizedBox(
@@ -163,7 +162,7 @@ Future PopUp(BuildContext context, user, userList, index) {
                           ),
                           onPressed: () {
                             FirebaseFirestore.instance
-                                .collection("Student")
+                                .collection("students")
                                 .doc(user.uid)
                                 .delete()
                                 .then((value) => Navigator.pop(context));
@@ -186,7 +185,7 @@ Future PopUp(BuildContext context, user, userList, index) {
       });
 }
 
-Widget Fields(BuildContext context, user) {
+Widget fields(BuildContext context, user) {
   return Column(
     crossAxisAlignment: CrossAxisAlignment.start,
     children: [
@@ -199,45 +198,32 @@ Widget Fields(BuildContext context, user) {
       const SizedBox(height: 8.0),
       Text(
         "Roll No. : ${user.roll}",
-        style: const TextStyle(
-          fontSize: 16.0,
-        ),
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
         "Section : ${user.sec}",
-        style: const TextStyle(
-          fontSize: 16.0,
-        ),
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
         "Sport : ${user.sport}",
-        style: const TextStyle(
-          fontSize: 16.0,
-        ),
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
         'Email: ${user.email}',
-        style: const TextStyle(fontSize: 16.0),
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
         "Parent's email: ${user.pemail}",
-        style: const TextStyle(fontSize: 16.0),
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
-        'Phone number: ${user.phone}',
-        style: const TextStyle(fontSize: 16.0),
+        'Phone: ${user.phone}',
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
       Text(
-        "Parent's phone number: ${user.pphone}",
-        style: const TextStyle(fontSize: 16.0),
+        "Parent's phone: ${user.pphone}",
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
-      const SizedBox(height: 8.0),
     ],
   );
 }

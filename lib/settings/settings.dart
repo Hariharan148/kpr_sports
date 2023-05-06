@@ -45,20 +45,30 @@ class _SettingsScreenState extends State<SettingsScreen> {
                   "Update Name",
                   style: TextStyle(
                       fontFamily: 'Poppins',
-                      fontStyle: FontStyle.normal,
-                      fontWeight: FontWeight.w500,
-                      fontSize: 15),
+                      fontWeight: FontWeight.w600,
+                      fontSize: 18),
                 ),
                 const SizedBox(
                   height: 15,
                 ),
                 SizedBox(
-                  height: 70,
+                  height: 60,
                   child: Form(
                     key: _nameUpdateKey,
                     child: TextFormField(
+                      maxLength: 13,
+                      cursorColor: const Color.fromARGB(66, 110, 110, 110),
                       controller: name,
                       decoration: const InputDecoration(
+                        contentPadding: EdgeInsets.only(left: 15, right: 15),
+                        focusedBorder: OutlineInputBorder(
+                          borderSide: BorderSide(
+                            color:
+                                Colors.grey, // Replace with your desired color
+                            width: 2.0,
+                          ),
+                        ),
+                        errorStyle: TextStyle(fontSize: 0.01),
                         border: OutlineInputBorder(),
                       ),
                       validator: (value) {
@@ -78,35 +88,39 @@ class _SettingsScreenState extends State<SettingsScreen> {
                 Row(
                   mainAxisAlignment: MainAxisAlignment.end,
                   children: [
-                    ElevatedButton(
-                      onPressed: () {
-                        final isValid = _nameUpdateKey.currentState!.validate();
-                        if (isValid) {
-                          _nameUpdateKey.currentState!.save();
-                          // Handle button press
-
-                          update();
-
-                          Navigator.pop(context);
-                        }
-                      },
-                      style: ElevatedButton.styleFrom(
-                        backgroundColor: const Color.fromRGBO(49, 151, 83, 1),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(10),
-                          side: const BorderSide(
-                              color: Color.fromRGBO(49, 151, 83, 1), width: 2),
-                        ),
+                    Container(
+                      margin: const EdgeInsets.only(top: 20),
+                      width: 120,
+                      height: 40,
+                      decoration: BoxDecoration(
+                        borderRadius: BorderRadius.circular(10),
+                        gradient: const LinearGradient(colors: [
+                          Color(0xFF319753),
+                          Color(0xFF4DC274),
+                        ]),
                       ),
-                      child: const Padding(
-                        padding: EdgeInsets.symmetric(horizontal: 15),
-                        child: Text(
+                      child: ElevatedButton(
+                        onPressed: () {
+                          final isValid =
+                              _nameUpdateKey.currentState!.validate();
+                          if (isValid) {
+                            _nameUpdateKey.currentState!.save();
+
+                            update();
+
+                            Navigator.pop(context);
+                          }
+                        },
+                        style: ElevatedButton.styleFrom(
+                          shadowColor: Colors.transparent,
+                          backgroundColor: Colors.transparent,
+                        ),
+                        child: const Text(
                           'Update',
                           style: TextStyle(
-                              color: Colors.black,
+                              color: Colors.white,
                               fontFamily: 'Poppins',
-                              fontStyle: FontStyle.normal,
-                              fontWeight: FontWeight.w500,
+                              fontWeight: FontWeight.w600,
                               fontSize: 16),
                         ),
                       ),

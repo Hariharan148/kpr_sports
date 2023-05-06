@@ -4,7 +4,7 @@ import 'package:kpr_sports/attendence/after_noon.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
 import 'package:kpr_sports/attendence/bottom_bar.dart';
 import 'package:kpr_sports/attendence/info_bar.dart';
-import 'package:kpr_sports/attendence/no_data.dart';
+import 'package:kpr_sports/shared/no_data.dart';
 import 'package:kpr_sports/services/attendance/init_helper.dart';
 import 'package:kpr_sports/services/attendance/submit_helper.dart';
 import 'package:kpr_sports/shared/appbar.dart';
@@ -33,7 +33,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   bool get isAfterNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour > 12;
+    return currentTime.hour < 12;
   }
 
   void updateStatus(ispresent) {
@@ -221,7 +221,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                           )
                         ],
                       )
-                    : const NoData()
+                    : const NoData(
+                        height: 250,
+                      )
                 : Center(
                     child: Lottie.asset("assets/basketball.json"),
                   ),
