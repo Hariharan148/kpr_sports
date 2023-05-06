@@ -92,19 +92,26 @@ class _StudentAddState extends State<StudentAdd> {
   }
 
   void uploadImg() async {
-    final ref = FirebaseStorage.instance
-        .ref()
-        .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
-    await ref.putFile(File(img));
-
-    await ref.getDownloadURL().then((value) {
-      link = value;
-      FirebaseFirestore.instance.collection("Student").add(toMap());
-    });
+    final id = generateRandomText(7);
+    var ref;
+    if (img != "") {
+      final ref = FirebaseStorage.instance
+          .ref()
+          .child("/Profile_Images/img_pic_$id.jpg");
+      await ref.putFile(File(img));
+      await ref.getDownloadURL().then((value) {
+        link = value;
+        FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
+      });
+    }else{
+      link = "";
+        FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
+    }
   }
 
-  toMap() {
+  toMap(id) {
     Map<String, dynamic> data = {
+      "UID": id,
       "Image": link,
       "Name": name.text,
       "Roll No": roll.text,
@@ -119,17 +126,26 @@ class _StudentAddState extends State<StudentAdd> {
   }
 
   void saveImg() async {
-    final ref = FirebaseStorage.instance
+    if(img != ""){
+      final ref = FirebaseStorage.instance
         .ref()
-        .child("/Profile_Images/img_pic_${generateRandomText(5)}.jpg");
+        .child("/Profile_Images/img_pic_${widget.usr[widget.index].uid}.jpg");
     await ref.putFile(File(img));
     await ref.getDownloadURL().then((value) {
       link = value;
       FirebaseFirestore.instance
           .collection("Student")
           .doc(widget.usr[widget.index].uid)
-          .set(toMap(), SetOptions(merge: true));
+          .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
     });
+    }else{
+      link = "";
+      FirebaseFirestore.instance
+          .collection("Student")
+          .doc(widget.usr[widget.index].uid)
+          .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
+    }
+    
   }
 
   check() {

@@ -30,7 +30,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   imgselect(user) {
-    if (user.image != null) {
+    if (user.image != null && user.image != "") {
       return NetworkImage(user.image);
     } else {
       return const AssetImage("assets/empty_pic.jpg");

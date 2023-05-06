@@ -19,7 +19,7 @@ class _HomeScreenState extends State<HomeScreen> {
   bool isHomePage = true;
 
   var Temp;
-  String name = "";
+  String name = "Loading.....";
 
   @override
   void initState() {
