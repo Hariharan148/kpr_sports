@@ -45,7 +45,10 @@ class CustomBottomBar extends StatelessWidget {
                 ),
                 child: const Text(
                   'Cancel',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      fontFamily: "Poppins"),
                 ),
               ),
             ),
@@ -74,7 +77,11 @@ class CustomBottomBar extends StatelessWidget {
                 ),
                 child: const Text(
                   'Submit',
-                  style: TextStyle(fontWeight: FontWeight.w600, fontSize: 16),
+                  style: TextStyle(
+                      fontWeight: FontWeight.w600,
+                      fontSize: 16,
+                      fontFamily: "Poppins",
+                      color: Colors.white),
                 ),
               ),
             ),

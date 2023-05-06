@@ -63,8 +63,7 @@ class _SettingsScreenState extends State<SettingsScreen> {
                         contentPadding: EdgeInsets.only(left: 15, right: 15),
                         focusedBorder: OutlineInputBorder(
                           borderSide: BorderSide(
-                            color:
-                                Colors.grey, // Replace with your desired color
+                            color: Colors.grey,
                             width: 2.0,
                           ),
                         ),

@@ -148,10 +148,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         children: [
                           const InfoBar(),
                           Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 5),
+                            margin: const EdgeInsets.only(top: 20, bottom: 15),
                             child: SizedBox(
                                 height: 60,
                                 child: Row(
+                                  crossAxisAlignment: CrossAxisAlignment.center,
                                   mainAxisAlignment:
                                       MainAxisAlignment.spaceAround,
                                   children: [
@@ -184,7 +185,9 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                           ),
                                           const Text(
                                             "All present",
-                                            style: TextStyle(fontSize: 12),
+                                            style: TextStyle(
+                                                fontSize: 12,
+                                                fontFamily: "Poppins"),
                                           ),
                                         ],
                                       ),

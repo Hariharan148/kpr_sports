@@ -15,12 +15,6 @@ class _AttendanceListState extends State<AttendanceList> {
     final attendanceProvider = context.watch<AttendanceProvider>();
     final attendanceStatus = attendanceProvider.attendanceStatus;
 
-    if (attendanceStatus.isEmpty) {
-      return const Center(
-        child: Text("No data!"),
-      );
-    }
-
     return SizedBox(
       height: MediaQuery.of(context).size.height - 400,
       width: MediaQuery.of(context).size.width,
@@ -62,17 +56,14 @@ class _AttendanceListState extends State<AttendanceList> {
                       name ?? "No Name",
                       style: const TextStyle(
                         fontSize: 16.0,
+                        fontFamily: "Poppins",
                         fontWeight: FontWeight.w600,
                       ),
                     ),
-                    Padding(
-                      padding: const EdgeInsets.only(top: 2),
-                      child: Text(
-                        rollno ?? "No Roll No",
-                        style: const TextStyle(
-                          fontSize: 14.0,
-                        ),
-                      ),
+                    Text(
+                      rollno ?? "No Roll No",
+                      style: const TextStyle(
+                          fontSize: 14.0, fontFamily: "Poppins"),
                     ),
                   ],
                 ),
