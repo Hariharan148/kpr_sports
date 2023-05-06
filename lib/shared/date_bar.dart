@@ -11,7 +11,7 @@ class DateBar extends StatefulWidget {
 class _DateBarState extends State<DateBar> {
   String getDate() {
     DateTime today = DateTime.now();
-    String formattedDate = DateFormat('yyyy-MM-dd').format(today);
+    String formattedDate = DateFormat('dd/MM/yyyy').format(today);
     return formattedDate;
   }
 
@@ -24,11 +24,11 @@ class _DateBarState extends State<DateBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 50,
-      width: 100,
+      height: 60,
+      width: 110,
       child: Container(
         padding: const EdgeInsets.all(2),
-        margin: const EdgeInsets.all(10.0),
+        margin: const EdgeInsets.all(15.0),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: Colors.black, width: 1.0)),
@@ -36,11 +36,17 @@ class _DateBarState extends State<DateBar> {
           children: [
             Text(
               getDate(),
-              style: const TextStyle(fontSize: 10),
+              style: const TextStyle(
+                  fontSize: 10,
+                  color: Color(0xFF319753),
+                  decoration: TextDecoration.none),
             ),
             Text(
               getDay(),
-              style: const TextStyle(fontSize: 10, color: Colors.grey),
+              style: const TextStyle(
+                  fontSize: 10,
+                  color: Colors.grey,
+                  decoration: TextDecoration.none),
             )
           ],
         ),

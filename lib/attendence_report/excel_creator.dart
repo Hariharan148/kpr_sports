@@ -1,14 +1,16 @@
 import 'dart:io';
+import 'package:external_path/external_path.dart';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/store/report_provider.dart';
-import 'package:path_provider/path_provider.dart';
 import 'package:permission_handler/permission_handler.dart';
 import 'package:provider/provider.dart';
 import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xcel;
 
 Future<void> downloadExcel(BuildContext context) async {
   try {
+    print("hello");
+
     final report = Provider.of<ReportProvider>(context, listen: false);
 
     final List<List<dynamic>>? tableData = report.studentData;
@@ -39,12 +41,11 @@ Future<void> downloadExcel(BuildContext context) async {
     final List<int> bytes = workbook.saveAsStream();
 
     final PermissionStatus status = await Permission.storage.request();
-    if (!status.isGranted) {
-      final directory = await getExternalStorageDirectory();
+    if (status.isGranted) {
+      final directory = await getPath_2();
 
       final filePath =
-          '${directory?.path}/${headers[1]}${headers[1] == headers[headers.length - 1] ? "" : " to ${headers[headers.length - 1]}"}.xlsx';
-      print(filePath);
+          '$directory/${headers[1]}${headers[1] == headers[headers.length - 1] ? "" : " to ${headers[headers.length - 1]}"}.xlsx';
 
       await File(filePath).writeAsBytes(bytes);
       Fluttertoast.showToast(
@@ -64,6 +65,11 @@ Future<void> downloadExcel(BuildContext context) async {
       gravity: ToastGravity.BOTTOM,
     );
   }
+}
+
+Future<String> getPath_2() async {
+  var path = await ExternalPath.getExternalStorageDirectories();
+  return path[0];
 }
 
 Future<void> checkPermissions(BuildContext context) async {

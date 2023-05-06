@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:firebase_core/firebase_core.dart';
+import 'package:kpr_sports/splash_screen.dart';
 import 'package:kpr_sports/routes.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:kpr_sports/store/report_provider.dart';
@@ -20,7 +21,6 @@ void main() async {
     ],
     child: const MyApp(),
   ));
-
 }
 
 class MyApp extends StatelessWidget {
@@ -30,6 +30,7 @@ class MyApp extends StatelessWidget {
   Widget build(BuildContext context) {
     return MaterialApp(
       debugShowCheckedModeBanner: false,
+
       theme: ThemeData(
           scaffoldBackgroundColor: Colors.white,
           primaryColor: const Color(0xFF1b345f),
@@ -37,8 +38,10 @@ class MyApp extends StatelessWidget {
           colorScheme: ColorScheme.fromSwatch(
             accentColor: const Color(0xFF142A50),
           )),
-      routes: appRoutes,
-      initialRoute: '/',
+
+      // routes: appRoutes,
+      // initialRoute: '/',
+      home: SplashScreen(),
     );
   }
 }
