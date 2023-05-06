@@ -103,49 +103,49 @@ class _StudentAddState extends State<StudentAdd> {
         link = value;
         FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
       });
-    }else{
+    } else {
       link = "";
-        FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
+      FirebaseFirestore.instance.collection("Student").doc(id).set(toMap(id));
     }
   }
 
   toMap(id) {
     Map<String, dynamic> data = {
-      "UID": id,
-      "Image": link,
-      "Name": name.text,
-      "Roll No": roll.text,
-      "Section": sec.text,
-      "Sport": sport.text,
-      "Email": email.text,
-      "PEmail": pemail.text,
-      "Phone": phone.text,
-      "PPhone": pphone.text
+      "id": id,
+      "image": link,
+      "name": name.text,
+      "rollno": roll.text,
+      "section": sec.text,
+      "sport": sport.text,
+      "email": email.text,
+      "parentEmail": pemail.text,
+      "phone": phone.text,
+      "parentPhone": pphone.text
     };
     return data;
   }
 
   void saveImg() async {
-    if(img != ""){
+    var ref;
+    if (img != "" && ch == true) {
       final ref = FirebaseStorage.instance
-        .ref()
-        .child("/Profile_Images/img_pic_${widget.usr[widget.index].uid}.jpg");
-    await ref.putFile(File(img));
-    await ref.getDownloadURL().then((value) {
-      link = value;
-      FirebaseFirestore.instance
-          .collection("Student")
-          .doc(widget.usr[widget.index].uid)
-          .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
-    });
-    }else{
-      link = "";
+          .ref()
+          .child("/Profile_Images/img_pic_${widget.usr[widget.index].uid}.jpg");
+      await ref.putFile(File(img));
+      await ref.getDownloadURL().then((value) {
+        link = value;
+        FirebaseFirestore.instance
+            .collection("Student")
+            .doc(widget.usr[widget.index].uid)
+            .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
+      });
+    } else {
+      link = widget.usr[widget.index].image;
       FirebaseFirestore.instance
           .collection("Student")
           .doc(widget.usr[widget.index].uid)
           .set(toMap(widget.usr[widget.index].uid), SetOptions(merge: true));
     }
-    
   }
 
   check() {

@@ -115,9 +115,11 @@ class _HomeScreenState extends State<HomeScreen> {
                   children: [
                     GestureDetector(
                       onTap: () {
-                        setState(() {
-                          isHomePage = true;
-                        });
+                        if (isHomePage == true) {
+                          setState(() {
+                            isHomePage = true;
+                          });
+                        }
 
                         Navigator.push(
                             context,

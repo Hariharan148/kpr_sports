@@ -31,9 +31,26 @@ class _StudentsScreenState extends State<StudentsScreen> {
 
   imgselect(user) {
     if (user.image != null && user.image != "") {
-      return NetworkImage(user.image);
+      return Image.network(
+        user.image,
+        fit: BoxFit.cover,
+        loadingBuilder: (context, child, loadingProgress) {
+          
+          if (loadingProgress == null) return child;
+          return Center(
+            
+            child: CircularProgressIndicator(
+              
+              value: loadingProgress.expectedTotalBytes != null
+                  ? loadingProgress.cumulativeBytesLoaded /
+                      loadingProgress.expectedTotalBytes!
+                  : null,
+            ),
+          );
+        },
+      );
     } else {
-      return const AssetImage("assets/empty_pic.jpg");
+      return  Image.asset("assets/empty_pic.jpg",fit: BoxFit.cover,);
     }
   }
 
@@ -156,8 +173,14 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                     MainAxisAlignment.spaceBetween,
                                 children: [
                                   CircleAvatar(
-                                      radius: 50.0,
-                                      backgroundImage: imgselect(user)),
+                                    radius: 50.0,
+                                    child: ClipOval(
+                                      child: SizedBox(
+                                          width: 100,
+                                          height: 100,
+                                          child: imgselect(user)),
+                                    ),
+                                  ),
                                   IconButton(
                                       onPressed: () {
                                         setState(() {
@@ -213,10 +236,16 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                             height: 3,
                                                           ),
                                                           CircleAvatar(
-                                                              radius: 50.0,
-                                                              backgroundImage:
-                                                                  imgselect(
-                                                                      user)),
+                                                            radius: 50.0,
+                                                            child: ClipOval(
+                                                              child: SizedBox(
+                                                                  width: 100,
+                                                                  height: 100,
+                                                                  child:
+                                                                      imgselect(
+                                                                          user)),
+                                                            ),
+                                                          ),
                                                           const SizedBox(
                                                             height: 15.25,
                                                           ),
@@ -273,12 +302,16 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                                         Colors
                                                                             .transparent,
                                                                   ),
-                                                                  onPressed: () =>
-                                                                      showPopUp(
-                                                                          context,
-                                                                          true,
-                                                                          userList,
-                                                                          index),
+                                                                  onPressed:
+                                                                      () {
+                                                                    Navigator.pop(
+                                                                        context);
+                                                                    showPopUp(
+                                                                        context,
+                                                                        true,
+                                                                        userList,
+                                                                        index);
+                                                                  },
                                                                   child:
                                                                       const Text(
                                                                     "Edit",
@@ -337,7 +370,8 @@ class _StudentsScreenState extends State<StudentsScreen> {
                                                                             .uid)
                                                                         .delete()
                                                                         .then((value) =>
-                                                                            print(user.uid));
+                                                                            Navigator.pop(context));
+
                                                                   },
                                                                   child:
                                                                       const Text(

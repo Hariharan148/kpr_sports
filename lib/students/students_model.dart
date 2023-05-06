@@ -41,39 +41,15 @@ class UserModel {
     final data = document.data()!;
     return UserModel(
       uid: document.id,
-      name: data["Name"],
-      email: data["Email"],
-      pemail: data["PEmail"],
-      phone: data["Phone"],
-      pphone: data["PPhone"],
-      sec: data["Section"],
-      roll: data["Roll No"],
-      sport: data["Sport"],
-      image: data["Image"]
-    );
-  }
-}
-
-class Faculty {
-
-  final String? name;
-
-
-  const Faculty({
-
-    required this.name,
-
-  });
-
-
-
-  factory Faculty.fromSnapshot(
-      DocumentSnapshot<Map<String, dynamic>> document) {
-    final data = document.data()!;
-    return Faculty(
-
-      name: data["Name"],
-
+      name: data["name"],
+      email: data["email"],
+      pemail: data["parentEmail"],
+      phone: data["phone"],
+      pphone: data["parentPhone"],
+      sec: data["section"],
+      roll: data["rollno"],
+      sport: data["sport"],
+      image: data["image"]
     );
   }
 }
