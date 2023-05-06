@@ -21,7 +21,6 @@ class _SettingsScreenState extends State<SettingsScreen> {
     final QuerySnapshot querySnapshot = await collection.get();
     final DocumentReference firstDoc = querySnapshot.docs.first.reference;
     await firstDoc.update({'name': name.text});
-    
   }
 
   @override
@@ -67,6 +66,8 @@ class _SettingsScreenState extends State<SettingsScreen> {
                           return "*Required";
                         } else if (value.length < 4) {
                           return "Enter Valid Name";
+                        } else if (value.length > 12) {
+                          return "Name Too Long (Max:12)";
                         } else {
                           return null;
                         }
