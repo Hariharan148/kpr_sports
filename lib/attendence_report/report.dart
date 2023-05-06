@@ -73,7 +73,7 @@ class _ReportScreenState extends State<ReportScreen> {
         child: CustomAppBar(name: "Report"),
       ),
       body: downloading
-          ? Lottie.asset("assets/basketball.json")
+          ? Lottie.asset("assets/animation/basketball.json")
           : Column(
               children: [
                 DateTimePickerButton(
@@ -111,9 +111,13 @@ class _ReportScreenState extends State<ReportScreen> {
                           child: Row(
                             mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                             children: const [
-                              Icon(Icons.download),
+                              Icon(
+                                Icons.download,
+                                color: Colors.white,
+                              ),
                               Text("Download",
                                   style: TextStyle(
+                                      color: Colors.white,
                                       fontWeight: FontWeight.w600,
                                       fontSize: 16,
                                       fontFamily: "Poppins")),

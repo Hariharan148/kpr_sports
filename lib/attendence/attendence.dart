@@ -228,7 +228,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         height: 250,
                       )
                 : Center(
-                    child: Lottie.asset("assets/basketball.json"),
+                    child: Lottie.asset("assets/animation/basketball.json"),
                   ),
         bottomNavigationBar: !isAfterNoon
             ? submitting

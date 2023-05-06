@@ -10,8 +10,7 @@ class AfterNoonWidget extends StatelessWidget {
       padding: const EdgeInsets.only(left: 25, right: 25),
       child: Column(
         children: [
-          Lottie.asset(
-              "assets/timer.json"),
+          Lottie.asset("assets/animation/timer.json"),
           SizedBox(
             height: 100,
             width: MediaQuery.of(context).size.width - 50,

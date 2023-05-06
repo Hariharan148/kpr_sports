@@ -69,7 +69,13 @@ class _DateTimePickerButtonState extends State<DateTimePickerButton> {
                 mainAxisAlignment: MainAxisAlignment.spaceEvenly,
                 children: const [
                   Icon(Icons.edit_calendar_outlined),
-                  Text("Choose date")
+                  Text(
+                    "Choose date",
+                    style: TextStyle(
+                        fontFamily: "Poppins",
+                        fontSize: 12,
+                        fontWeight: FontWeight.w600),
+                  )
                 ],
               ),
             ),

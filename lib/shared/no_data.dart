@@ -17,7 +17,7 @@ class NoData extends StatelessWidget {
         child: SizedBox(
           height: MediaQuery.of(context).size.height - height,
           child: Lottie.network(
-            'https://assets7.lottiefiles.com/packages/lf20_3qzrm0wa.json',
+            'assets/animation/nodata.json',
           ),
         ),
       ),
