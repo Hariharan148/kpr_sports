@@ -1,11 +1,11 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_svg/flutter_svg.dart';
-import 'package:intl/intl.dart';
 import 'package:kpr_sports/attendence/attendence.dart';
 import 'package:kpr_sports/attendence_report/report.dart';
 import 'package:kpr_sports/settings/settings.dart';
 import 'package:kpr_sports/shared/date_bar.dart';
+import 'package:kpr_sports/shared/navbar.dart';
 import 'package:kpr_sports/students/students.dart';
 
 class HomeScreen extends StatefulWidget {
@@ -54,6 +54,7 @@ class _HomeScreenState extends State<HomeScreen> {
             padding:
                 const EdgeInsets.only(left: 25, right: 25, top: 25, bottom: 25),
             child: Row(
+              crossAxisAlignment: CrossAxisAlignment.center,
               mainAxisAlignment: MainAxisAlignment.spaceBetween,
               children: [
                 Column(
@@ -126,11 +127,10 @@ class _HomeScreenState extends State<HomeScreen> {
                             MaterialPageRoute(
                                 builder: (context) => const HomeScreen()));
                       },
-                      child: _navBar(
-                          context,
-                          isHomePage,
-                          'assets/Home/home_icon.svg',
-                          'assets/Home/select_icon.svg'),
+                      child: NavBar(
+                          homePage: isHomePage,
+                          mainAsset: 'assets/Home/home_icon.svg',
+                          subAsset: 'assets/Home/select_icon.svg'),
                     ),
                     GestureDetector(
                       onTap: () {
@@ -147,11 +147,10 @@ class _HomeScreenState extends State<HomeScreen> {
                           isHomePage = true;
                         });
                       },
-                      child: _navBar(
-                          context,
-                          !isHomePage,
-                          'assets/Home/settings_icon.svg',
-                          'assets/Home/select_icon.svg'),
+                      child: NavBar(
+                          homePage: !isHomePage,
+                          mainAsset: 'assets/Home/settings_icon.svg',
+                          subAsset: 'assets/Home/select_icon.svg'),
                     ),
                   ],
                 ),
@@ -160,17 +159,6 @@ class _HomeScreenState extends State<HomeScreen> {
           ),
         ],
       ),
-    );
-  }
-
-  Widget _navBar(BuildContext context, homePage, mainAsset, subAsset) {
-    return Column(
-      mainAxisAlignment:
-          (homePage) ? MainAxisAlignment.spaceEvenly : MainAxisAlignment.center,
-      children: [
-        SvgPicture.asset(mainAsset),
-        Visibility(visible: homePage, child: SvgPicture.asset(subAsset))
-      ],
     );
   }
 

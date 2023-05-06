@@ -24,11 +24,11 @@ class _DateBarState extends State<DateBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 60,
-      width: 110,
+      height: 40,
+      width: 90,
       child: Container(
         padding: const EdgeInsets.all(2),
-        margin: const EdgeInsets.all(15.0),
+        // margin: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: Colors.black, width: 1.0)),
@@ -37,14 +37,18 @@ class _DateBarState extends State<DateBar> {
             Text(
               getDate(),
               style: const TextStyle(
-                  fontSize: 10,
+                  fontSize: 11,
+                  fontWeight: FontWeight.w600,
+                  fontFamily: "Poppins",
                   color: Color(0xFF319753),
                   decoration: TextDecoration.none),
             ),
             Text(
               getDay(),
               style: const TextStyle(
-                  fontSize: 10,
+                  fontFamily: "Poppins",
+                  fontWeight: FontWeight.w600,
+                  fontSize: 11,
                   color: Colors.grey,
                   decoration: TextDecoration.none),
             )
