@@ -27,6 +27,7 @@ nameField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           controller: control,
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
