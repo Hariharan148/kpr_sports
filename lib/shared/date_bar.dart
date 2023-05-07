@@ -24,7 +24,7 @@ class _DateBarState extends State<DateBar> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
-      height: 40,
+      height: MediaQuery.of(context).size.height*0.06,
       width: 90,
       child: Container(
         padding: const EdgeInsets.all(2),
