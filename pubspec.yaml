@@ -54,15 +54,15 @@ dependencies:
   flutter_launcher_icons: ^0.13.1
 
 
-flutter_icons:
-  android: "launcher_icon"
-  image_path: 'assets/logo/logo.png'
+# flutter_icons:
+#   android: "launcher_icon"
+#   image_path: 'assets/logo/logo.png'
 
-flutter_native_splash:
-  color: "#ffffff"
-  image: "assets/splashscreen/logo.png"
-  android: true
-  android_gravity: fill
+# flutter_native_splash:
+#   color: "#ffffff"
+#   image: "assets/splashscreen/logo.png"
+#   android: true
+#   android_gravity: fill
 
 dev_dependencies:
   flutter_test:
@@ -103,6 +103,7 @@ flutter:
     - assets/animation/basketball.json
     - assets/animation/timer.json
     - assets/animation/nodata.json
+    - assets/logo/logo.png
 
 
   # An image asset can refer to one or more resolution-specific "variants", see

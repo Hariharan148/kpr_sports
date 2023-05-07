@@ -5,7 +5,7 @@ import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:kpr_sports/store/report_provider.dart';
 import 'package:provider/provider.dart';
 import 'package:flutter/services.dart';
-
+import 'package:kpr_sports/splash_screen.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   SystemChrome.setPreferredOrientations([
@@ -40,7 +40,7 @@ class MyApp extends StatelessWidget {
         primaryColor: const Color(0xFF1b345f),
         secondaryHeaderColor: const Color(0xFF319753),
       ),
-      home: const HomeScreen(),
+      home: SplashScreen(),
     );
   }
 }
