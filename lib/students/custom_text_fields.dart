@@ -88,6 +88,7 @@ rollField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           controller: control,
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
@@ -148,6 +149,7 @@ sectionField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           controller: control,
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
@@ -208,6 +210,7 @@ sportField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
           controller: control,
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
@@ -268,6 +271,7 @@ emailField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           controller: control,
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
 //------DECORATION OF TEXT FIELD STARTS-----------------------------------------
@@ -331,6 +335,7 @@ phoneField({
         width: horizo ?? 285,
         height: verti ?? 30,
         child: TextFormField(
+          cursorColor: const Color.fromRGBO(20, 42, 80, 1),
           style: const TextStyle(fontFamily: "Poppins", fontSize: 15),
           maxLength: 10,
           controller: control,

@@ -41,7 +41,7 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   Stream<List<UserModel>> allUser() {
-    return FirebaseFirestore.instance.collection("students").snapshots().map(
+    return FirebaseFirestore.instance.collection("students").orderBy('name',descending: false).snapshots().map(
         (snapshot) =>
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
