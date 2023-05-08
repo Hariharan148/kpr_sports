@@ -10,15 +10,11 @@ nameField({
   double? horizo,
 }) {
   return Column(
+    crossAxisAlignment: CrossAxisAlignment.start,
     children: [
-      Row(
-        mainAxisAlignment: MainAxisAlignment.start,
-        children: [
-          Text(
-            lableText,
-            style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
-          ),
-        ],
+      Text(
+        lableText,
+        style: const TextStyle(fontSize: 12, fontFamily: "Poppins"),
       ),
       const SizedBox(
         height: 10,

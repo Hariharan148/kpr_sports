@@ -222,20 +222,25 @@ class _StudentAddState extends State<StudentAdd> {
                 )),
             Form(
                 key: _formKey,
-                child: Container(
-                  padding: const EdgeInsets.only(left: 10, right: 10),
-                  child: Column(
-                    children: [
-                      nameField(
-                        control: name,
-                        lableText: "Name",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      Row(
+                child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.center,
+                  children: [
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    nameField(
+                      verti: 30,
+                      control: name,
+                      lableText: "Name",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Container(
+                      margin: EdgeInsets.only(left: 20, right: 20),
+                      child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
                           rollField(
@@ -256,55 +261,55 @@ class _StudentAddState extends State<StudentAdd> {
                           ),
                         ],
                       ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      sportField(
-                        verti: 30,
-                        control: sport,
-                        lableText: "Sport",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      emailField(
-                        verti: 30,
-                        control: email,
-                        lableText: "Email",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      emailField(
-                        control: pemail,
-                        lableText: "Parent's Email",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      phoneField(
-                        control: phone,
-                        lableText: "Phone",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                      const SizedBox(
-                        height: 10,
-                      ),
-                      phoneField(
-                        control: pphone,
-                        lableText: "Parent's Phone",
-                        inputTextColor: Colors.black,
-                        barColor: Colors.black,
-                      ),
-                    ],
-                  ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    sportField(
+                      verti: 30,
+                      control: sport,
+                      lableText: "Sport",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    emailField(
+                      verti: 30,
+                      control: email,
+                      lableText: "Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    emailField(
+                      control: pemail,
+                      lableText: "Parent's Email",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    phoneField(
+                      control: phone,
+                      lableText: "Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    phoneField(
+                      control: pphone,
+                      lableText: "Parent's Phone",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
+                    ),
+                  ],
                 )),
             const SizedBox(
               height: 40,
