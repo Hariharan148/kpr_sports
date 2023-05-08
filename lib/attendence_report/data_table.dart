@@ -23,7 +23,7 @@ class _AttendanceDataState extends State<AttendanceData> {
     ];
 
     if (tableData!.isEmpty) {
-      return Lottie.asset("assets/nodata.json");
+      return Lottie.asset("assets/animation/nodata.json");
     }
 
     double getWidth() {

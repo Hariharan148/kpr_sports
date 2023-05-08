@@ -33,7 +33,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
 
   bool get isAfterNoon {
     final currentTime = DateTime.now();
-    return currentTime.hour < 12;
+    return currentTime.hour > 12;
   }
 
   void updateStatus(ispresent) {
@@ -158,7 +158,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   children: [
                                     SizedBox(
                                       height: 50,
-                                      width: 120,
+                                      width: 130,
                                       child: Row(
                                         children: [
                                           Theme(
@@ -228,7 +228,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                         height: 250,
                       )
                 : Center(
-                    child: Lottie.asset("assets/basketball.json"),
+                    child: Lottie.asset("assets/animation/basketball.json"),
                   ),
         bottomNavigationBar: !isAfterNoon
             ? submitting

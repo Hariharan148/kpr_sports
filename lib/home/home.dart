@@ -194,41 +194,47 @@ class _HomeScreenState extends State<HomeScreen> {
                       offset: Offset(2, 2),
                     ),
                   ]),
-              child: Padding(
-                padding: const EdgeInsets.only(left: 25, right: 25),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.start,
-                  children: [
-                    Stack(alignment: Alignment.center, children: [
-                      SvgPicture.asset(background),
-                      SvgPicture.asset(mainIcon)
-                    ]),
-                    Padding(
-                      padding: const EdgeInsets.only(left: 20),
-                      child: Column(
-                        crossAxisAlignment: CrossAxisAlignment.start,
-                        mainAxisAlignment: MainAxisAlignment.center,
-                        children: [
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                color: Color(0xFF212121),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 18),
-                          ),
-                          Text(
-                            title,
-                            style: const TextStyle(
-                                color: Color(0xFFA8A9AC),
-                                fontFamily: 'Poppins',
-                                fontWeight: FontWeight.w500,
-                                fontSize: 10),
-                          )
-                        ],
+              child: SingleChildScrollView(
+                scrollDirection: Axis.horizontal,
+                child: Padding(
+                  padding: const EdgeInsets.only(
+                    left: 20,
+                  ),
+                  child: Row(
+                    crossAxisAlignment: CrossAxisAlignment.center,
+                    mainAxisAlignment: MainAxisAlignment.start,
+                    children: [
+                      Stack(alignment: Alignment.center, children: [
+                        SvgPicture.asset(background),
+                        SvgPicture.asset(mainIcon)
+                      ]),
+                      Padding(
+                        padding: const EdgeInsets.only(left: 20),
+                        child: Column(
+                          crossAxisAlignment: CrossAxisAlignment.start,
+                          mainAxisAlignment: MainAxisAlignment.center,
+                          children: [
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                  color: Color(0xFF212121),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 18),
+                            ),
+                            Text(
+                              title,
+                              style: const TextStyle(
+                                  color: Color(0xFFA8A9AC),
+                                  fontFamily: 'Poppins',
+                                  fontWeight: FontWeight.w500,
+                                  fontSize: 10),
+                            )
+                          ],
+                        ),
                       ),
-                    ),
-                  ],
+                    ],
+                  ),
                 ),
               ),
             ),

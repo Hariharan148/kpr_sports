@@ -1,5 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:rive/rive.dart';
 import 'package:kpr_sports/home/home.dart';
 
 class SplashScreen extends StatefulWidget {
@@ -14,7 +13,7 @@ class _SplashScreenState extends State<SplashScreen> {
   void initState() {
     super.initState();
     Future.delayed(
-        const Duration(seconds: 3),
+        const Duration(seconds: 2),
         () => Navigator.push(
               context,
               MaterialPageRoute(builder: (context) => const HomeScreen()),
@@ -23,11 +22,9 @@ class _SplashScreenState extends State<SplashScreen> {
 
   @override
   Widget build(BuildContext context) {
-    return const SafeArea(
-      child: Scaffold(
-        backgroundColor: Colors.white,
-        body: RiveAnimation.asset('assets/Home/splash.riv'),
-      ),
+    return Scaffold(
+      backgroundColor: Colors.white,
+      body: Center(child: Image.asset("assets/splashscreen/logo.png")),
     );
   }
 }

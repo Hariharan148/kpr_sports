@@ -27,12 +27,12 @@ class _DateBarState extends State<DateBar> {
       height: 40,
       width: 90,
       child: Container(
-        padding: const EdgeInsets.all(2),
-        // margin: EdgeInsets.only(top: 20),
         decoration: BoxDecoration(
             borderRadius: BorderRadius.circular(10),
             border: Border.all(color: Colors.black, width: 1.0)),
         child: Column(
+          crossAxisAlignment: CrossAxisAlignment.center,
+          mainAxisAlignment: MainAxisAlignment.center,
           children: [
             Text(
               getDate(),
