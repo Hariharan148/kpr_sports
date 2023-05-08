@@ -158,7 +158,7 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                                   children: [
                                     SizedBox(
                                       height: 50,
-                                      width: 120,
+                                      width: 130,
                                       child: Row(
                                         children: [
                                           Theme(

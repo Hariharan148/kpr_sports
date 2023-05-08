@@ -46,7 +46,7 @@ Future<void> downloadExcel(BuildContext context) async {
 
       final filePath =
           '$directory/${headers[1]}${headers[1] == headers[headers.length - 1] ? "" : " to ${headers[headers.length - 1]}"}.xlsx';
-
+      print(filePath);
       await File(filePath).writeAsBytes(bytes);
       Fluttertoast.showToast(
         msg: 'Excel file downloaded successfully!',
@@ -68,8 +68,9 @@ Future<void> downloadExcel(BuildContext context) async {
 }
 
 Future<String> getPath_2() async {
-  var path = await ExternalPath.getExternalStorageDirectories();
-  return path[0];
+  var path = await ExternalPath.getExternalStoragePublicDirectory(
+      ExternalPath.DIRECTORY_DOWNLOADS);
+  return path;
 }
 
 Future<void> checkPermissions(BuildContext context) async {
