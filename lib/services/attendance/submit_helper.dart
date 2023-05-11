@@ -22,7 +22,6 @@ class AttendanceService {
             })),
       ]);
     } catch (error) {
-      print("p");
       rethrow;
     }
   }

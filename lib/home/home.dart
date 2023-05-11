@@ -9,7 +9,7 @@ import 'package:kpr_sports/shared/navbar.dart';
 import 'package:kpr_sports/students/students.dart';
 
 class HomeScreen extends StatefulWidget {
-  const HomeScreen({Key? key});
+  const HomeScreen({Key? key}) : super(key: key);
 
   @override
   State<HomeScreen> createState() => _HomeScreenState();
@@ -18,7 +18,7 @@ class HomeScreen extends StatefulWidget {
 class _HomeScreenState extends State<HomeScreen> {
   bool isHomePage = true;
 
-  var Temp;
+  var temp;
   String name = "Loading.....";
 
   @override
@@ -35,8 +35,8 @@ class _HomeScreenState extends State<HomeScreen> {
       // Do something with the querySnapshot, like update a variable
       for (var element in querySnapshot.docs) {
         setState(() {
-          Temp = element.data()!;
-          name = Temp["name"];
+          temp = element.data()!;
+          name = temp["name"];
         });
       }
     });

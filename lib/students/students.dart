@@ -1,6 +1,5 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
-import 'package:kpr_sports/attendence/shimmer_attendance.dart';
 import 'package:kpr_sports/shared/appbar.dart';
 import 'package:kpr_sports/shared/no_data.dart';
 import 'package:kpr_sports/students/shimmer_students.dart';
@@ -41,8 +40,11 @@ class _StudentsScreenState extends State<StudentsScreen> {
   }
 
   Stream<List<UserModel>> allUser() {
-    return FirebaseFirestore.instance.collection("students").orderBy('name',descending: false).snapshots().map(
-        (snapshot) =>
+    return FirebaseFirestore.instance
+        .collection("students")
+        .orderBy('name', descending: false)
+        .snapshots()
+        .map((snapshot) =>
             snapshot.docs.map((e) => UserModel.fromSnapshot(e)).toList());
   }
 

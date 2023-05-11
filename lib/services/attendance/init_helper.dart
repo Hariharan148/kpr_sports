@@ -7,7 +7,6 @@ void getAttendanceStatus(
   Function(List<Map<String, dynamic>>)? onSuccess,
   Function(dynamic)? onError,
 ) {
-  print("in");
   students.orderBy("name").get().then((QuerySnapshot querySnapshot) {
     final attendenceStatus = querySnapshot.docs
         .map((doc) => {
@@ -18,9 +17,7 @@ void getAttendanceStatus(
             })
         .toList();
     onSuccess?.call(attendenceStatus);
-    print("out");
   }).catchError((error) {
-    print("error in ");
     onError?.call(error);
   });
 }

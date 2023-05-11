@@ -1,8 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:kpr_sports/home/home.dart';
 import 'package:kpr_sports/shared/appbar.dart';
-import 'package:kpr_sports/students/custom_text_fields.dart';
 
 class SettingsScreen extends StatefulWidget {
   const SettingsScreen({super.key});

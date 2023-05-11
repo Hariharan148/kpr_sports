@@ -1,6 +1,5 @@
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
-import 'package:kpr_sports/attendence/after_noon.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
 import 'package:kpr_sports/attendence/bottom_bar.dart';
 import 'package:kpr_sports/attendence/info_bar.dart';
@@ -30,11 +29,6 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   bool submitting = false;
 
   bool success = false;
-
-  bool get isAfterNoon {
-    final currentTime = DateTime.now();
-    return currentTime.hour > 12;
-  }
 
   void updateStatus(ispresent) {
     if (!ispresent) {
@@ -125,12 +119,11 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
   @override
   void initState() {
     super.initState();
-    if (!isAfterNoon) {
-      WidgetsBinding.instance.addPostFrameCallback((_) {
-        _refreshAttendanceList();
-        _attendanceProvider.presentVal = 0;
-      });
-    }
+
+    WidgetsBinding.instance.addPostFrameCallback((_) {
+      _refreshAttendanceList();
+      _attendanceProvider.presentVal = 0;
+    });
   }
 
   @override
@@ -140,106 +133,96 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
           preferredSize: Size.fromHeight(120),
           child: CustomAppBar(name: "Attendance"),
         ),
-        body: isAfterNoon
-            ? const AfterNoonWidget()
-            : !submitting
-                ? _attendanceProvider.attendanceStatus.isNotEmpty
-                    ? Column(
-                        children: [
-                          const InfoBar(),
-                          Container(
-                            margin: const EdgeInsets.only(top: 20, bottom: 15),
-                            child: SizedBox(
-                                height: 60,
-                                child: Row(
-                                  crossAxisAlignment: CrossAxisAlignment.center,
-                                  mainAxisAlignment:
-                                      MainAxisAlignment.spaceAround,
-                                  children: [
-                                    SizedBox(
-                                      height: 50,
-                                      width: 130,
-                                      child: Row(
-                                        children: [
-                                          Theme(
-                                            data: ThemeData(
-                                              checkboxTheme: CheckboxThemeData(
-                                                shape: RoundedRectangleBorder(
-                                                  borderRadius:
-                                                      BorderRadius.circular(5),
-                                                ),
-                                              ),
-                                            ),
-                                            child: Checkbox(
-                                              value: allPresent,
-                                              checkColor: Colors.white,
-                                              activeColor:
-                                                  const Color(0xFF142A50),
-                                              onChanged: (value) {
-                                                setState(() {
-                                                  allPresent = value!;
-                                                });
-                                                updateStatus(value);
-                                              },
+        body: !submitting
+            ? _attendanceProvider.attendanceStatus.isNotEmpty
+                ? Column(
+                    children: [
+                      const InfoBar(),
+                      Container(
+                        margin: const EdgeInsets.only(top: 20, bottom: 15),
+                        child: SizedBox(
+                            height: 60,
+                            child: Row(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.spaceAround,
+                              children: [
+                                SizedBox(
+                                  height: 50,
+                                  width: 130,
+                                  child: Row(
+                                    children: [
+                                      Theme(
+                                        data: ThemeData(
+                                          checkboxTheme: CheckboxThemeData(
+                                            shape: RoundedRectangleBorder(
+                                              borderRadius:
+                                                  BorderRadius.circular(5),
                                             ),
                                           ),
-                                          const Text(
-                                            "All present",
-                                            style: TextStyle(
-                                                fontSize: 12,
-                                                fontFamily: "Poppins"),
-                                          ),
-                                        ],
+                                        ),
+                                        child: Checkbox(
+                                          value: allPresent,
+                                          checkColor: Colors.white,
+                                          activeColor: const Color(0xFF142A50),
+                                          onChanged: (value) {
+                                            setState(() {
+                                              allPresent = value!;
+                                            });
+                                            updateStatus(value);
+                                          },
+                                        ),
+                                      ),
+                                      const Text(
+                                        "All present",
+                                        style: TextStyle(
+                                            fontSize: 12,
+                                            fontFamily: "Poppins"),
+                                      ),
+                                    ],
+                                  ),
+                                ),
+                                const DateBar()
+                              ],
+                            )),
+                      ),
+                      Expanded(
+                        child: RefreshIndicator(
+                            onRefresh: _refreshAttendanceList,
+                            color: Theme.of(context).primaryColor,
+                            child: _isfetching
+                                ? Center(
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height -
+                                              400,
+                                      width: double.infinity,
+                                      child: const ShimmerCardList(
+                                        itemCount: 5,
                                       ),
                                     ),
-                                    const DateBar()
-                                  ],
-                                )),
-                          ),
-                          Expanded(
-                            child: RefreshIndicator(
-                                onRefresh: _refreshAttendanceList,
-                                color: Theme.of(context).primaryColor,
-                                child: isAfterNoon
-                                    ? const AfterNoonWidget()
-                                    : _isfetching
-                                        ? Center(
-                                            child: SizedBox(
-                                              height: MediaQuery.of(context)
-                                                      .size
-                                                      .height -
-                                                  400,
-                                              width: double.infinity,
-                                              child: const ShimmerCardList(
-                                                itemCount: 5,
-                                              ),
-                                            ),
-                                          )
-                                        : const SingleChildScrollView(
-                                            physics:
-                                                AlwaysScrollableScrollPhysics(
-                                              parent: BouncingScrollPhysics(),
-                                            ),
-                                            child: AttendanceList())),
-                          )
-                        ],
+                                  )
+                                : const SingleChildScrollView(
+                                    physics: AlwaysScrollableScrollPhysics(
+                                      parent: BouncingScrollPhysics(),
+                                    ),
+                                    child: AttendanceList())),
                       )
-                    : const NoData(
-                        height: 250,
-                      )
-                : Center(
-                    child: Lottie.asset("assets/animation/basketball.json"),
-                  ),
-        bottomNavigationBar: !isAfterNoon
-            ? submitting
-                ? null
-                : _attendanceProvider.attendanceStatus.isNotEmpty
-                    ? CustomBottomBar(
-                        onCancelPressed: () {
-                          updateStatus(false);
-                        },
-                        onSubmitPressed: _onSubmit)
-                    : null
-            : null);
+                    ],
+                  )
+                : const NoData(
+                    height: 250,
+                  )
+            : Center(
+                child: Lottie.asset("assets/animation/basketball.json"),
+              ),
+        bottomNavigationBar: submitting
+            ? null
+            : _attendanceProvider.attendanceStatus.isNotEmpty
+                ? CustomBottomBar(
+                    onCancelPressed: () {
+                      updateStatus(false);
+                    },
+                    onSubmitPressed: _onSubmit)
+                : null);
   }
 }

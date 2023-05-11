@@ -9,8 +9,6 @@ import 'package:syncfusion_flutter_xlsio/xlsio.dart' as xcel;
 
 Future<void> downloadExcel(BuildContext context) async {
   try {
-    print("hello");
-
     final report = Provider.of<ReportProvider>(context, listen: false);
 
     final List<List<dynamic>>? tableData = report.studentData;
@@ -46,7 +44,6 @@ Future<void> downloadExcel(BuildContext context) async {
 
       final filePath =
           '$directory/${headers[1]}${headers[1] == headers[headers.length - 1] ? "" : " to ${headers[headers.length - 1]}"}.xlsx';
-      print(filePath);
       await File(filePath).writeAsBytes(bytes);
       Fluttertoast.showToast(
         msg: 'Excel file downloaded successfully!',

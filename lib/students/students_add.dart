@@ -3,8 +3,6 @@ import 'dart:math';
 import 'package:firebase_storage/firebase_storage.dart';
 import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
-import 'package:firebase_core/firebase_core.dart';
-import 'package:kpr_sports/students/students_model.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kpr_sports/students/custom_text_fields.dart';
 
@@ -239,7 +237,7 @@ class _StudentAddState extends State<StudentAdd> {
                       height: 10,
                     ),
                     Container(
-                      margin: EdgeInsets.only(left: 20, right: 20),
+                      margin: const EdgeInsets.only(left: 20, right: 20),
                       child: Row(
                         mainAxisAlignment: MainAxisAlignment.spaceBetween,
                         children: [
