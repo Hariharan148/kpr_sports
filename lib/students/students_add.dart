@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kpr_sports/students/custom_text_fields.dart';
-
+import 'package:kpr_sports/students/widgets.dart';
 class StudentAdd extends StatefulWidget {
   final bool edit;
   final List usr;
@@ -237,13 +237,13 @@ class _StudentAddState extends State<StudentAdd> {
                       height: 10,
                     ),
                     Container(
-                      margin: const EdgeInsets.only(left: 20, right: 20),
+                      // margin: const EdgeInsets.only(left: 20, right: 20),
                       child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        mainAxisAlignment: MainAxisAlignment.spaceAround,
                         children: [
                           rollField(
                             verti: 30,
-                            horizo: 140,
+                            horizo: 160,
                             control: roll,
                             lableText: "Roll No.",
                             inputTextColor: Colors.black,
@@ -259,6 +259,28 @@ class _StudentAddState extends State<StudentAdd> {
                           ),
                         ],
                       ),
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    Row(
+                      mainAxisAlignment: MainAxisAlignment.spaceAround,
+                      children: [deptField(
+                            verti: 30,
+                            horizo: 130,
+                            control: roll,
+                            lableText: "Department",
+                            inputTextColor: Colors.black,
+                            barColor: Colors.black,
+                          ),
+                          yearField(
+                            verti: 30,
+                            horizo: 130,
+                            control: sec,
+                            lableText: "Year",
+                            inputTextColor: Colors.black,
+                            barColor: Colors.black,
+                          ),],
                     ),
                     const SizedBox(
                       height: 10,
@@ -375,6 +397,7 @@ class _StudentAddState extends State<StudentAdd> {
                           _formKey.currentState!.save();
 
                           uploadImg();
+                          successToast("Student Added Successfully");
                           Navigator.pop(context);
                         }
                       },
@@ -447,7 +470,7 @@ class _StudentAddState extends State<StudentAdd> {
                           _formKey.currentState!.save();
 
                           saveImg();
-
+                          successToast("Updated Successfully");
                           Navigator.pop(context);
                         }
                       },

@@ -1,5 +1,6 @@
 import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:flutter/material.dart';
+import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/students/students_add.dart';
 
 void showPopUp(BuildContext context, [verify, userList, index]) {
@@ -21,6 +22,8 @@ void showPopUp(BuildContext context, [verify, userList, index]) {
             ));
       });
 }
+
+void successToast(info) => Fluttertoast.showToast(msg: info, fontSize: 12);
 
 imgselect(user) {
   if (user.image != null && user.image != "") {
@@ -164,7 +167,10 @@ Future popUp(BuildContext context, user, userList, index) {
                                 .collection("students")
                                 .doc(user.uid)
                                 .delete()
-                                .then((value) => Navigator.pop(context));
+                                .then((value) {
+                              successToast("Student Deleted Successfully");
+                              Navigator.pop(context);
+                            });
                           },
                           child: const Text(
                             "Delete",
