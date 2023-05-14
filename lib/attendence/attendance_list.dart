@@ -1,6 +1,8 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendanceList extends StatefulWidget {
   const AttendanceList({Key? key}) : super(key: key);
@@ -67,10 +69,14 @@ class _AttendanceListState extends State<AttendanceList> {
                     ),
                   ],
                 ),
-                onTap: () {
+                onTap: () async {
                   status = !status;
                   attendanceStatus[index]["status"] = status;
                   attendanceProvider.attendanceStatusList = attendanceStatus;
+                  SharedPreferences prefs =
+                      await SharedPreferences.getInstance();
+                  String serializedList = json.encode(attendanceStatus);
+                  await prefs.setString('attendanceState', serializedList);
                   if (status) {
                     attendanceProvider.increment();
                   } else {

@@ -1,3 +1,4 @@
+import 'dart:convert';
 import 'package:flutter/material.dart';
 import 'package:fluttertoast/fluttertoast.dart';
 import 'package:kpr_sports/attendence/attendance_list.dart';
@@ -12,6 +13,7 @@ import 'package:kpr_sports/attendence/shimmer_attendance.dart';
 import 'package:kpr_sports/store/attendance_provider.dart';
 import 'package:lottie/lottie.dart';
 import 'package:provider/provider.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AttendanceScreen extends StatefulWidget {
   const AttendanceScreen({Key? key}) : super(key: key);
@@ -22,15 +24,16 @@ class AttendanceScreen extends StatefulWidget {
 
 class _AttendanceScreenState extends State<AttendanceScreen> {
   late AttendanceProvider _attendanceProvider;
+
   bool _isfetching = false;
 
-  bool allPresent = false;
+  bool? allPresent = false;
 
   bool submitting = false;
 
   bool success = false;
 
-  void updateStatus(ispresent) {
+  void updateStatus(ispresent) async {
     if (!ispresent) {
       setState(() {
         allPresent = false;
@@ -48,26 +51,35 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
       }
     }
 
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
+    String serializedList = json.encode(_attendanceProvider.attendanceStatus);
+
+    await prefs.setString('attendanceState', serializedList);
+
+    await prefs.setBool('allPresent', allPresent!);
+
     _attendanceProvider.attendanceStatusList =
         _attendanceProvider.attendanceStatus;
   }
 
   Future<void> _refreshAttendanceList() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+
     setState(() {
       _isfetching = true;
-      allPresent = false;
+      allPresent = prefs.getBool('allPresent') ?? false;
     });
 
     try {
       getAttendanceStatus((status) {
         setState(() {
-          _attendanceProvider.presentVal = 0;
           _attendanceProvider.attendanceStatusList = status;
           _isfetching = false;
         });
       }, (error) {
         throw error;
-      });
+      }, _attendanceProvider);
     } catch (error) {
       Fluttertoast.showToast(
         msg: 'Error: ${error.toString()}',
