@@ -163,75 +163,80 @@ class _StudentsScreenState extends State<StudentsScreen> {
             ),
           ),
           Expanded(
-            child: StreamBuilder<List<UserModel>>(
-              stream: _streamUser,
-              builder: (context, snapshot) {
-                if (snapshot.connectionState == ConnectionState.waiting) {
-                  return const Center(
-                      child: ShimmerCardStudent(
-                    itemCount: 3,
-                  ));
-                } else if (snapshot.hasError) {
-                  return Center(child: Text("${snapshot.error}"));
-                } else if (snapshot.data!.isEmpty) {
-                  return const NoData(
-                    height: 550,
-                  );
-                } else {
-                  final userList = snapshot.data!;
-                  return ListView.builder(
-                    physics: const RangeMaintainingScrollPhysics(
-                      parent: BouncingScrollPhysics(),
-                    ),
-                    itemCount: userList.length,
-                    itemBuilder: (context, index) {
-                      final user = userList[index];
-                      return Card(
-                        elevation: 0,
-                        margin: const EdgeInsets.only(
-                            left: 25, right: 25, bottom: 25),
-                        shape: RoundedRectangleBorder(
-                          borderRadius: BorderRadius.circular(20),
-                          side: const BorderSide(color: Colors.grey, width: 1),
-                        ),
-                        child: Container(
-                          padding: const EdgeInsets.all(20),
-                          child: Column(
-                            crossAxisAlignment: CrossAxisAlignment.center,
-                            mainAxisAlignment: MainAxisAlignment.center,
-                            children: [
-                              Row(
-                                crossAxisAlignment: CrossAxisAlignment.start,
-                                mainAxisAlignment:
-                                    MainAxisAlignment.spaceBetween,
-                                children: [
-                                  CircleAvatar(
-                                    backgroundColor: Colors.transparent,
-                                    radius: 50.0,
-                                    child: ClipOval(
-                                      child: SizedBox(
-                                          width: 100,
-                                          height: 100,
-                                          child: imgselect(user)),
-                                    ),
-                                  ),
-                                  IconButton(
-                                      onPressed: () {
-                                        popUp(context, user, userList, index);
-                                      },
-                                      icon:
-                                          const Icon(Icons.more_vert_outlined))
-                                ],
-                              ),
-                              fields(context, user),
-                            ],
+            child: RefreshIndicator(
+              onRefresh: _refreshAttendanceList,
+              color: Theme.of(context).primaryColor,
+              child: StreamBuilder<List<UserModel>>(
+                stream: _streamUser,
+                builder: (context, snapshot) {
+                  if (snapshot.connectionState == ConnectionState.waiting) {
+                    return const Center(
+                        child: ShimmerCardStudent(
+                      itemCount: 3,
+                    ));
+                  } else if (snapshot.hasError) {
+                    return Center(child: Text("${snapshot.error}"));
+                  } else if (snapshot.data!.isEmpty) {
+                    return const NoData(
+                      height: 550,
+                    );
+                  } else {
+                    final userList = snapshot.data!;
+                    return ListView.builder(
+                      physics: const RangeMaintainingScrollPhysics(
+                        parent: BouncingScrollPhysics(),
+                      ),
+                      itemCount: userList.length,
+                      itemBuilder: (context, index) {
+                        final user = userList[index];
+                        return Card(
+                          elevation: 0,
+                          margin: const EdgeInsets.only(
+                              left: 25, right: 25, bottom: 25),
+                          shape: RoundedRectangleBorder(
+                            borderRadius: BorderRadius.circular(20),
+                            side:
+                                const BorderSide(color: Colors.grey, width: 1),
                           ),
-                        ),
-                      );
-                    },
-                  );
-                }
-              },
+                          child: Container(
+                            padding: const EdgeInsets.all(20),
+                            child: Column(
+                              crossAxisAlignment: CrossAxisAlignment.center,
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Row(
+                                  crossAxisAlignment: CrossAxisAlignment.start,
+                                  mainAxisAlignment:
+                                      MainAxisAlignment.spaceBetween,
+                                  children: [
+                                    CircleAvatar(
+                                      backgroundColor: Colors.transparent,
+                                      radius: 50.0,
+                                      child: ClipOval(
+                                        child: SizedBox(
+                                            width: 100,
+                                            height: 100,
+                                            child: imgselect(user)),
+                                      ),
+                                    ),
+                                    IconButton(
+                                        onPressed: () {
+                                          popUp(context, user, userList, index);
+                                        },
+                                        icon: const Icon(
+                                            Icons.more_vert_outlined))
+                                  ],
+                                ),
+                                fields(context, user),
+                              ],
+                            ),
+                          ),
+                        );
+                      },
+                    );
+                  }
+                },
+              ),
             ),
           ),
         ],
