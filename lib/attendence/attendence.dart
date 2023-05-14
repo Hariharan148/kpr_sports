@@ -197,21 +197,28 @@ class _AttendanceScreenState extends State<AttendanceScreen> {
                               ],
                             )),
                       ),
-                      RefreshIndicator(
-                          onRefresh: _refreshAttendanceList,
-                          color: Theme.of(context).primaryColor,
-                          child: _isfetching
-                              ? Center(
-                                  child: SizedBox(
-                                    height: MediaQuery.of(context).size.height -
-                                        400,
-                                    width: double.infinity,
-                                    child: const ShimmerCardList(
-                                      itemCount: 5,
+                      Expanded(
+                        child: RefreshIndicator(
+                            onRefresh: _refreshAttendanceList,
+                            color: Theme.of(context).primaryColor,
+                            child: _isfetching
+                                ? Center(
+                                    child: SizedBox(
+                                      height:
+                                          MediaQuery.of(context).size.height -
+                                              400,
+                                      width: double.infinity,
+                                      child: const ShimmerCardList(
+                                        itemCount: 5,
+                                      ),
                                     ),
-                                  ),
-                                )
-                              : const Expanded(child: AttendanceList()))
+                                  )
+                                : const SingleChildScrollView(
+                                    physics: AlwaysScrollableScrollPhysics(
+                                      parent: BouncingScrollPhysics(),
+                                    ),
+                                    child: AttendanceList())),
+                      )
                     ],
                   )
                 : const NoData(
