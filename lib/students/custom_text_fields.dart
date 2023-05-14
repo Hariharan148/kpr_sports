@@ -235,7 +235,7 @@ deptField({
           validator: (value) {
             if (value == null || value.isEmpty) {
               return "*Required";
-            } else if (value.length > 2) {
+            } else if (value.length < 2) {
               return "Enter Valid Dept.";
             } else {
               return null;

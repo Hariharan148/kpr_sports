@@ -210,6 +210,18 @@ Widget fields(BuildContext context, user) {
         style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),
       Text(
+        "Department : ${user.dept}",
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
+      ),
+      Text(
+        "Year : ${user.year}",
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
+      ),
+      Text(
+        "Blood Group : ${user.bldgrp}",
+        style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
+      ),
+      Text(
         "Sport : ${user.sport}",
         style: const TextStyle(fontSize: 15.0, fontFamily: "Poppins"),
       ),

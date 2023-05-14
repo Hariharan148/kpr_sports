@@ -6,6 +6,7 @@ import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:image_picker/image_picker.dart';
 import 'package:kpr_sports/students/custom_text_fields.dart';
 import 'package:kpr_sports/students/widgets.dart';
+
 class StudentAdd extends StatefulWidget {
   final bool edit;
   final List usr;
@@ -24,11 +25,15 @@ class _StudentAddState extends State<StudentAdd> {
   TextEditingController name = TextEditingController();
   TextEditingController roll = TextEditingController();
   TextEditingController sec = TextEditingController();
+  TextEditingController dept = TextEditingController();
+  TextEditingController year = TextEditingController();
+  TextEditingController bldgrp = TextEditingController();
   TextEditingController email = TextEditingController();
   TextEditingController pemail = TextEditingController();
   TextEditingController sport = TextEditingController();
   TextEditingController phone = TextEditingController();
   TextEditingController pphone = TextEditingController();
+
   String img = "";
   String filePath = "";
   String result = "";
@@ -48,6 +53,9 @@ class _StudentAddState extends State<StudentAdd> {
       sport.text = user.sport;
       phone.text = user.phone;
       pphone.text = user.pphone;
+      bldgrp.text = user.bldgrp;
+      dept.text = user.dept;
+      year.text = user.year;
 
       setState(() {
         if (user.image != "") {
@@ -121,7 +129,10 @@ class _StudentAddState extends State<StudentAdd> {
       "email": email.text,
       "parentEmail": pemail.text,
       "phone": phone.text,
-      "parentPhone": pphone.text
+      "parentPhone": pphone.text,
+      "bloodGroup": bldgrp.text,
+      "department": dept.text,
+      "year": year.text,
     };
     return data;
   }
@@ -265,22 +276,34 @@ class _StudentAddState extends State<StudentAdd> {
                     ),
                     Row(
                       mainAxisAlignment: MainAxisAlignment.spaceAround,
-                      children: [deptField(
-                            verti: 30,
-                            horizo: 130,
-                            control: roll,
-                            lableText: "Department",
-                            inputTextColor: Colors.black,
-                            barColor: Colors.black,
-                          ),
-                          yearField(
-                            verti: 30,
-                            horizo: 130,
-                            control: sec,
-                            lableText: "Year",
-                            inputTextColor: Colors.black,
-                            barColor: Colors.black,
-                          ),],
+                      children: [
+                        deptField(
+                          verti: 30,
+                          horizo: 130,
+                          control: dept,
+                          lableText: "Department",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                        yearField(
+                          verti: 30,
+                          horizo: 130,
+                          control: year,
+                          lableText: "Year",
+                          inputTextColor: Colors.black,
+                          barColor: Colors.black,
+                        ),
+                      ],
+                    ),
+                    const SizedBox(
+                      height: 10,
+                    ),
+                    bloodField(
+                      verti: 30,
+                      control: bldgrp,
+                      lableText: "Blood Group",
+                      inputTextColor: Colors.black,
+                      barColor: Colors.black,
                     ),
                     const SizedBox(
                       height: 10,

@@ -11,6 +11,9 @@ class UserModel {
   final String? roll;
   final String? sec;
   final String? sport;
+  final String? dept;
+  final String? year;
+  final String? bldgrp;
 
   const UserModel({
     required this.uid,
@@ -23,6 +26,9 @@ class UserModel {
     required this.roll,
     required this.sec,
     required this.sport,
+    required this.dept,
+    required this.year,
+    required this.bldgrp,
   });
 
   // tojson() {
@@ -49,7 +55,10 @@ class UserModel {
       sec: data["section"],
       roll: data["rollno"],
       sport: data["sport"],
-      image: data["image"]
+      image: data["image"],
+      bldgrp: data["bloodGroup"],
+      dept: data["department"],
+      year: data["year"],
     );
   }
 }
